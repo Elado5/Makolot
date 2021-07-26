@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const http = require('http');
+
 const port = process.env.PORT || 5000
 
 const app = express();
@@ -12,4 +13,4 @@ app.get('/', (req, res) =>{res.send('hello everyone')});
 
 const server = http.createServer(app);
 
-server.listen(port, () => {console.log('active')});
+server.listen(port, () => {console.log(`Server running on port ${port} -> localhost:${port}`)});
