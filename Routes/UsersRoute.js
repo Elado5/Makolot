@@ -10,14 +10,22 @@ let route = express.Router();
 route.get(`/` , async (req, res) =>{
 
     //on error
-    sql.on(`error`, (error) => res.send(error))
+    sql.on(`error`, (error) => res.send(error));
 
     //connect to the db
-    let db = await sql.connect(config.db)
+    let db = await sql.connect(config.db);
 
     //run the wanted query - this one shall be ?
-    let quert = await db.request().execute(`select_user`)
+    let query = await db.request().execute(`select_user`);
 
+    //get the data from the query result
+    let data = await query.recordset;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
     
 })
 
