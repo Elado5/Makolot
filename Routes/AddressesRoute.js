@@ -51,7 +51,6 @@ route.get(`:address_id`, async (req, res) =>{
 
 })
 
-
 route.post(`/add`, async (req, res) => {
 
     let body = req.body;
