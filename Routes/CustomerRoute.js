@@ -56,7 +56,7 @@ route.post(`/api/customers/login` , async (req, res) =>{
     let query = await db.request()
     .input(`customer_email`, sql.NVarChar(150), body.customer_email)
     .input(`customer_password`, sql.NVarChar(50), body.customer_password)
-    .execute(`login_customer`);
+    .execute(`Select * from Customers where customer_email = @customer_email and customer_password = @customer_password`);
 
     //get the data from the query result
     let data = await query;
