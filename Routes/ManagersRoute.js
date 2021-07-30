@@ -68,14 +68,28 @@ route.put(`/api/managers/update/:id`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(`customer_id`, sql.Int, params.customer_id)
-    .input(`customer_phone_number`, sql.VarChar(10), body.customer_phone_number)
-    .input(`customer_password`, sql.NVarChar(50), body.customer_password)
-    .input(`customer_city`, sql.NVarChar(50), body.customer_city)
-    .input(`address_id`, sql.Int, body.address_id)
-    .execute(`update_customer`);
+    .input(`retailer_id`, sql.Int, params.customer_id)
+    .input(`retailer_phone_number`, sql.VarChar(10), body.customer_phone_number)
+    .input(`retailer_password`, sql.NVarChar(50), body.customer_password)
+    .input(`retailer_city`, sql.NVarChar(50), body.customer_city)
+    .input(`retailer_address_id`, sql.Int, body.address_id)
+    .execute(`update_retailer`);
 
     let data = await query
     await db.close()
     res.send(data)
+})
+
+route.put(`/api/managers/logical_delete/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+    .input(`retailer_id`, sql.Int, params.id)
+
+    let query = await db.request()
+        .input(``)
+
 })
