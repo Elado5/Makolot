@@ -101,14 +101,35 @@ route.put(`/api/customers/update_card/:id`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(`customer_id`, sql.Int, params.customer_id)
+    .input(`customer_id`, sql.Int, params.id)
     .input(`credit_card_id`, sql.VarChar(10), body.credit_card_id)
     .execute(`update_credit_card`);
 
-    let data = await query
-    await db.close()
-    res.send(data)
+    let data = await query;
+    await db.close();
+    res.send(data);
 })
+
+route.put(`/api/customers/delete/:id`, async (req, res) => {
+
+    let body = req.body;
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`customer_id`, sql.Int, params.id)
+    .execute(`delete_customer`);
+
+    let data = await query;
+    await db.close();
+    res.send(data);
+
+})
+
+
 
 module.exports = route
 

@@ -75,21 +75,24 @@ route.put(`/api/managers/update/:id`, async (req, res) => {
     .input(`retailer_address_id`, sql.Int, body.address_id)
     .execute(`update_retailer`);
 
-    let data = await query
-    await db.close()
-    res.send(data)
+    let data = await query;
+    await db.close();
+    res.send(data);
 })
 
-route.put(`/api/managers/logical_delete/:id`, async (req, res) => {
+route.put(`/api/managers/delete/:id`, async (req, res) => {
 
     let params = req.params;
 
     sql.on(`error`, (error) => res.send(error));
 
     let db = await sql.connect(config.db);
-    .input(`retailer_id`, sql.Int, params.id)
 
     let query = await db.request()
-        .input(``)
+    .input(`retailer_id`, sql.Int, params.id)
+    .execute(`delete_retail_manager`);
 
+    let data = await query;
+    await db.close();
+    res.send(data);
 })
