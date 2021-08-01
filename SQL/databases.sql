@@ -251,7 +251,9 @@ create table Category (
 	category_id int IDENTITY(1,1) not null primary key,
 	category_name nvarchar(150) not null,
 	category_info nvarchar(150) not null,
-	category_image Text not null
+	category_image image not null,
+	isActive bit default 1
+
 )
 go
 
@@ -259,7 +261,7 @@ create proc add_category
 
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image Text
+	@category_image image
 AS
 	insert into [dbo].[Makolot]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
@@ -277,6 +279,23 @@ as
 			[category_image] = @category_image
 		where [category_id] = @category_id
 go
+
+create proc logical_delete_category
+@category_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 0
+	WHERE [category_id] = @category_id
+go
+
+create proc reactivate_category
+@category_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 1
+	WHERE [category_id] = @category_id
+go
+
 
 create proc delete_category
 	@category_id int
@@ -298,7 +317,8 @@ create table Products (
 	product_details nvarchar(150),
 	product_description nvarchar(150),
 	product_image Text not null,
-	product_suppliers nvarchar(150)
+	product_suppliers nvarchar(150),
+	isActive bit default 1
 )
 go
 
@@ -337,6 +357,23 @@ as
 		where [product_id] = @product_id
 go
 
+create proc logical_delete_product
+@product_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 0
+	WHERE [product_id] = @product_id
+go
+
+create proc reactivate_product
+@product_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 1
+	WHERE [product_id] = @product_id
+go
+
+
 create proc delete_product
 	@product_id int
 AS
@@ -358,7 +395,8 @@ create table Grocery_Shop (
 	grocery_shop_opening_times nvarchar(150) not null,
 	grocery_shop_radius float(10) not null,
 	grocery_shop_phone_number varchar(10) not null,
-	grocery_shop_contact_name nvarchar(150)
+	grocery_shop_contact_name nvarchar(150),
+	isActive bit default 1
 )
 go
 
@@ -396,6 +434,22 @@ as
 			[grocery_shop_phone_number] = @grocery_shop_phone_number,
 			[grocery_shop_contact_name] = @grocery_shop_contact_name
 		where [grocery_shop_id] = @grocery_shop_id
+go
+
+create proc logical_delete_grocery_shop
+@grocery_shop_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 0
+	WHERE [grocery_shop_id] = @grocery_shop_id
+go
+
+create proc reactivate_grocery_shop
+@grocery_shop_id int
+as
+	update [dbo].[Makolot]
+		set [isActive] = 1
+	WHERE [grocery_shop_id] = @grocery_shop_id
 go
 
 
