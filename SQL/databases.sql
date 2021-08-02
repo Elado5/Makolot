@@ -80,7 +80,7 @@ create proc add_credit_card
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
 	@credit_card_cvv varchar(3),
-	@credit_card_name nvarchar(150),
+	@credit_card_name nvarchar(150)
 AS
 	insert into [dbo].CreditCards([credit_card_number], [credit_card_date], [credit_card_cvv], [credit_card_name])
 	values (@credit_card_number, @credit_card_date, @credit_card_cvv, @credit_card_name)
