@@ -13,7 +13,7 @@ route.post(`/api/managers/register`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(`retailer_first_name`, sql.NVarChar(150), body.retailer_first_name
+    .input(`retailer_first_name`, sql.NVarChar(150), body.retailer_first_name)
     .input(`retailer_last_name`, sql.NVarChar(150), body.retailer_last_name)
     .input(`retailer_email`, sql.NVarChar(150), body.retailer_email)
     .input(`retailer_phone_number`, sql.VarChar(150), body.retailer_phone_number)
