@@ -263,7 +263,7 @@ create proc add_category
 	@category_info nvarchar(150),
 	@category_image image
 AS
-	insert into [dbo].[Makolot]([category_name],[category_info],[category_image])
+	insert into [dbo].[Makolot].[Category]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
 GO
 
@@ -273,7 +273,7 @@ create proc update_category
 	@category_info nvarchar(150),
 	@category_image Text
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Category]
 		set [category_name] = @category_name,
 			[category_info] = @category_info,
 			[category_image] = @category_image
@@ -283,7 +283,7 @@ go
 create proc logical_delete_category
 @category_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Category]
 		set [isActive] = 0
 	WHERE [category_id] = @category_id
 go
@@ -291,7 +291,7 @@ go
 create proc reactivate_category
 @category_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Category]
 		set [isActive] = 1
 	WHERE [category_id] = @category_id
 go
@@ -331,7 +331,7 @@ create proc add_product
 	@product_image TEXT,
 	@product_suppliers nvarchar(150)
 AS
-	insert into [dbo].[Makolot]([product_name],[product_price], [product_details],[product_description], [product_image], [product_suppliers])
+	insert into [dbo].[Makolot].[Products]([product_name],[product_price], [product_details],[product_description], [product_image], [product_suppliers])
 	values (@product_name, @product_price, @product_details, @product_description, @product_image, @product_suppliers)
 	set @category_id = @@IDENTITY
 GO
@@ -346,7 +346,7 @@ create proc update_product
 	@product_image TEXT,
 	@product_suppliers nvarchar(150)
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Products]
 		set [category_id] = @category_id,
 			[product_name] = @product_name,
 			[product_price] = @product_price,
@@ -360,7 +360,7 @@ go
 create proc logical_delete_product
 @product_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Products]
 		set [isActive] = 0
 	WHERE [product_id] = @product_id
 go
@@ -368,7 +368,7 @@ go
 create proc reactivate_product
 @product_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Products]
 		set [isActive] = 1
 	WHERE [product_id] = @product_id
 go
@@ -377,7 +377,7 @@ go
 create proc delete_product
 	@product_id int
 AS
-	delete from [dbo].[Makolot]
+	delete from [dbo].[Makolot].[Products]
 	WHERE [product_id] = @product_id
 go
 
@@ -409,7 +409,7 @@ create proc add_grocery_shop
 	@grocery_shop_phone_number varchar(10),
 	@grocery_shop_contact_name nvarchar(150)
 as
-	insert into [dbo].[Makolot]([grocery_shop_name],[grocery_shop_city],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_phone_number],[grocery_shop_contact_name])
+	insert into [dbo].[Makolot].[Grocery_Shop]([grocery_shop_name],[grocery_shop_city],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_phone_number],[grocery_shop_contact_name])
 	values (@grocery_shop_name, @grocery_shop_city, @grocery_shop_radius, @grocery_shop_phone_number, @grocery_shop_contact_name)
 	set @retailer_id = @@IDENTITY
 	set @grocery_shop_address_id = @@IDENTITY
@@ -425,7 +425,7 @@ create proc update_grocery_shop
 	@grocery_shop_phone_number varchar(10),
 	@grocery_shop_contact_name nvarchar(150)
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Grocery_Shop]
 		set [grocery_shop_name] = @grocery_shop_name,
 			[retailer_id] = @retailer_id,
 			[grocery_shop_city] = @grocery_shop_city,
@@ -439,7 +439,7 @@ go
 create proc logical_delete_grocery_shop
 @grocery_shop_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Grocery_Shop]
 		set [isActive] = 0
 	WHERE [grocery_shop_id] = @grocery_shop_id
 go
@@ -447,7 +447,7 @@ go
 create proc reactivate_grocery_shop
 @grocery_shop_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Grocery_Shop]
 		set [isActive] = 1
 	WHERE [grocery_shop_id] = @grocery_shop_id
 go
@@ -490,7 +490,7 @@ create proc add_order
 	@order_ship_date_preference datetime,
 	@grocery_shop_id int output
 as
-	insert into [dbo].[Makolot]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference])
+	insert into [dbo].[Makolot].[Orders]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference])
 	values (@order_status,@order_discount,@order_total_price,@order_details,@order_date,@order_ship_date_preference)
 	set @customer_id = @@IDENTITY
 	set @grocery_shop_id = @@IDENTITY
@@ -556,17 +556,17 @@ create table Invoices (
 	customer_id int identity not null foreign key references Customers(customer_id),
 	amount_total float(10) not null,
 	invoice_date datetime not null,
-	status nvarchar(20)
+	invoice_status nvarchar(20)
 )
 go
 
-create proc add_Invoice
+create proc add_invoice
 	@transaction_id int output,
 	@customer_id int output,
 	@amount_total float(10),
 	@invoice_date datetime
 AS
-	insert into [dbo].[Makolot]([amount_total], [invoice_date])
+	insert into [dbo].[Makolot].[Invoices] ([amount_total], [invoice_date])
 	values (@amount_total, @invoice_date)
 	set @transaction_id = @@IDENTITY
 	set @customer_id = @@IDENTITY
@@ -579,7 +579,7 @@ create proc update_invoice
 	@amount_total float(10),
 	@invoice_date datetime
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Invoices]
 		set [transaction_id] = @transaction_id,
 			[customer_id] = @customer_id,
 			[amount_total] = @amount_total,
@@ -615,7 +615,7 @@ create proc add_order_details
 	@order_promocode nvarchar(20),
 	@product_id int output
 AS
-	insert into [dbo].[Makolot]([order_quantity], [order_price], [order_promocode])
+	insert into [dbo].[Makolot].[Order_Details]([order_quantity], [order_price], [order_promocode])
 	values (@order_quantity, @order_price, @order_promocode)
 	set @order_id = @@IDENTITY
 	set @product_id = @@IDENTITY
@@ -628,7 +628,7 @@ create proc update_order_details
 	@order_promocode nvarchar(20),
 	@product_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Order_Details]
 		set 
 			[order_quantity] = @order_quantity,
 			[order_price] = @order_price,
