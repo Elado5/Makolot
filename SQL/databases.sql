@@ -475,7 +475,7 @@ create table Orders (
 	customer_id int identity not null foreign key references Customers(customer_id),
 	order_ship_date_preference datetime not null,
 	grocery_shop_id int identity not null foreign key references Grocery_Shop(grocery_shop_id)
-
+	
 )
 go
 
