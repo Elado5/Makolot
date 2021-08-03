@@ -4,8 +4,20 @@ const config = require('../Utils/config')
 
 let route = express.Router();
 
+route.get(`/api/customers/all`, async (req, res) => {
 
-//route.get('/', (req, res) =>{res.send('user route')})
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request().execute(`SELECT * FROM Customers`);
+
+    let data = await query.recordset;
+
+    await db.close();
+
+    res.send(data);
+})
 
 route.post(`/api/customers/register` , async (req, res) =>{
 

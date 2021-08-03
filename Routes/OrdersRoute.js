@@ -4,6 +4,21 @@ const config = require(`../Utils/config`);
 
 let route = express.Router();
 
+route.get(`/api/Orders/all`, async (req, res) => {
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request().execute(`SELECT * FROM Orders`);
+
+    let data = await query.recordset;
+
+    await db.close();
+
+    res.send(data);
+})
+
 route.post(`/api/Orders/add` , async (req, res) => {
 
     let body = req.body;

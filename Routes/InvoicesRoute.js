@@ -4,7 +4,23 @@ const config = require(`../Utils/config`);
 
 let route = express.Router();
 
-route.post(`/api/Invoices/add` , async (req, res) =>{
+
+route.get(`/api/invoices/all`, async (req, res) => {
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request().execute(`SELECT * FROM Invoices`);
+
+    let data = await query.recordset;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.post(`/api/invoices/add` , async (req, res) =>{
 
     let body = req.body;
 
@@ -49,7 +65,7 @@ route.put(`/api/Invoices/update/:id`, async (req, res) => {
 
 })*/
 
-route.post(`/api/Invoices/delete/:id`, async (req, res) => {
+route.post(`/api/invoices/delete/:id`, async (req, res) => {
 
     let params = req.params;
     
