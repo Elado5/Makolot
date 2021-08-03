@@ -391,7 +391,7 @@ create table Grocery_Shop (
 	grocery_shop_name nvarchar(150) not null,
 	retailer_id int identity not null foreign key references Retail_Managers(retailer_id),
 	grocery_shop_city nvarchar(150) not null,
-	grocery_shop_address_id int identity not null foreign key references Addresses(address_id),
+	address_id int identity not null foreign key references Addresses(address_id),
 	grocery_shop_opening_times nvarchar(150) not null,
 	grocery_shop_radius float(10) not null,
 	grocery_shop_phone_number varchar(10) not null,
@@ -402,17 +402,17 @@ go
 
 create proc add_grocery_shop
 	@grocery_shop_name nvarchar(150),
-	@retailer_id int output,
+	@retailer_id int,
 	@grocery_shop_city nvarchar(150),
-	@grocery_shop_address_id int output,
+	@address_id int,
 	@grocery_shop_radius float(10),
 	@grocery_shop_phone_number varchar(10),
 	@grocery_shop_contact_name nvarchar(150)
 as
-	insert into [dbo].[Makolot].[Grocery_Shop]([grocery_shop_name],[grocery_shop_city],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_phone_number],[grocery_shop_contact_name])
+	insert into [dbo].[Makolot].[Grocery_Shop]([grocery_shop_name],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_phone_number],[grocery_shop_contact_name])
 	values (@grocery_shop_name, @grocery_shop_city, @grocery_shop_radius, @grocery_shop_phone_number, @grocery_shop_contact_name)
 	set @retailer_id = @@IDENTITY
-	set @grocery_shop_address_id = @@IDENTITY
+	set @address_id = @@IDENTITY
 go
 
 create proc update_grocery_shop
@@ -420,7 +420,7 @@ create proc update_grocery_shop
 	@grocery_shop_name nvarchar(150),
 	@retailer_id int,
 	@grocery_shop_city nvarchar(150),
-	@grocery_shop_address_id int,
+	@address_id int,
 	@grocery_shop_radius float(10),
 	@grocery_shop_phone_number varchar(10),
 	@grocery_shop_contact_name nvarchar(150)
@@ -429,7 +429,7 @@ as
 		set [grocery_shop_name] = @grocery_shop_name,
 			[retailer_id] = @retailer_id,
 			[grocery_shop_city] = @grocery_shop_city,
-			[grocery_shop_address_id] = @grocery_shop_address_id,
+			[address_id] = @ddress_id,
 			[grocery_shop_radius] = @grocery_shop_radius,
 			[grocery_shop_phone_number] = @grocery_shop_phone_number,
 			[grocery_shop_contact_name] = @grocery_shop_contact_name
