@@ -33,6 +33,8 @@ route.post(`/api/Invoices/add` , async (req, res) =>{
     
 })
 
+//is update even needed on invoice
+/*
 route.put(`/api/Invoices/update/:id`, async (req, res) => {
 
     let params = req.params;
@@ -45,4 +47,23 @@ route.put(`/api/Invoices/update/:id`, async (req, res) => {
     let query = await db.request()
     .input(`invoice_id`, sql.Int, params.id);
 
+})*/
+
+route.post(`/api/Invoices/delete/:id`, async (req, res) => {
+
+    let params = req.params;
+    
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+        .input(`invoice_id`, sql.Int, params.id)
+        .execute(`delete_invoice`);
+
+        let data = await query;
+
+        await db.close();
+
+        res.send(data);
 })
