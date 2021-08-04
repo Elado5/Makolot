@@ -129,3 +129,5 @@ route.put(`/delete_permanent/:id`, async (req, res) => {
 
     res.send(data);
 })
+
+module.exports = route;

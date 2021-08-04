@@ -66,3 +66,5 @@ route.post(`/delete/:id` , async (req, res) => {
     res.send(data);
 
 })
+
+module.exports = route;

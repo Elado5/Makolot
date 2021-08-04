@@ -10,7 +10,7 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`SELECT * FROM Managers`);
+    let query = await db.request().execute(`select * from Retail_Managers`);
 
     let data = await query.recordset;
 
@@ -111,3 +111,5 @@ route.put(`/delete/:id`, async (req, res) => {
     await db.close();
     res.send(data);
 })
+
+module.exports = route;
