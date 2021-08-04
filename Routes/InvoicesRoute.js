@@ -5,7 +5,7 @@ const config = require(`../Utils/config`);
 let route = express.Router();
 
 
-route.get(`/api/invoices/all`, async (req, res) => {
+route.get(`/all`, async (req, res) => {
 
     sql.on(`error`, (error) => res.send(error));
 
@@ -20,7 +20,7 @@ route.get(`/api/invoices/all`, async (req, res) => {
     res.send(data);
 })
 
-route.post(`/api/invoices/add` , async (req, res) =>{
+route.post(`/add` , async (req, res) =>{
 
     let body = req.body;
 
@@ -65,7 +65,7 @@ route.put(`/api/Invoices/update/:id`, async (req, res) => {
 
 })*/
 
-route.post(`/api/invoices/delete/:id`, async (req, res) => {
+route.post(`/delete/:id`, async (req, res) => {
 
     let params = req.params;
     

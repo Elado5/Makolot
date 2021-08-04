@@ -4,7 +4,7 @@ const config = require('../Utils/config');
 
 let route = express.Router();
 
-route.get(`/api/products/all`, async (req, res) => {
+route.get(`/all`, async (req, res) => {
 
     sql.on(`error`, (error) => res.send(error));
 
@@ -20,7 +20,7 @@ route.get(`/api/products/all`, async (req, res) => {
 })
 
 
-route.post(`/api/products/add` , async (req, res) =>{
+route.post(`/add` , async (req, res) =>{
 
     let body = req.body;
 
@@ -51,7 +51,7 @@ route.post(`/api/products/add` , async (req, res) =>{
     
 })
 
-route.put(`/api/products/update/:id` , async (req, res) =>{
+route.put(`/update/:id` , async (req, res) =>{
 
     let body = req.body;
     let params = req.params;
@@ -83,7 +83,7 @@ route.put(`/api/products/update/:id` , async (req, res) =>{
     
 })
 
-route.put(`/api/products/reactivate/:id` , async (req, res) =>{
+route.put(`/reactivate/:id` , async (req, res) =>{
 
     let params = req.params;
 
@@ -109,7 +109,7 @@ route.put(`/api/products/reactivate/:id` , async (req, res) =>{
     
 })
 
-route.put(`/api/products/logical_delete/:id` , async (req, res) =>{
+route.put(`/logical_delete/:id` , async (req, res) =>{
 
     let params = req.params;
 

@@ -5,7 +5,7 @@ const config = require(`../Utils/config`);
 let route = express.Router();
 
 
-route.get(`/api/Category/all`, async (req, res) => {
+route.get(`/all`, async (req, res) => {
 
    sql.on(`error`, (error) => res.send(error));
 
@@ -20,7 +20,7 @@ route.get(`/api/Category/all`, async (req, res) => {
     res.send(data);
 })
 
-route.post(`/api/Category/add`,async (req,res) => {
+route.post(`/add`,async (req,res) => {
 
     let body = req.body;
 
@@ -40,7 +40,7 @@ route.post(`/api/Category/add`,async (req,res) => {
 
 })
 
-route.put(`/api/Category/update/:id`,async (req,res) => {
+route.put(`/update/:id`,async (req,res) => {
 
     let body = req.body;
     let params = req.params;
@@ -64,7 +64,7 @@ route.put(`/api/Category/update/:id`,async (req,res) => {
 
 module.exports = route;
 
-route.put(`/api/Category/logical_delete/:id`, async (req, res) => {
+route.put(`/logical_delete/:id`, async (req, res) => {
 
     let body = req.body;
     let params = req.params;
@@ -81,7 +81,7 @@ route.put(`/api/Category/logical_delete/:id`, async (req, res) => {
         .execute(`delete_category`);
 })
 
-route.put(`/api/Category/permanent_delete/:id`, async (req, res) => {
+route.put(`/permanent_delete/:id`, async (req, res) => {
 
     let body = req.body;
     let params = req.params;

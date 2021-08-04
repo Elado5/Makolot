@@ -4,7 +4,7 @@ const config = require(`../Utils/config`);
 
 let route = express.Router();
 
-route.get(`/api/Shops/all`, async (req, res) => {
+route.get(`/all`, async (req, res) => {
 
     sql.on(`error`, (error) => res.send(error));
 
@@ -19,7 +19,7 @@ route.get(`/api/Shops/all`, async (req, res) => {
     res.send(data);
 })
 
-route.post(`/api/Shops/add`, async (req, res) => {
+route.post(`/add`, async (req, res) => {
 
     let body = req.body;
 
@@ -45,7 +45,7 @@ route.post(`/api/Shops/add`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/api/Shops/update/:id`, async (req, res) => {
+route.put(`/update/:id`, async (req, res) => {
 
     let body = req.body;
     let params = req.params;
@@ -73,7 +73,7 @@ route.put(`/api/Shops/update/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/api/Shops/delete_logical/:id`, async (req, res) => {
+route.put(`/delete_logical/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -92,7 +92,7 @@ route.put(`/api/Shops/delete_logical/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/api/Shops/delete_logical/:id`, async (req, res) => {
+route.put(`/delete_logical/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -111,7 +111,7 @@ route.put(`/api/Shops/delete_logical/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/api/Shops/delete_permanent/:id`, async (req, res) => {
+route.put(`/delete_permanent/:id`, async (req, res) => {
 
     let params = req.params;
 
