@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
     db: {
         user: `db_a779d2_proj4_admin`,
         password: `8CcJK8jQmG9JUfXs`,
@@ -6,6 +6,7 @@ module.export = {
         database: `db_a779d2_proj4`,
         options: {
             enableArithAbort: true, //this ends a query when an overflow or divide-by-zero error occurs during query execution.
+            trustServerCertificate: true,
         }
     }
 }

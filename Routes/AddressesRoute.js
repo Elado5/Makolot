@@ -7,7 +7,7 @@ let route = express.Router();
 
 //route.get('/', (req, res) =>{res.send('user route')})
 
-route.get(`/` , async (req, res) =>{
+route.get(`/all` , async (req, res) =>{
 
     //on error
     sql.on(`error`, (error) => res.send(error));
@@ -16,7 +16,7 @@ route.get(`/` , async (req, res) =>{
     let db = await sql.connect(config.db);
 
     //run the wanted query - this one shall be ?
-    let query = await db.request().execute(`select * from Addresses`);
+    let query = await db.request().query(`select * from Addresses`);
 
     //get the data from the query result
     let data = await query.recordset;
@@ -29,7 +29,7 @@ route.get(`/` , async (req, res) =>{
     
 })
 
-route.get(`:address_id`, async (req, res) =>{
+route.get(`/:address_id`, async (req, res) =>{
 
     let params = req.params;
 

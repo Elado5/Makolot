@@ -5,13 +5,13 @@ const config = require(`../Utils/config`);
 let route = express.Router();
 
 
-route.get(`/api/managers/all`, async (req, res) => {
+route.get(`/api/Category/all`, async (req, res) => {
 
-    sql.on(`error`, (error) => res.send(error));
+   sql.on(`error`, (error) => res.send(error));
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`SELECT * FROM Categories`);
+    let query = await db.request().query(`SELECT * FROM Categories`);
 
     let data = await query.recordset;
 
