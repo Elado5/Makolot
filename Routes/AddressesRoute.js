@@ -29,7 +29,7 @@ route.get(`/all` , async (req, res) =>{
     
 })
 
-route.get(`/:address_id`, async (req, res) =>{
+route.get(`/:id`, async (req, res) =>{
 
     let params = req.params;
 
@@ -73,7 +73,7 @@ route.post(`/add`, async (req, res) => {
 
 })
 
-route.delete(`/delete_logical/:address_id`, async (req, res) => {
+route.delete(`/delete_logical/:id`, async (req, res) => {
 
     let params = req.params
 
@@ -88,7 +88,7 @@ route.delete(`/delete_logical/:address_id`, async (req, res) => {
     res.send(data)
 })
 
-route.delete(`/delete_physical/:address_id`, async (req, res) => {
+route.delete(`/delete_physical/:id`, async (req, res) => {
     let params = req.params
 
     sql.on(`error`, (error) => res.send(error))
@@ -102,7 +102,7 @@ route.delete(`/delete_physical/:address_id`, async (req, res) => {
     res.send(data)
 })
 
-route.put(`/update/:address_id`, async (req, res) => {
+route.put(`/update/:id`, async (req, res) => {
 
 let params = req.params;
 let body = req.body;
