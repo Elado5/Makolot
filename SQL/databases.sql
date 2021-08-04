@@ -67,11 +67,11 @@ go
 
 create table CreditCards (
 
-	credit_card_holder_id int IDENTITY(1,1) primary key not null, --id of card holder or unique card id for system?
+	credit_card_id int IDENTITY(1,1) primary key not null, --id of card holder or unique card id for system?
 	credit_card_number varchar(16) not null,
 	credit_card_date nvarchar(5) not null,
-	credit_card_cvv varchar(3) not null,
-	credit_card_name nvarchar(150) not null,
+	credit_card_cvv varchar(4) not null,
+	credit_card_name nvarchar(150) not null
 	--credit_card_password ?
 )
 go
@@ -79,17 +79,20 @@ go
 create proc add_credit_card
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
-	@credit_card_cvv varchar(3),
+	@credit_card_cvv varchar(4),
 	@credit_card_name nvarchar(150)
 AS
 	insert into [dbo].CreditCards([credit_card_number], [credit_card_date], [credit_card_cvv], [credit_card_name])
 	values (@credit_card_number, @credit_card_date, @credit_card_cvv, @credit_card_name)
 go
 
+EXEC add_credit_card 1234123412341234, '04/21', 221, 'Elad Koko'
+go
+
 create proc update_credit_card
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
-	@credit_card_cvv varchar(3),
+	@credit_card_cvv varchar(4),
 	@credit_card_name nvarchar(150),
 	@credit_card_holder_id int
 as
@@ -98,14 +101,14 @@ as
 			[credit_card_date] = @credit_card_date,
 			[credit_card_cvv] = @credit_card_cvv,
 			[credit_card_name] = @credit_card_name
-		where [credit_card_holder_id] = @credit_card_holder_id
+		where [credit_card_id] = @credit_card_id
 GO
 
 create proc delete_credit_card
 	@credit_card_holder_id int
 as
 	delete from [dbo].CreditCards.[CreditCards]
-	WHERE [credit_card_holder_id] = @credit_card_holder_id
+	WHERE [credit_card_id] = @credit_card_id
 go
 
 
@@ -122,7 +125,7 @@ create table Customers (
 	customer_password nvarchar(50) not null,
 	customer_city nvarchar(50) not null,
 	address_id int not null foreign key references Addresses(address_id),
-	credit_card_id int not null foreign key references CreditCards(credit_card_holder_id)
+	credit_card_id int foreign key references CreditCards(credit_card_holder_id)
 )
 go
 
@@ -140,8 +143,8 @@ create proc add_customer
 	@credit_card_id int,
 	@customer_id int output
 AS
-	insert into [dbo].[Makolot]([customer_first_name], [customer_last_name], [customer_email], [customer_phone_number],[customer_birthdate],[customer_password],[customer_city], [address_id], [credit_card_id])
-	values (@customer_first_name, @customer_last_name, customer_email, customer_phone_number, customer_birthdate, customer_password, customer_city, address_id, credit_card_id)
+	insert into [dbo].Customers([customer_first_name], [customer_last_name], [customer_email], [customer_phone_number],[customer_birthdate],[customer_password],[customer_city], [address_id], [credit_card_id])
+	values (@customer_first_name, @customer_last_name, @customer_email, @customer_phone_number, @customer_birthdate, @customer_password, @customer_city, @address_id, @credit_card_id)
 	set @customer_id = @@IDENTITY
 go
 
@@ -157,7 +160,7 @@ create proc update_customer
 	@address_id int,
 	@credit_card_id int
 AS
-	update [dbo].[Makolot]
+	update [dbo].[Makolot].[Customers]
 		set [customer_first_name] = @customer_first_name,
 			[customer_last_name] = @customer_last_name,
 			[customer_email] = @customer_email,
@@ -246,14 +249,13 @@ go
 --Categories
 
 
-create table Category (
+create table Categories (
 
 	category_id int IDENTITY(1,1) not null primary key,
 	category_name nvarchar(150) not null,
 	category_info nvarchar(150) not null,
 	category_image image not null,
 	isActive bit default 1
-
 )
 go
 
@@ -263,7 +265,7 @@ create proc add_category
 	@category_info nvarchar(150),
 	@category_image image
 AS
-	insert into [dbo].[Makolot].[Category]([category_name],[category_info],[category_image])
+	insert into [dbo].[Makolot].[Categories]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
 GO
 
@@ -273,7 +275,7 @@ create proc update_category
 	@category_info nvarchar(150),
 	@category_image Text
 as
-	update [dbo].[Makolot].[Category]
+	update [dbo].[Makolot].[Categories]
 		set [category_name] = @category_name,
 			[category_info] = @category_info,
 			[category_image] = @category_image
@@ -283,7 +285,7 @@ go
 create proc logical_delete_category
 @category_id int
 as
-	update [dbo].[Makolot].[Category]
+	update [dbo].[Makolot].[Categories]
 		set [isActive] = 0
 	WHERE [category_id] = @category_id
 go
@@ -291,7 +293,7 @@ go
 create proc reactivate_category
 @category_id int
 as
-	update [dbo].[Makolot].[Category]
+	update [dbo].[Makolot].[Categories]
 		set [isActive] = 1
 	WHERE [category_id] = @category_id
 go
@@ -300,7 +302,7 @@ go
 create proc delete_category
 	@category_id int
 as
-	delete from [dbo].[Makolot].[Category]
+	delete from [dbo].[Makolot].[Categories]
 	WHERE [category_id] = @category_id
 go
 
@@ -472,9 +474,9 @@ create table Orders (
 	order_total_price float(10) not null,
 	order_details nvarchar(150),
 	order_date datetime not null,
-	customer_id int identity not null foreign key references Customers(customer_id),
+	customer_id int not null foreign key references Customers(customer_id),
 	order_ship_date_preference datetime not null,
-	grocery_shop_id int identity not null foreign key references Grocery_Shop(grocery_shop_id)
+	grocery_shop_id int not null foreign key references Grocery_Shop(grocery_shop_id)
 	
 )
 go
@@ -486,14 +488,12 @@ create proc add_order
 	@order_total_price float(10),
 	@order_details nvarchar(150),
 	@order_date datetime,
-	@customer_id int output,
+	@customer_id int,
 	@order_ship_date_preference datetime,
-	@grocery_shop_id int output
+	@grocery_shop_id int
 as
-	insert into [dbo].[Makolot].[Orders]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference])
-	values (@order_status,@order_discount,@order_total_price,@order_details,@order_date,@order_ship_date_preference)
-	set @customer_id = @@IDENTITY
-	set @grocery_shop_id = @@IDENTITY
+	insert into [dbo].[Makolot].[Orders]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference], [customer_id], [grocery_shop_id])
+	values (@order_status,@order_discount,@order_total_price,@order_details,@order_date,@order_ship_date_preference, @customer_id, @grocery_shop_id)
 go
 
 --update order - not needed? (only delete)
@@ -511,12 +511,12 @@ go
 create table Payment_Transactions (
 
 	transaction_id int IDENTITY(1,1) not null primary key,
-	customer_id int identity not null foreign key references Customers(customer_id),
+	customer_id int not null foreign key references Customers(customer_id),
 	amount_total float(10) not null,
 	payment_date datetime not null,
-	order_id int identity not null foreign key references Orders(order_id),
+	order_id intnot null foreign key references Orders(order_id),
 	payment_status nvarchar(20),
-	credit_card_holder_id int identity not null foreign key references CreditCards(credit_card_holder_id)
+	credit_card_holder_id int not null foreign key references CreditCards(credit_card_id)
 )
 go
 
@@ -552,8 +552,8 @@ go
 create table Invoices (
 
 	invoices_id int IDENTITY(1,1) not null,
-	transaction_id int identity not null foreign key references Payment_Transactions(transaction_id),
-	customer_id int identity not null foreign key references Customers(customer_id),
+	transaction_id int not null foreign key references Payment_Transactions(transaction_id),
+	customer_id int not null foreign key references Customers(customer_id),
 	amount_total float(10) not null,
 	invoice_date datetime not null,
 	invoice_status nvarchar(20)
@@ -604,7 +604,7 @@ create table Order_Details (
 	order_quantity smallint not null,
 	order_price float(10) not null,
 	order_promocode nvarchar(20),
-	product_id int identity not null foreign key references Products(product_id)
+	product_id int not null foreign key references Products(product_id)
 )
 go
 
