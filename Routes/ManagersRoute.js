@@ -95,7 +95,7 @@ route.put(`/update/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/delete/:id`, async (req, res) => {
+route.delete(`/delete/:id`, async (req, res) => {
 
     let params = req.params;
 

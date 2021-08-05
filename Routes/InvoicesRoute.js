@@ -65,7 +65,7 @@ route.put(`/api/Invoices/update/:id`, async (req, res) => {
 
 })*/
 
-route.post(`/delete/:id`, async (req, res) => {
+route.delete(`/delete/:id`, async (req, res) => {
 
     let params = req.params;
     
