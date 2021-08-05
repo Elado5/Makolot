@@ -122,9 +122,8 @@ route.put(`/api/customers/update_card/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/api/customers/delete/:id`, async (req, res) => {
+route.delete(`/api/customers/delete/:id`, async (req, res) => {
 
-    let body = req.body;
     let params = req.params;
 
     sql.on(`error`, (error) => res.send(error));

@@ -73,7 +73,7 @@ route.post(`/add`, async (req, res) => {
 
 })
 
-route.delete(`/delete_logical/:id`, async (req, res) => {
+route.put(`/delete_logical/:id`, async (req, res) => {
 
     let params = req.params
 
