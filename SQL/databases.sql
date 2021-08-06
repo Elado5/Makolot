@@ -513,31 +513,43 @@ create table Payment_Transactions (
 	customer_id int not null foreign key references Customers(customer_id),
 	amount_total float(10) not null,
 	payment_date datetime not null,
-	order_id intnot null foreign key references Orders(order_id),
+	order_id int not null foreign key references Orders(order_id),
 	payment_status nvarchar(20),
 	credit_card_holder_id int not null foreign key references CreditCards(credit_card_id)
 )
 go
 
 create proc add_transaction
-	@transaction_id int output,
-	@customer_id int output,
+	@customer_id int,
 	@amount_total float(10),
 	@payment_date datetime,
-	@order_id int output,
+	@order_id int,
 	@payment_status nvarchar(20),
-	@credit_card_holder_id int output
+	@credit_card_id int
 AS
-	insert into [dbo].[Makolot]([amount_total], [payment_date], [payment_status])
+	insert into [dbo].[Makolot]([amount_total], [payment_date], [order_id], [payment_status],  [credit_card_id])
 	values (@amount_total, @payment_date, @payment_status)
-	set @transaction_id = @@IDENTITY
-	set @customer_id = @@IDENTITY
-	set @order_id = @@IDENTITY
-	set @credit_card_holder_id = @@IDENTITY
 go
 
 --update transaction - not needed? (only delete)
-
+create proc update_transaction
+	@transaction_id int,
+	@amount_total float(10),
+	@payment_date datetime,
+	@order_id int,
+	@payment_status nvarchar(20),
+	@credit_card_id int
+AS
+	update [dbo].[Makolot].[Payment_Transactions]
+		set 
+		[transaction_id] = @transaction_id,
+		[amount_total] = @amount_total,
+		[payment_date] = @payment_date,
+		[order_id] = @order_id,
+		[payment_status] = @payment_status,
+		[credit_card_id] = @credit_card_id
+		where [transaction_id] = @transaction_id
+go
 
 create proc delete_transaction
 	@transaction_id int 
