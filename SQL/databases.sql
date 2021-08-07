@@ -138,7 +138,7 @@ create table Customers (
 	customer_password nvarchar(50) not null,
 	customer_city nvarchar(50) not null,
 	address_id int not null foreign key references Addresses(address_id),
-	credit_card_id int foreign key references CreditCards(credit_card_holder_id)
+	credit_card_id int foreign key references CreditCards(credit_card_id)
 )
 go
 
@@ -153,12 +153,19 @@ create proc add_customer
 	@customer_password nvarchar(50),
 	@customer_city nvarchar(50),
 	@address_id int,
-	@credit_card_id int,
-	@customer_id int output
+	@credit_card_id int
 AS
 	insert into [dbo].Customers([customer_first_name], [customer_last_name], [customer_email], [customer_phone_number],[customer_birthdate],[customer_password],[customer_city], [address_id], [credit_card_id])
 	values (@customer_first_name, @customer_last_name, @customer_email, @customer_phone_number, @customer_birthdate, @customer_password, @customer_city, @address_id, @credit_card_id)
-	set @customer_id = @@IDENTITY
+go
+
+--how to i check?
+create proc login_customer
+
+	@customer_email nvarchar(150),
+	@customer_password nvarchar(50)
+AS
+	Select * from Customers where customer_email = @customer_email and customer_password = @customer_password
 go
 
 create proc get_customer_by_id
@@ -169,33 +176,24 @@ go
 
 create proc update_customer
 	@customer_id int,
-	@customer_first_name nvarchar(150),
-	@customer_last_name nvarchar(150),
-	@customer_email nvarchar(150),
 	@customer_phone_number varchar(10),
-	@customer_birthdate datetime,
 	@customer_password nvarchar(50),
 	@customer_city nvarchar(50),
-	@address_id int,
-	@credit_card_id int
+	@address_id int
 AS
-	update [dbo].[Makolot].[Customers]
-		set [customer_first_name] = @customer_first_name,
-			[customer_last_name] = @customer_last_name,
-			[customer_email] = @customer_email,
+	update [dbo].[Customers]
+		set
 			[customer_phone_number] = @customer_phone_number,
-			[customer_birthdate] = @customer_birthdate,
 			[customer_password] = @customer_password,
 			[customer_city] = @customer_city,
-			[address_id] = @address_id, -- להתייחס לשדות זהות כמו רגילים?
-			[credit_card_id] = @credit_card_id
+			[address_id] = @address_id -- להתייחס לשדות זהות כמו רגילים?
 		where [customer_id] = @customer_id
 go
 
 create proc delete_customer
 	@customer_id int
 as
-	delete from [dbo].[Makolot].[Customers]
+	delete from [dbo].[Customers]
 	WHERE [customer_id] = @customer_id
 go
 

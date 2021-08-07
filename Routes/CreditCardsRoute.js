@@ -11,7 +11,7 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = db.request().query(`SELECT * FROM CreditCards`);
+    let query = db.request().query(`select * from CreditCards`);
 
     let data = await query.recordset;
 
