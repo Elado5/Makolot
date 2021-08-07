@@ -7,7 +7,7 @@
 create table Addresses (
 	address_id int IDENTITY(1,1) not null primary key, 
 	street nvarchar(150) not null,
-	other_data nvarchar(150), 
+	other_data nvarchar(150),
 	zip_code int not null,
 	isActive bit default 1
 )
@@ -24,6 +24,13 @@ go
 
 exec add_address "kokbo", "yho", 14234
 go
+
+create proc get_address_by_id
+	@address_id int
+as
+	select * from Addresses where [address_id] = @address_id
+go
+
 
 create proc update_address
 	@street nvarchar(150),
@@ -89,6 +96,12 @@ go
 EXEC add_credit_card 1234123412341234, '04/21', 221, 'Elad Koko'
 go
 
+create proc get_credit_card_by_id
+	@credit_card_id int
+as
+	select * from CreditCards where [credit_card_id] = @credit_card_id
+go
+
 create proc update_credit_card
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
@@ -146,6 +159,12 @@ AS
 	insert into [dbo].Customers([customer_first_name], [customer_last_name], [customer_email], [customer_phone_number],[customer_birthdate],[customer_password],[customer_city], [address_id], [credit_card_id])
 	values (@customer_first_name, @customer_last_name, @customer_email, @customer_phone_number, @customer_birthdate, @customer_password, @customer_city, @address_id, @credit_card_id)
 	set @customer_id = @@IDENTITY
+go
+
+create proc get_customer_by_id
+	@customer_id int
+as
+	select * from customers where [customer_id] = @customer_id
 go
 
 create proc update_customer
@@ -214,6 +233,12 @@ AS
 	set @retailer_address_id = @@IDENTITY
 GO
 
+create proc get_retail_manager_by_id
+	@retail_manager_id int
+as
+	select * from retail_managers where [retail_manager_id] = @retail_manager_id
+go
+
 create proc update_retail_manager
 	@retailer_id int,
 	@retailer_first_name nvarchar(150),
@@ -268,6 +293,12 @@ AS
 	insert into [dbo].[Makolot].[Categories]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
 GO
+
+create proc get_category_by_id
+	@category_id int
+as
+	select * from categories where [category_id] = @category_id
+go
 
 create proc update_category
 	@category_id int output,
@@ -337,6 +368,12 @@ AS
 	values (@product_name, @product_price, @product_details, @product_description, @product_image, @product_suppliers)
 	set @category_id = @@IDENTITY
 GO
+
+create proc get_product_by_id
+	@product_id int
+as
+	select * from products where [product_id] = product_id
+go
 
 create proc update_product
 	@product_id int,
@@ -415,6 +452,13 @@ as
 	values (@grocery_shop_name, @grocery_shop_city, @grocery_shop_radius, @grocery_shop_phone_number, @grocery_shop_contact_name, @retailer_id, @address_id)
 
 go
+
+create proc get_grocery_shop_by_id
+	@grocery_shop_id int
+as
+	select * from grocery_shops where [grocery_shop_id] = grocery_shop_id
+go
+
 
 create proc update_grocery_shop
 	@grocery_shop_id int,
@@ -495,6 +539,12 @@ as
 	values (@order_status,@order_discount,@order_total_price,@order_details,@order_date,@order_ship_date_preference, @customer_id, @grocery_shop_id)
 go
 
+create proc get_order_by_id
+	@order_id int
+as
+	select * from orders where [order_id] = order_id
+go
+
 --update order - not needed? (only delete)
 
 create proc delete_order
@@ -529,6 +579,12 @@ create proc add_transaction
 AS
 	insert into [dbo].[Makolot]([amount_total], [payment_date], [order_id], [payment_status],  [credit_card_id])
 	values (@amount_total, @payment_date, @payment_status)
+go
+
+create proc get_transaction_by_id
+	@transaction_id int
+as
+	select * from Payment_Transactions where [transaction_id] = transaction_id
 go
 
 --update transaction - not needed? (only delete)
@@ -583,6 +639,12 @@ AS
 	set @customer_id = @@IDENTITY
 GO
 
+create proc get_invoice_by_id
+	@invoice_id int
+as
+	select * from invoices where [invoice_id] = invoice_id
+go
+
 create proc update_invoice
 	@invoices_id int,
 	@transaction_id int,
@@ -607,7 +669,7 @@ as
 go
 
 
---Order Details
+--Order Details -DO WE NEED THAT? We already have orders table
 
 create table Order_Details (
 
@@ -630,6 +692,12 @@ AS
 	values (@order_quantity, @order_price, @order_promocode)
 	set @order_id = @@IDENTITY
 	set @product_id = @@IDENTITY
+go
+
+create proc get_order_by_id
+	@order_id int
+as
+	select * from orders where [order_id] = order_id
 go
 
 create proc update_order_details
