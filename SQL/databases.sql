@@ -25,7 +25,7 @@ go
 exec add_address "kokbo", "yho", 14234
 go
 
-create proc get_address_by_id
+create proc select_address_by_id
 	@address_id int
 as
 	select * from Addresses where [address_id] = @address_id
@@ -33,10 +33,10 @@ go
 
 
 create proc update_address
+	@address_id int,
 	@street nvarchar(150),
 	@other_data nvarchar(150),
-	@zip_code int,
-	@address_id int
+	@zip_code int
 as
 	UPDATE [dbo].Addresses
 		set [street] = @street,
@@ -49,7 +49,7 @@ create proc activate_address
 	@address_id int
 as
 	UPDATE [dbo].Addresses
-		set [isActive] = TRUE
+		set [isActive] = 1
 		where [address_id] = @address_id
 go
 
@@ -57,7 +57,7 @@ create proc deactivate_address
 	@address_id int
 as
 	UPDATE [dbo].Addresses
-		set [isActive] = FALSE
+		set [isActive] = 0
 		where [address_id] = @address_id
 go
 

@@ -11,6 +11,7 @@ app.use(cors());
 //What's before the require is the url addition
 app.use('/api/Addresses', require('./Routes/AddressesRoute'));
 app.use('/api/Customers', require('./Routes/CustomerRoute'));
+app.use('/api/CreditCards', require('./Routes/CreditCardsRoute'));
 app.use('/api/Categories', require('./Routes/CategoryRoute'));
 app.use('/api/Managers', require('./Routes/ManagersRoute'));
 app.use('/api/Orders', require('./Routes/OrdersRoute'));

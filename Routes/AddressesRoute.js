@@ -73,8 +73,37 @@ route.post(`/add`, async (req, res) => {
 
 })
 
-route.put(`/delete_logical/:id`, async (req, res) => {
+route.put(`/activate/:id`, async (req, res) => {
 
+    let params = req.params
+
+    sql.on(`error`, (error) => res.send(error))
+
+    let db = await sql.connect(config.db)
+    let query = await db.request()
+        .input(`address_id`, sql.Int, params.id)
+        .execute(`activate_address`)
+    let data = await query
+    await db.close()
+    res.send(data)
+})
+
+route.put(`/deactivate/:id`, async (req, res) => {
+
+    let params = req.params
+
+    sql.on(`error`, (error) => res.send(error))
+
+    let db = await sql.connect(config.db)
+    let query = await db.request()
+        .input(`address_id`, sql.Int, params.id)
+        .execute(`deactivate_address`)
+    let data = await query
+    await db.close()
+    res.send(data)
+})
+
+route.delete(`/delete/:id`, async (req, res) => {
     let params = req.params
 
     sql.on(`error`, (error) => res.send(error))
@@ -83,20 +112,6 @@ route.put(`/delete_logical/:id`, async (req, res) => {
     let query = await db.request()
         .input(`address_id`, sql.Int, params.id)
         .execute(`delete_address`)
-    let data = await query
-    await db.close()
-    res.send(data)
-})
-
-route.delete(`/delete_physical/:id`, async (req, res) => {
-    let params = req.params
-
-    sql.on(`error`, (error) => res.send(error))
-
-    let db = await sql.connect(config.db)
-    let query = await db.request()
-        .input(`address_id`, sql.Int, params.id)
-        .execute(`delete_address2`)
     let data = await query
     await db.close()
     res.send(data)
