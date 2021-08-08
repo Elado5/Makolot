@@ -436,7 +436,7 @@ go
 --Grocery Shop
 
 
-create table Grocery_Shop (
+create table Grocery_Shops (
 
 	grocery_shop_id int IDENTITY(1,1) not null primary key,
 	grocery_shop_name nvarchar(150) not null,
@@ -455,56 +455,63 @@ create proc add_grocery_shop
 	@grocery_shop_name nvarchar(150),
 	@grocery_shop_city nvarchar(150),
 	@grocery_shop_radius float(10),
+	@grocery_shop_opening_times nvarchar(150),
 	@grocery_shop_phone_number varchar(10),
 	@grocery_shop_contact_name nvarchar(150),
 	@retailer_id int,
 	@address_id int
 as
-	insert into [dbo].[Makolot].[Grocery_Shop]([grocery_shop_name],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_phone_number],[grocery_shop_contact_name],[retailer_id],[address_id])
-	values (@grocery_shop_name, @grocery_shop_city, @grocery_shop_radius, @grocery_shop_phone_number, @grocery_shop_contact_name, @retailer_id, @address_id)
+	insert into [dbo].[Grocery_Shops]([grocery_shop_name],[grocery_shop_city],[grocery_shop_radius],[grocery_shop_opening_times],[grocery_shop_phone_number],[grocery_shop_contact_name],[retailer_id],[address_id])
+	values (@grocery_shop_name, @grocery_shop_city, @grocery_shop_radius, @grocery_shop_opening_times, @grocery_shop_phone_number, @grocery_shop_contact_name, @retailer_id, @address_id)
+go
 
+create proc get_all_grocery_shops
+as
+	select * from Grocery_Shops
 go
 
 create proc get_grocery_shop_by_id
 	@grocery_shop_id int
 as
-	select * from grocery_shops where [grocery_shop_id] = grocery_shop_id
+	select * from Grocery_Shops where [grocery_shop_id] = grocery_shop_id
 go
 
 
 create proc update_grocery_shop
 	@grocery_shop_id int,
 	@grocery_shop_name nvarchar(150),
-	@retailer_id int,
 	@grocery_shop_city nvarchar(150),
-	@address_id int,
 	@grocery_shop_radius float(10),
+	@grocery_shop_opening_times nvarchar(150),
 	@grocery_shop_phone_number varchar(10),
-	@grocery_shop_contact_name nvarchar(150)
+	@grocery_shop_contact_name nvarchar(150),
+	@retailer_id int,
+	@address_id int
 as
-	update [dbo].[Makolot].[Grocery_Shop]
+	update [dbo].[Grocery_Shops]
 		set [grocery_shop_name] = @grocery_shop_name,
 			[retailer_id] = @retailer_id,
 			[grocery_shop_city] = @grocery_shop_city,
-			[address_id] = @ddress_id,
+			[address_id] = @address_id,
 			[grocery_shop_radius] = @grocery_shop_radius,
+			[grocery_shop_opening_times] = @grocery_shop_opening_times,
 			[grocery_shop_phone_number] = @grocery_shop_phone_number,
 			[grocery_shop_contact_name] = @grocery_shop_contact_name
 		where [grocery_shop_id] = @grocery_shop_id
 go
 
-create proc logical_delete_grocery_shop
+create proc deactivate_grocery_shop
 @grocery_shop_id int
 as
-	update [dbo].[Makolot].[Grocery_Shop]
+	update [dbo].[Grocery_Shops]
 		set [isActive] = 0
 	WHERE [grocery_shop_id] = @grocery_shop_id
 go
 
-create proc reactivate_grocery_shop
+create proc activate_grocery_shop
 @grocery_shop_id int
 as
-	update [dbo].[Makolot].[Grocery_Shop]
+	update [dbo].[Grocery_Shops]
 		set [isActive] = 1
 	WHERE [grocery_shop_id] = @grocery_shop_id
 go
@@ -513,7 +520,7 @@ go
 create proc delete_grocery_shop
 	@grocery_shop_id int
 as
-	delete from [dbo].[Makolot].[Grocery_Shop]
+	delete from [dbo].[Grocery_Shops]
 	where [grocery_shop_id] = @grocery_shop_id
 go
 

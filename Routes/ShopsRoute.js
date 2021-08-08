@@ -10,9 +10,28 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`SELECT * FROM Grocery_Shop`);
+    let query = await db.request().execute(`get_all_grocery_shops`);
 
     let data = await query.recordset;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`grocery_shop_id`, sql.Int, params.id)
+    .execute(`get_grocery_shop_by_id`);
+
+    let data = await query;
 
     await db.close();
 
@@ -34,7 +53,7 @@ route.post(`/add`, async (req, res) => {
     .input(`address_id`, sql.Int, body.address_id)
     .input(`grocery_shop_opening_times`, sql.NVarChar(150), body.grocery_shop_opening_times)
     .input(`grocery_shop_radius`, sql.Float(10), body.grocery_shop_radius)
-    .input(`grocery_phone_number`, sql.VarChar(10))
+    .input(`grocery_shop_phone_number`, sql.VarChar(10))
     .input(`grocery_shop_contact_name`, sql.NVarChar(150), body.grocery_shop_contact_name)
     .execute(`add_grocery_shop`)
 
@@ -62,7 +81,7 @@ route.put(`/update/:id`, async (req, res) => {
     .input(`address_id`, sql.Int, body.address_id)
     .input(`grocery_shop_opening_times`, sql.NVarChar(150), body.grocery_shop_opening_times)
     .input(`grocery_shop_radius`, sql.Float(10), body.grocery_shop_radius)
-    .input(`grocery_phone_number`, sql.VarChar(10))
+    .input(`grocery_shop_phone_number`, sql.VarChar(10), body.grocery_shop_phone_number)
     .input(`grocery_shop_contact_name`, sql.NVarChar(150), body.grocery_shop_contact_name)
     .execute(`update_grocery_shop`)
 
@@ -73,7 +92,7 @@ route.put(`/update/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/delete_logical/:id`, async (req, res) => {
+route.put(`/deactivate/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -83,7 +102,7 @@ route.put(`/delete_logical/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`grocery_shop_id`, sql.Int, params.id)
-    .execute(`logical_delete_grocery_shop`)
+    .execute(`deactivate_grocery_shop`)
 
     let data = await query;
 
@@ -92,7 +111,7 @@ route.put(`/delete_logical/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/delete_logical/:id`, async (req, res) => {
+route.put(`/activate/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -102,7 +121,7 @@ route.put(`/delete_logical/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`grocery_shop_id`, sql.Int, params.id)
-    .execute(`reactivate_grocery_shop`)
+    .execute(`activate_grocery_shop`)
 
     let data = await query;
 
@@ -111,7 +130,7 @@ route.put(`/delete_logical/:id`, async (req, res) => {
     res.send(data);
 })
 
-route.put(`/delete_permanent/:id`, async (req, res) => {
+route.delete(`/delete/:id`, async (req, res) => {
 
     let params = req.params;
 
