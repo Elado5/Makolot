@@ -215,6 +215,11 @@ create table Retail_Managers (
 )
 go
 
+create proc get_all_managers
+AS
+	select * from Retail_Managers
+go
+
 create proc add_retail_manager 
 
 	@retailer_first_name nvarchar(150),
@@ -224,11 +229,10 @@ create proc add_retail_manager
 	@retailer_birthdate datetime,
 	@retailer_password nvarchar(50),
 	@retailer_city nvarchar(50),
-	@retailer_address_id int output
+	@retailer_address_id int
 AS
-	insert into [dbo].[Makolot]([retailer_first_name], [retailer_last_name],[retailer_email],[retailer_phone_number],[retailer_birthdate],[retailer_password],[retailer_city])
-	values (@retailer_first_name, @retailer_last_name, @retailer_email,@retailer_phone_number,@retailer_birthdate,@retailer_password,@retailer_city)
-	set @retailer_address_id = @@IDENTITY
+	insert into [dbo].[Retail_Managers]([retailer_first_name], [retailer_last_name],[retailer_email],[retailer_phone_number],[retailer_birthdate],[retailer_password],[retailer_city],[retailer_address_id])
+	values (@retailer_first_name, @retailer_last_name, @retailer_email,@retailer_phone_number,@retailer_birthdate,@retailer_password,@retailer_city,@retailer_address_id)
 GO
 
 create proc get_retail_manager_by_id
@@ -248,7 +252,7 @@ create proc update_retail_manager
 	@retailer_city nvarchar(50),
 	@retailer_address_id int
 as
-	update [dbo].[Makolot]
+	update [dbo].[Retail_Managers]
 		set [retailer_first_name] = @retailer_first_name,
 			[retailer_last_name] = @retailer_last_name,
 			[retailer_email] = @retailer_email,
@@ -264,7 +268,7 @@ go
 create proc delete_retail_manager
 	@retailer_id int
 as
-	delete from [dbo].[Makolot].[Retail_Managers]
+	delete from [dbo].[Retail_Managers].[Retail_Managers]
 	WHERE [retailer_id] = @retailer_id
 go
 

@@ -10,9 +10,9 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`select * from Retail_Managers`);
+    let query = await db.request().execute(`get_all_managers`);
 
-    let data = await query.recordset;
+    let data = await query;
 
     await db.close();
 
@@ -32,7 +32,7 @@ route.post(`/register`, async (req, res) => {
     .input(`retailer_last_name`, sql.NVarChar(150), body.retailer_last_name)
     .input(`retailer_email`, sql.NVarChar(150), body.retailer_email)
     .input(`retailer_phone_number`, sql.VarChar(150), body.retailer_phone_number)
-    .input(`birthdate`, sql.DateTime, body.birthdate)
+    .input(`retailer_birthdate`, sql.DateTime, body.retailer_birthdate)
     .input(`retailer_password`, sql.NVarChar(50), body.retailer_password)
     .input(`retailer_city`, sql.NVarChar(50), body.retailer_city)
     .input(`retailer_address_id`, sql.Int, body.retailer_address_id)
