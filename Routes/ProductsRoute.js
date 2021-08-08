@@ -10,7 +10,7 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`SELECT * FROM Addresses`);
+    let query = await db.request().execute(`get_all_products`);
 
     let data = await query.recordset;
 
@@ -19,6 +19,24 @@ route.get(`/all`, async (req, res) => {
     res.send(data);
 })
 
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .execute(`get_product_by_id`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
 
 route.post(`/add` , async (req, res) =>{
 
@@ -83,7 +101,7 @@ route.put(`/update/:id` , async (req, res) =>{
     
 })
 
-route.put(`/reactivate/:id` , async (req, res) =>{
+route.put(`/activate/:id` , async (req, res) =>{
 
     let params = req.params;
 
@@ -109,7 +127,7 @@ route.put(`/reactivate/:id` , async (req, res) =>{
     
 })
 
-route.put(`/logical_delete/:id` , async (req, res) =>{
+route.put(`/deactivate/:id` , async (req, res) =>{
 
     let params = req.params;
 
@@ -122,7 +140,7 @@ route.put(`/logical_delete/:id` , async (req, res) =>{
     //run the wanted query - this one shall be ?
     let query = await db.request()
     .input(`product_id`, sql.Int, params.id)
-    .execute(`delete_product`);
+    .execute(`deactivate_product`);
 
     //get the data from the query result
     let data = await query;
@@ -136,7 +154,7 @@ route.put(`/logical_delete/:id` , async (req, res) =>{
 })
 
 
-route.put(`/api/products/permanent_delete/:id` , async (req, res) =>{
+route.delete(`/delete/:id` , async (req, res) =>{
 
     let params = req.params;
 

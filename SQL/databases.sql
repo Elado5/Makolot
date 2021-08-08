@@ -358,30 +358,34 @@ create table Products (
 	product_price float(10) not null,
 	product_details nvarchar(150),
 	product_description nvarchar(150),
-	product_image Text not null,
+	product_image Image not null,
 	product_suppliers nvarchar(150),
 	isActive bit default 1
 )
 go
 
 create proc add_product
-	@category_id int output,
+	@category_id int,
 	@product_name nvarchar(150),
 	@product_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
-	@product_image TEXT,
+	@product_image Image,
 	@product_suppliers nvarchar(150)
 AS
-	insert into [dbo].[Makolot].[Products]([product_name],[product_price], [product_details],[product_description], [product_image], [product_suppliers])
+	insert into [dbo].[Products]([product_name],[product_price], [product_details],[product_description], [product_image], [product_suppliers])
 	values (@product_name, @product_price, @product_details, @product_description, @product_image, @product_suppliers)
-	set @category_id = @@IDENTITY
 GO
+
+create proc get_all_products
+as
+	select * from Products
+go
 
 create proc get_product_by_id
 	@product_id int
 as
-	select * from products where [product_id] = product_id
+	select * from Products where [product_id] = product_id
 go
 
 create proc update_product
@@ -391,10 +395,10 @@ create proc update_product
 	@product_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
-	@product_image TEXT,
+	@product_image Image,
 	@product_suppliers nvarchar(150)
 as
-	update [dbo].[Makolot].[Products]
+	update [dbo].[Products]
 		set [category_id] = @category_id,
 			[product_name] = @product_name,
 			[product_price] = @product_price,
@@ -405,27 +409,26 @@ as
 		where [product_id] = @product_id
 go
 
-create proc logical_delete_product
+create proc deactivate_product
 @product_id int
 as
-	update [dbo].[Makolot].[Products]
+	update [dbo].[Products]
 		set [isActive] = 0
 	WHERE [product_id] = @product_id
 go
 
-create proc reactivate_product
+create proc activate_product
 @product_id int
 as
-	update [dbo].[Makolot].[Products]
+	update [dbo].[Products]
 		set [isActive] = 1
 	WHERE [product_id] = @product_id
 go
 
-
 create proc delete_product
 	@product_id int
 AS
-	delete from [dbo].[Makolot].[Products]
+	delete from [dbo].[Products]
 	WHERE [product_id] = @product_id
 go
 
