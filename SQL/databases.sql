@@ -543,6 +543,17 @@ create table Orders (
 )
 go
 
+create proc get_all_orders
+as
+	select * from Orders
+go
+
+create proc get_order_by_id
+	@order_id int
+as
+	select * from Orders where [order_id] = @order_id
+go
+
 create proc add_order
 
 	@order_status nvarchar(20),
@@ -554,14 +565,24 @@ create proc add_order
 	@order_ship_date_preference datetime,
 	@grocery_shop_id int
 as
-	insert into [dbo].[Makolot].[Orders]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference], [customer_id], [grocery_shop_id])
+	insert into [dbo].[Orders]([order_status], [order_discount], [order_total_price],[order_details],[order_date],[order_ship_date_preference], [customer_id], [grocery_shop_id])
 	values (@order_status,@order_discount,@order_total_price,@order_details,@order_date,@order_ship_date_preference, @customer_id, @grocery_shop_id)
 go
 
-create proc get_order_by_id
-	@order_id int
+create proc update_order
+
+	@order_status nvarchar(20),
+	@order_total_price float(10),
+	@order_details nvarchar(150),
+	@grocery_shop_id int
+
 as
-	select * from orders where [order_id] = order_id
+	update [dbo].[Orders]
+	set
+	[order_status] = @order_status,
+	[order_total_price] = @order_total_price,
+	[order_details] = @order_details,
+	[grocery_shop_id] = @grocery_shop_id
 go
 
 --update order - not needed? (only delete)
@@ -569,7 +590,7 @@ go
 create proc delete_order
 	@order_id int
 as
-	delete from [dbo].[Makolot].[Orders] where [order_id] = @order_id
+	delete from [dbo].[Orders] where [order_id] = @order_id
 go
 
 
