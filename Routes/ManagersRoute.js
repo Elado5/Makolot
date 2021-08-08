@@ -19,6 +19,25 @@ route.get(`/all`, async (req, res) => {
     res.send(data);
 })
 
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`retailer_id`, sql.Int , params.id)
+    .execute(`get_retail_manager_by_id`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
 route.post(`/register`, async (req, res) => {
 
     let body = req.body;
@@ -60,7 +79,7 @@ route.post(`/login` , async (req, res) =>{
     let query = await db.request()
     .input(`retailer_email`, sql.NVarChar(150), body.retailer_email)
     .input(`retailer_password`, sql.NVarChar(50), body.retailer_password)
-    .execute(`Select * from Retail_Managers where retailer_email = @retailer_email and retail_password = @customer_password`);
+    .execute(`login_retail_manager`);
 
     //get the data from the query result
     let data = await query;
@@ -83,12 +102,13 @@ route.put(`/update/:id`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(`retailer_id`, sql.Int, params.customer_id)
-    .input(`retailer_phone_number`, sql.VarChar(10), body.customer_phone_number)
-    .input(`retailer_password`, sql.NVarChar(50), body.customer_password)
-    .input(`retailer_city`, sql.NVarChar(50), body.customer_city)
-    .input(`retailer_address_id`, sql.Int, body.address_id)
-    .execute(`update_retailer`);
+    .input(`retailer_id`, sql.Int, params.id)
+    .input(`retailer_email`, sql.NVarChar(150), body.retailer_email)
+    .input(`retailer_phone_number`, sql.VarChar(10), body.retailer_phone_number)
+    .input(`retailer_password`, sql.NVarChar(50), body.retailer_password)
+    .input(`retailer_city`, sql.NVarChar(50), body.retailer_city)
+    .input(`retailer_address_id`, sql.Int, body.retailer_address_id)
+    .execute(`update_retail_manager`);
 
     let data = await query;
     await db.close();

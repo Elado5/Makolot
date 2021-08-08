@@ -235,29 +235,32 @@ AS
 	values (@retailer_first_name, @retailer_last_name, @retailer_email,@retailer_phone_number,@retailer_birthdate,@retailer_password,@retailer_city,@retailer_address_id)
 GO
 
+create proc login_retail_manager
+
+	@retailer_email nvarchar(150),
+	@retailer_password nvarchar(50)
+AS
+	Select * from Retail_Managers where retailer_email = @retailer_email and retailer_password = @retailer_password
+go
+
 create proc get_retail_manager_by_id
-	@retail_manager_id int
+	@retailer_id int
 as
-	select * from retail_managers where [retail_manager_id] = @retail_manager_id
+	select * from retail_managers where [retailer_id] = @retailer_id
 go
 
 create proc update_retail_manager
 	@retailer_id int,
-	@retailer_first_name nvarchar(150),
-	@retailer_last_name nvarchar(150),
 	@retailer_email nvarchar(150),
 	@retailer_phone_number varchar(10),
-	@retailer_birthdate datetime,
 	@retailer_password nvarchar(50),
 	@retailer_city nvarchar(50),
 	@retailer_address_id int
 as
 	update [dbo].[Retail_Managers]
-		set [retailer_first_name] = @retailer_first_name,
-			[retailer_last_name] = @retailer_last_name,
+		set
 			[retailer_email] = @retailer_email,
 			[retailer_phone_number] = @retailer_phone_number,
-			[retailer_birthdate] = @retailer_birthdate,
 			[retailer_password] = @retailer_password,
 			[retailer_city] = @retailer_city,
 			[retailer_address_id] = @retailer_address_id
@@ -268,7 +271,7 @@ go
 create proc delete_retail_manager
 	@retailer_id int
 as
-	delete from [dbo].[Retail_Managers].[Retail_Managers]
+	delete from [dbo].[Retail_Managers]
 	WHERE [retailer_id] = @retailer_id
 go
 
