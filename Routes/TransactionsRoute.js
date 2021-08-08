@@ -42,7 +42,7 @@ route.get('/:id', async (req, res) =>{
 
 route.post(`/add`, async (req, res) => {
 
-    let body = req.body;
+    let body = req.body;``
 
     sql.on(`error`, (error) => res.send(error));
 

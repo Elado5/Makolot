@@ -11,14 +11,33 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().query(`SELECT * FROM Categories`);
+    let query = await db.request().execute(`get_all_categories`);
 
-    let data = await query.recordset;
+    let data = await query;
 
     await db.close();
 
     res.send(data);
 })
+
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+ 
+     let db = await sql.connect(config.db);
+ 
+     let query = await db.request()
+     .input(`category_id`, sql.Int, params.id)
+     .execute(`get_category_by_id`);
+ 
+     let data = await query;
+ 
+     await db.close();
+ 
+     res.send(data);
+ })
 
 route.post(`/add`,async (req,res) => {
 
@@ -64,7 +83,7 @@ route.put(`/update/:id`,async (req,res) => {
 
 module.exports = route;
 
-route.put(`/logical_delete/:id`, async (req, res) => {
+route.put(`/deactivate/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -74,10 +93,14 @@ route.put(`/logical_delete/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`category_id`, sql.Int, params.id)
-        .execute(`delete_category`);
+        .execute(`deactivate_category`);
+
+    let data = await query;
+    await db.close();
+    res.send(data);
 })
 
-route.delete(`/permanent_delete/:id`, async (req, res) => {
+route.put(`/activate/:id`, async (req, res) => {
 
     let params = req.params;
 
@@ -87,7 +110,28 @@ route.delete(`/permanent_delete/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`category_id`, sql.Int, params.id)
-        .execute(`delete_category2`);
+    .execute(`activate_category`);
+
+    let data = await query;
+    await db.close();
+    res.send(data);
+})
+
+route.delete(`/delete/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`category_id`, sql.Int, params.id)
+    .execute(`delete_category`);
+
+    let data = await query;
+    await db.close();
+    res.send(data);
 })
 
 module.exports = route;

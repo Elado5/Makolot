@@ -278,7 +278,6 @@ go
 
 --Categories
 
-
 create table Categories (
 
 	category_id int IDENTITY(1,1) not null primary key,
@@ -295,9 +294,14 @@ create proc add_category
 	@category_info nvarchar(150),
 	@category_image image
 AS
-	insert into [dbo].[Makolot].[Categories]([category_name],[category_info],[category_image])
+	insert into [dbo].[Categories]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
 GO
+
+create proc get_all_categories
+as
+	select * from categories
+go
 
 create proc get_category_by_id
 	@category_id int
@@ -306,30 +310,30 @@ as
 go
 
 create proc update_category
-	@category_id int output,
+	@category_id int,
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image Text
+	@category_image Image
 as
-	update [dbo].[Makolot].[Categories]
+	update [dbo].[Categories]
 		set [category_name] = @category_name,
 			[category_info] = @category_info,
 			[category_image] = @category_image
 		where [category_id] = @category_id
 go
 
-create proc logical_delete_category
+create proc deactivate_category
 @category_id int
 as
-	update [dbo].[Makolot].[Categories]
+	update [dbo].[Categories]
 		set [isActive] = 0
 	WHERE [category_id] = @category_id
 go
 
-create proc reactivate_category
+create proc activate_category
 @category_id int
 as
-	update [dbo].[Makolot].[Categories]
+	update [dbo].[Categories]
 		set [isActive] = 1
 	WHERE [category_id] = @category_id
 go
@@ -338,7 +342,7 @@ go
 create proc delete_category
 	@category_id int
 as
-	delete from [dbo].[Makolot].[Categories]
+	delete from [dbo].[Categories]
 	WHERE [category_id] = @category_id
 go
 
