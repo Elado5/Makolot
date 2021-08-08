@@ -11,9 +11,29 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = db.request().query(`select * from CreditCards`);
+    let query = db.request().execute(`get_all_credit_cards`);
 
-    let data = await query.recordset;
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+
+})
+
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = db.request()
+    .input(`credit_card_id`, sql.Int, params.id)
+    .execute(`get_credit_card_by_id`);
+
+    let data = await query;
 
     await db.close();
 

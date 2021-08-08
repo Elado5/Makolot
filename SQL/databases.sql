@@ -83,6 +83,17 @@ create table CreditCards (
 )
 go
 
+create proc get_all_credit_cards
+as
+	select * from CreditCards
+go
+
+create proc get_credit_card_by_id
+@credit_card_id int
+as
+	select * from CreditCards where credit_card_id = @credit_card_id
+go
+
 create proc add_credit_card
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
@@ -103,13 +114,13 @@ as
 go
 
 create proc update_credit_card
+	@credit_card_id int,
 	@credit_card_number varchar(16),
 	@credit_card_date nvarchar(5),
 	@credit_card_cvv varchar(4),
-	@credit_card_name nvarchar(150),
-	@credit_card_holder_id int
+	@credit_card_name nvarchar(150)
 as
-	UPDATE [dbo]..CreditCards
+	UPDATE [dbo].CreditCards
 		set [credit_card_number] = @credit_card_number,
 			[credit_card_date] = @credit_card_date,
 			[credit_card_cvv] = @credit_card_cvv,
@@ -118,9 +129,9 @@ as
 GO
 
 create proc delete_credit_card
-	@credit_card_holder_id int
+	@credit_card_id int
 as
-	delete from [dbo].CreditCards.[CreditCards]
+	delete from [dbo].CreditCards
 	WHERE [credit_card_id] = @credit_card_id
 go
 
