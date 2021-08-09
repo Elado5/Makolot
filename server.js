@@ -19,6 +19,7 @@ app.use('/api/Managers', require('./Routes/ManagersRoute'));
 app.use('/api/Orders', require('./Routes/OrdersRoute'));
 app.use('/api/Products', require('./Routes/ProductsRoute'));
 app.use('/api/Shops', require('./Routes/ShopsRoute'));
+app.use('/api/transactions', require('./Routes/TransactionsRoute'));
 
 const upload = multer({
     dest: "./uploads"

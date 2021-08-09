@@ -604,9 +604,7 @@ as
 	delete from [dbo].[Orders] where [order_id] = @order_id
 go
 
-
 --Payment Transactions
-
 
 create table Payment_Transactions (
 
@@ -616,7 +614,7 @@ create table Payment_Transactions (
 	payment_date datetime not null,
 	order_id int not null foreign key references Orders(order_id),
 	payment_status nvarchar(20),
-	credit_card_holder_id int not null foreign key references CreditCards(credit_card_id)
+	credit_card_id int not null foreign key references CreditCards(credit_card_id)
 )
 go
 
@@ -628,8 +626,13 @@ create proc add_transaction
 	@payment_status nvarchar(20),
 	@credit_card_id int
 AS
-	insert into [dbo].[Makolot]([amount_total], [payment_date], [order_id], [payment_status],  [credit_card_id])
-	values (@amount_total, @payment_date, @payment_status)
+	insert into [dbo].[Payment_Transactions]([customer_id],[amount_total],[payment_date], [order_id], [payment_status],  [credit_card_id])
+	values (@customer_id, @amount_total, @payment_date, @order_id, @payment_status, @credit_card_id)
+go
+
+create proc get_all_transactions
+as
+	select * from Payment_Transactions
 go
 
 create proc get_transaction_by_id
@@ -647,9 +650,8 @@ create proc update_transaction
 	@payment_status nvarchar(20),
 	@credit_card_id int
 AS
-	update [dbo].[Makolot].[Payment_Transactions]
+	update [dbo].[Payment_Transactions]
 		set 
-		[transaction_id] = @transaction_id,
 		[amount_total] = @amount_total,
 		[payment_date] = @payment_date,
 		[order_id] = @order_id,
@@ -661,7 +663,7 @@ go
 create proc delete_transaction
 	@transaction_id int 
 	as 
-	delete from [dbo].[Makolot].[Payment_Transactions] where [transaction_id] = @transaction_id
+	delete from [dbo].[Payment_Transactions] where [transaction_id] = @transaction_id
 go
 
 
@@ -684,7 +686,7 @@ create proc add_invoice
 	@amount_total float(10),
 	@invoice_date datetime
 AS
-	insert into [dbo].[Makolot].[Invoices] ([amount_total], [invoice_date])
+	insert into [dbo].[Invoices] ([amount_total], [invoice_date])
 	values (@amount_total, @invoice_date)
 	set @transaction_id = @@IDENTITY
 	set @customer_id = @@IDENTITY
@@ -703,7 +705,7 @@ create proc update_invoice
 	@amount_total float(10),
 	@invoice_date datetime
 as
-	update [dbo].[Makolot].[Invoices]
+	update [dbo].[Invoices]
 		set [transaction_id] = @transaction_id,
 			[customer_id] = @customer_id,
 			[amount_total] = @amount_total,
@@ -715,7 +717,7 @@ go
 create proc delete_invoice
 	@invoices_id int
 as
-	delete from [dbo].[Makolot].[Invoices]
+	delete from [dbo].[Invoices]
 	where [invoice_id] = @invoice_id
 go
 
@@ -739,7 +741,7 @@ create proc add_order_details
 	@order_promocode nvarchar(20),
 	@product_id int output
 AS
-	insert into [dbo].[Makolot].[Order_Details]([order_quantity], [order_price], [order_promocode])
+	insert into [dbo].[Order_Details]([order_quantity], [order_price], [order_promocode])
 	values (@order_quantity, @order_price, @order_promocode)
 	set @order_id = @@IDENTITY
 	set @product_id = @@IDENTITY
@@ -758,7 +760,7 @@ create proc update_order_details
 	@order_promocode nvarchar(20),
 	@product_id int
 as
-	update [dbo].[Makolot].[Order_Details]
+	update [dbo].[Order_Details]
 		set 
 			[order_quantity] = @order_quantity,
 			[order_price] = @order_price,
@@ -771,6 +773,6 @@ go
 create proc delete_order_details
 	@order_id int
 as
-	delete from [dbo].[Makolot].[order_details]
+	delete from [dbo].[order_details]
 	where [order_id] = @order_id
 go
