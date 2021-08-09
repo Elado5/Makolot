@@ -681,16 +681,19 @@ create table Invoices (
 go
 
 create proc add_invoice
-	@transaction_id int output,
-	@customer_id int output,
+	@transaction_id int,
+	@customer_id int,
 	@amount_total float(10),
 	@invoice_date datetime
 AS
-	insert into [dbo].[Invoices] ([amount_total], [invoice_date])
-	values (@amount_total, @invoice_date)
-	set @transaction_id = @@IDENTITY
-	set @customer_id = @@IDENTITY
+	insert into [dbo].[Invoices] ([transaction_id], [customer_id], [amount_total], [invoice_date])
+	values (@transaction_id, @customer_id, @amount_total, @invoice_date)
 GO
+
+create proc get_all_invoices
+as
+	select * from Invoices
+go
 
 create proc get_invoice_by_id
 	@invoice_id int
@@ -699,7 +702,7 @@ as
 go
 
 create proc update_invoice
-	@invoices_id int,
+	@invoice_id int,
 	@transaction_id int,
 	@customer_id int,
 	@amount_total float(10),
@@ -710,12 +713,12 @@ as
 			[customer_id] = @customer_id,
 			[amount_total] = @amount_total,
 			[invoice_date] = @invoice_date
-		where [invoices_id] = @invoices_id
+		where [invoice_id] = @invoice_id
 go
 
 
 create proc delete_invoice
-	@invoices_id int
+	@invoice_id int
 as
 	delete from [dbo].[Invoices]
 	where [invoice_id] = @invoice_id

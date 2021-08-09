@@ -11,9 +11,29 @@ route.get(`/all`, async (req, res) => {
 
     let db = await sql.connect(config.db);
 
-    let query = await db.request().execute(`select * from Invoices`);
+    let query = await db.request().execute(`get_all_invoices`);
 
-    let data = await query.recordset;
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
+
+route.get(`/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`invoice_id`, sql.Int, params.id)
+    .execute(`get_invoice_by_id`);
+
+    let data = await query;
 
     await db.close();
 
@@ -49,9 +69,8 @@ route.post(`/add` , async (req, res) =>{
     
 })
 
-//is update even needed on invoice
-/*
-route.put(`/api/Invoices/update/:id`, async (req, res) => {
+//do we need an option to update invoices??
+route.put(`/update/:id`, async (req, res) => {
 
     let params = req.params;
     let body = req.body;
@@ -61,9 +80,20 @@ route.put(`/api/Invoices/update/:id`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(`invoice_id`, sql.Int, params.id);
+    .input(`invoice_id`, sql.Int, params.id)
+    .input(`transaction_id`, sql.Int, body.transaction_id)
+    .input(`customer_id`, sql.Int, body.customer_id)
+    .input(`amount_total`, sql.Float(10), body.amount_total)
+    .input(`invoice_date`, sql.DateTime, body.invoice_date)
+    .execute(`update_invoice`);
 
-})*/
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+
+})
 
 route.delete(`/delete/:id`, async (req, res) => {
 
