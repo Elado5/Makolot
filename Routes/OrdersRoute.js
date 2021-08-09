@@ -97,7 +97,7 @@ route.delete(`/delete/:id` , async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
-    .input(order_id, sql.Int, params.id)
+    .input(`order_id`, sql.Int, params.id)
     .execute(`delete_order`)
 
     let data = await query;
