@@ -22,41 +22,26 @@ app.use('/api/Shops', require('./Routes/ShopsRoute'));
 app.use('/api/transactions', require('./Routes/TransactionsRoute'));
 app.use('/api/Invoices', require('./Routes/InvoicesRoute'));
 
-const upload = multer({
-    dest: "./uploads"
-    // you might also want to set some limits: https://github.com/expressjs/multer#limits
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './images' )
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '--' + file.originalname)
+    }
+})
+
+const upload = multer({storage: fileStorageEngine});
+
+app.post('/single', upload.single('image'), (req, res) => {
+    console.log(req.file);
+    res.send("Single file upload success");
 });
 
-app.post
-(
-    "/upload",
-    upload.single("file" /* name attribute of <file> element in your form */),
-    (req, res) => {
-        const tempPath = req.file.path;
-        const targetPath = path.join(__dirname, "./uploads/vegetables.jpg");
-
-        if (path.extname(req.file.originalname).toLowerCase() === ".png" || path.extname(req.file.originalname).toLowerCase() === ".jpeg" || path.extname(req.file.originalname).toLowerCase() === ".jpg") {
-        fs.rename(tempPath, targetPath, err => {
-            if (err) return handleError(err, res);
-
-            res
-            .status(200)
-            .contentType("text/plain")
-            .end("File uploaded!");
-        });
-    }
-        else {
-        fs.unlink(tempPath, err => {
-            if (err) return handleError(err, res);
-
-            res
-            .status(403)
-            .contentType("text/plain")
-            .end("Only .png/jpeg/jpg files are allowed!");
-        });
-        }
-    }
-);
+app.post(`/multiple`, upload.array('images', 3), (req, res) => {
+    console.log(req.files);
+    res.send("Multiple files upload success");
+})
 
 app.get('/', (req, res) =>{res.send('Default Home Page')});
 
