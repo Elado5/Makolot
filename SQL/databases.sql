@@ -7,7 +7,7 @@
 create table Addresses (
 	address_id int IDENTITY(1,1) not null primary key, 
 	street nvarchar(150) not null,
-	other_data nvarchar(150),
+	other_data nvarchar(150), --other data suggested: entrance, floor, apartment
 	zip_code int not null,
 	isActive bit default 1
 )
@@ -139,6 +139,8 @@ go
 --Customers
 
 --create new table to connect address to customer
+	
+
 --create new table to connect customer to credit card
 
 create table Customers (
@@ -209,6 +211,17 @@ as
 	WHERE [customer_id] = @customer_id
 go
 
+
+create table Customer_Addresses_Connector (
+	customer_id int not null,
+	address_id int not null
+)
+go
+
+create proc get_all_cac
+as
+	select * from Customer_Addresses_Connector
+go
 
 --Retail Managers
 
