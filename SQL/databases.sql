@@ -382,7 +382,7 @@ GO
 
 create proc get_all_sub_categories
 as
-	select * from sub_sub_categories
+	select * from sub_categories
 go
 
 create proc get_sub_category_by_id
@@ -397,7 +397,7 @@ create proc update_sub_category
 	@sub_category_info nvarchar(150),
 	@sub_category_image Image
 as
-	update [dbo].[Categories]
+	update [dbo].[Sub_Categories]
 		set [sub_category_name] = @sub_category_name,
 			[sub_category_info] = @sub_category_info,
 			[sub_category_image] = @sub_category_image
@@ -744,7 +744,7 @@ create proc delete_transaction
 go
 
 
---Invoices
+--Invoices - for us irrelevant
 
 create table Invoices (
 

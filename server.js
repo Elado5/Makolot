@@ -15,11 +15,12 @@ app.use('/api/Addresses', require('./Routes/AddressesRoute'));
 app.use('/api/Customers', require('./Routes/CustomerRoute'));
 app.use('/api/CreditCards', require('./Routes/CreditCardsRoute'));
 app.use('/api/Categories', require('./Routes/CategoryRoute'));
+app.use('/api/SubCategories', require('./Routes/SubCategoryRoute'));
 app.use('/api/Managers', require('./Routes/ManagersRoute'));
 app.use('/api/Orders', require('./Routes/OrdersRoute'));
 app.use('/api/Products', require('./Routes/ProductsRoute'));
 app.use('/api/Shops', require('./Routes/ShopsRoute'));
-app.use('/api/transactions', require('./Routes/TransactionsRoute'));
+app.use('/api/Transactions', require('./Routes/TransactionsRoute'));
 app.use('/api/Invoices', require('./Routes/InvoicesRoute'));
 
 const fileStorageEngine = multer.diskStorage({
