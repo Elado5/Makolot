@@ -71,7 +71,7 @@ go
 
 --Credit Cards
 
-
+--irrelevant
 create table CreditCards (
 
 	credit_card_id int IDENTITY(1,1) primary key not null, --id of card holder or unique card id for system?
@@ -138,6 +138,8 @@ go
 
 --Customers
 
+--create new table to connect address to customer
+--create new table to connect customer to credit card
 
 create table Customers (
 	customer_id int IDENTITY(1,1) not null primary key,
@@ -148,7 +150,6 @@ create table Customers (
 	customer_birthdate datetime not null,
 	customer_password nvarchar(50) not null,
 	customer_city nvarchar(50) not null,
-	address_id int not null foreign key references Addresses(address_id),
 	credit_card_id int foreign key references CreditCards(credit_card_id)
 )
 go
@@ -358,6 +359,75 @@ as
 go
 
 
+create table Sub_Categories
+(
+	sub_category_id int IDENTITY(1,1) not null primary key,
+	category_id int not null foreign key references Categories(category_id),
+	sub_category_name nvarchar(150) not null,
+	sub_category_info nvarchar(150) not null,
+	sub_category_image image not null,
+	isActive bit default 1
+)
+go
+
+create proc add_sub_category
+	@category_id int,
+	@sub_category_name nvarchar(150),
+	@sub_category_info nvarchar(150),
+	@sub_category_image image
+AS
+	insert into [dbo].[sub_Categories]([category_id],[sub_category_name],[sub_category_info],[sub_category_image])
+	values (@category_id,@sub_category_name, @sub_category_info, @sub_category_image)
+GO
+
+create proc get_all_sub_categories
+as
+	select * from sub_sub_categories
+go
+
+create proc get_sub_category_by_id
+	@sub_category_id int
+as
+	select * from sub_categories where [sub_category_id] = @sub_category_id
+go
+
+create proc update_sub_category
+	@sub_category_id int,
+	@sub_category_name nvarchar(150),
+	@sub_category_info nvarchar(150),
+	@sub_category_image Image
+as
+	update [dbo].[Categories]
+		set [sub_category_name] = @sub_category_name,
+			[sub_category_info] = @sub_category_info,
+			[sub_category_image] = @sub_category_image
+		where [sub_category_id] = @sub_category_id
+go
+
+create proc deactivate_sub_category
+@sub_category_id int
+as
+	update [dbo].[sub_categories]
+		set [isActive] = 0
+	WHERE [sub_category_id] = @sub_category_id
+go
+
+create proc activate_sub_category
+@sub_category_id int
+as
+	update [dbo].[sub_categories]
+		set [isActive] = 1
+	WHERE [sub_category_id] = @sub_category_id
+go
+
+
+create proc delete_sub_category
+	@sub_category_id int
+as
+	delete from [dbo].[sub_Categories]
+	WHERE [sub_category_id] = @sub_category_id
+go
+
 --Products
 
 
@@ -365,6 +435,7 @@ create table Products (
 
 	product_id int IDENTITY(1,1) not null primary key,
 	category_id int not null foreign key references Category(category_id),
+	sub_category_id int not null foreign key references SubCategory(sub_category_id),
 	product_name nvarchar(150) not null,
 	product_price float(10) not null,
 	product_details nvarchar(150),
@@ -537,12 +608,18 @@ go
 
 
 --Orders
+create table Order_Status (
+
+	order_status_id int IDENTITY(1,1) NOT NULL primary key,
+	order_status_desc nvarchar(20) not null
+)
+
 
 
 create table Orders (
 
 	order_id int IDENTITY(1,1) primary key not null,
-	order_status nvarchar(20),
+	order_status_id int not null foreign key references Order_Status(order_status_id),
 	order_discount float(10),
 	order_total_price float(10) not null,
 	order_details nvarchar(150),
