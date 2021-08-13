@@ -213,8 +213,9 @@ go
 
 
 create table Customer_Addresses_Connector (
-	customer_id int not null,
-	address_id int not null
+	cac_id int IDENTITY(1,1) NOT NULL primary key,
+	customer_id int not null foreign key references Customers(customer_id),
+	address_id int not null foreign key references Addresses(address_id)
 )
 go
 
@@ -222,6 +223,27 @@ create proc get_all_cac
 as
 	select * from Customer_Addresses_Connector
 go
+
+create proc get_cac_by_id
+	@cac_id int
+as
+	select * from Customer_Addresses_Connector where [cac_id] = @cac_id
+go
+
+create proc add_cac
+	@customer_id int,
+	@address_id int
+as
+	insert into [dbo].[Customer_Addresses_Connector] ([customer_id], [address_id])
+	values (@customer_id, @address_id)
+go
+
+create proc delete_cac
+	@cac_id int
+as
+	delete from [dbo].[Customer_Addresses_Connector] where [cac_id] = @cac_id
+go
+
 
 --Retail Managers
 
