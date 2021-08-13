@@ -67,7 +67,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
     sql.on(`error`, (error) => res.send(error));
 
-    let db = await sql.connect(config.sb);
+    let db = await sql.connect(config.db);
 
     let query = db.request()
     .input(`cac_id`, sql.Int, params.id)
