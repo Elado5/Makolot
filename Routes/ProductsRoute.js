@@ -1,8 +1,30 @@
 const express = require('express');
 const sql = require('mssql');
 const config = require('../Utils/config');
+const multer = require('multer');
 
 let route = express.Router();
+
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './images' )
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '--' + file.originalname)
+    }
+})
+
+const upload = multer({storage: fileStorageEngine});
+
+route.post('/singleUp', upload.single('image'), (req, res) => {
+    console.log(req.file);
+    res.send("Single file upload success");
+});
+
+route.post(`/multipleUp`, upload.array('images', 3), (req, res) => {
+    console.log(req.files);
+    res.send("Multiple files upload success");
+})
 
 route.get(`/all`, async (req, res) => {
 
