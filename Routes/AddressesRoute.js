@@ -82,6 +82,7 @@ route.post(`/add`, async (req, res) => {
     let db = await sql.connect(config.db);
 
     let query = await db.request()
+        .input(`city`, sql.NVarChar(150), body.city)
         .input(`street`, sql.NVarChar(150), body.street)
         .input(`other_data`, sql.NVarChar(150), body.other_data)
         .input(`zip_code`, sql.Int, body.zip_code)
@@ -149,6 +150,7 @@ sql.on(`error`, (error) => res.send(error));
 let db = await sql.connect(config.db);
 let query = await db.request()
     .input(`address_id`, sql.Int, params.id)
+    .input(`city`, sql.NVarChar(150), body.city)
     .input(`street`, sql.NVarChar(150), body.street)
     .input(`other_data`, sql.NVarChar(150), body.other_data)
     .input(`zip_code`, sql.Int, body.zip_code)

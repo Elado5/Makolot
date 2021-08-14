@@ -532,13 +532,13 @@ go
 create proc get_product_image_and_price
 	@product_id int
 as
-	select [product_image], [product_price], [product_final_price] from Products where [product_id] = product_id
+	select [product_name], [product_image], [product_price], [product_final_price] from Products where [product_id] = product_id
 go
 
 create proc get_product_image_price_and_description
 	@product_id int
 as
-	select [product_image], [product_price], [product_final_price], [product_description] from Products where [product_id] = product_id
+	select [product_name], [product_image], [product_price], [product_final_price], [product_description] from Products where [product_id] = product_id
 go
 
 create proc get_product_discount
