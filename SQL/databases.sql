@@ -473,6 +473,7 @@ create table Products (
 	sub_category_id int not null foreign key references SubCategory(sub_category_id),
 	product_name nvarchar(150) not null,
 	product_price float(10) not null,
+	product_final_price float(10) not null,
 	product_details nvarchar(150),
 	product_description nvarchar(150),
 	product_image Image not null,
@@ -485,13 +486,14 @@ create proc add_product
 	@category_id int,
 	@product_name nvarchar(150),
 	@product_price float(10),
+	@product_final_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
 	@product_image Image,
 	@product_suppliers nvarchar(150)
 AS
-	insert into [dbo].[Products]([product_name],[product_price], [product_details],[product_description], [product_image], [product_suppliers])
-	values (@product_name, @product_price, @product_details, @product_description, @product_image, @product_suppliers)
+	insert into [dbo].[Products]([product_name],[product_price],[product_final_price],[product_details],[product_description], [product_image], [product_suppliers])
+	values (@product_name, @product_price, @product_final_price, @product_details, @product_description, @product_image, @product_suppliers)
 GO
 
 create proc get_all_products
@@ -510,6 +512,7 @@ create proc update_product
 	@category_id int,
 	@product_name nvarchar(150),
 	@product_price float(10),
+	@product_final_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
 	@product_image Image,
@@ -519,6 +522,7 @@ as
 		set [category_id] = @category_id,
 			[product_name] = @product_name,
 			[product_price] = @product_price,
+			[product_final_price] = @product_final_price,
 			[product_details] = @product_details,
 			[product_description] = @product_description,
 			[product_image] = @product_image,
