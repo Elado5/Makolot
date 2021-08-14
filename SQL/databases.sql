@@ -1,8 +1,13 @@
 
---create the table
+--reset identity in that table to that value (next addition will be the value+1)
+create proc reset_identity
+	@table_name nvarchar(50),
+	@new_id int
+as
+DBCC CHECKIDENT (@table_name, RESEED, @new_id)
+go
 
 --Addresses
-
 
 create table Addresses (
 	address_id int IDENTITY(1,1) not null primary key, 
@@ -14,12 +19,13 @@ create table Addresses (
 )
 go
 
-create proc add_address 
+create proc add_address
 	@city nvarchar(150),
 	@street nvarchar(150),
 	@other_data nvarchar(150),
 	@zip_code int
 as
+	
 	insert into [dbo].Addresses([city], [street], [other_data], [zip_code])
 		VALUES(@city, @street, @other_data, @zip_code)
 go
