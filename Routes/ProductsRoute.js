@@ -60,6 +60,101 @@ route.get(`/:id`, async (req, res) => {
     res.send(data);
 })
 
+route.get(`/byCategory/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`category_id`, sql.Int, params.id)
+    .execute(`get_product_by_category`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.get(`/bySubCategory/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`sub_category_id`, sql.Int, params.id)
+    .execute(`get_product_by_sub_category`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.get(`/preview/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .execute(`get_product_image_and_price`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.get(`/preview2/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .execute(`get_product_image_price_and_description`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
+route.get(`/discount/:id`, async (req, res) => {
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => res.send(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .execute(`get_product_discount`);
+
+    let data = await query;
+
+    await db.close();
+
+    res.send(data);
+})
+
 route.post(`/add` , async (req, res) =>{
 
     let body = req.body;

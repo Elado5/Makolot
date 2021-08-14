@@ -16,10 +16,10 @@ route.get(`/all` , async (req, res) =>{
     let db = await sql.connect(config.db);
 
     //run the wanted query - this one shall be ?
-    let query = await db.request().query(`select * from Addresses`);
+    let query = await db.request().execute(`get_all_addresses`);
 
     //get the data from the query result
-    let data = await query.recordset;
+    let data = await query;
 
     //close connection to server
     await db.close();
@@ -39,15 +39,37 @@ route.get(`/:id`, async (req, res) =>{
 
     let query = await db.request()
         .input(`address_id`, sql.Int, params.id)
-        .execute(`select_address_by_id`)
+        .execute(`get_address_by_id`)
 
     //get the data
-    let data = await query.recordset
+    let data = await query;
 
     await db.close()
 
     //מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
-    res.send(data[0])
+    res.send(data)
+
+})
+
+route.get(`/preview/:id`, async (req, res) =>{
+
+    let params = req.params;
+
+    sql.on(`error`, (error) => console.log(error));
+
+    let db = await sql.connect(config.db);
+
+    let query = await db.request()
+        .input(`address_id`, sql.Int, params.id)
+        .execute(`get_address_preview`)
+
+    //get the data
+    let data = await query;
+
+    await db.close()
+
+    //מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
+    res.send(data)
 
 })
 

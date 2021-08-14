@@ -6,6 +6,7 @@
 
 create table Addresses (
 	address_id int IDENTITY(1,1) not null primary key, 
+	city nvarchar(150) not null,
 	street nvarchar(150) not null,
 	other_data nvarchar(150), --other data suggested: entrance, floor, apartment
 	zip_code int not null,
@@ -14,32 +15,46 @@ create table Addresses (
 go
 
 create proc add_address 
+	@city nvarchar(150),
 	@street nvarchar(150),
 	@other_data nvarchar(150),
 	@zip_code int
 as
-	insert into [dbo].Addresses([street], [other_data], [zip_code], [isActive])
-		VALUES(@street, @other_data, @zip_code, 'TRUE')
+	insert into [dbo].Addresses([city], [street], [other_data], [zip_code])
+		VALUES(@city, @street, @other_data, @zip_code)
 go
 
 exec add_address "kokbo", "yho", 14234
 go
 
-create proc select_address_by_id
+create proc get_all_addresses
+as
+	select * from Addresses
+go
+
+create proc get_address_by_id
 	@address_id int
 as
 	select * from Addresses where [address_id] = @address_id
 go
 
+create proc get_address_preview
+	@address_id int
+as
+	select [street], [city] from Addresses
+go
+
 
 create proc update_address
 	@address_id int,
+	@city nvarchar(150),
 	@street nvarchar(150),
 	@other_data nvarchar(150),
 	@zip_code int
 as
 	UPDATE [dbo].Addresses
-		set [street] = @street,
+		set [city] = @city,
+			[street] = @street,
 			[other_data] = @other_data,
 			[zip_code] = @zip_code
 		where [address_id] = @address_id
@@ -484,6 +499,7 @@ go
 
 create proc add_product
 	@category_id int,
+	@sub_category_id int,
 	@product_name nvarchar(150),
 	@product_price float(10),
 	@product_final_price float(10),
@@ -492,8 +508,8 @@ create proc add_product
 	@product_image Image,
 	@product_suppliers nvarchar(150)
 AS
-	insert into [dbo].[Products]([product_name],[product_price],[product_final_price],[product_details],[product_description], [product_image], [product_suppliers])
-	values (@product_name, @product_price, @product_final_price, @product_details, @product_description, @product_image, @product_suppliers)
+	insert into [dbo].[Products]([category_id],[sub_category_id],[product_name],[product_price],[product_final_price],[product_details],[product_description], [product_image], [product_suppliers])
+	values (@category_id, @sub_category_id, @product_name, @product_price, @product_final_price, @product_details, @product_description, @product_image, @product_suppliers)
 GO
 
 create proc get_all_products
@@ -507,9 +523,40 @@ as
 	select * from Products where [product_id] = product_id
 go
 
+create proc get_product_image_and_price
+	@product_id int
+as
+	select [product_image], [product_price], [product_final_price] from Products where [product_id] = product_id
+go
+
+create proc get_product_image_price_and_description
+	@product_id int
+as
+	select [product_image], [product_price], [product_final_price], [product_description] from Products where [product_id] = product_id
+go
+
+create proc get_product_discount
+	@product_id int
+as
+	select (100 - [product_final_price] / [product_price]) from Products where [product_id] = product_id
+go
+
+create proc get_products_by_category
+	@category_id int
+as
+	select * from Products where [category_id] = @category_id;
+go
+
+create proc get_products_by_sub_category
+	@sub_category_id int
+as
+	select * from Products where [sub_category_id] = @sub_category_id;
+go
+
 create proc update_product
 	@product_id int,
 	@category_id int,
+	@sub_category_id int,
 	@product_name nvarchar(150),
 	@product_price float(10),
 	@product_final_price float(10),
@@ -520,6 +567,7 @@ create proc update_product
 as
 	update [dbo].[Products]
 		set [category_id] = @category_id,
+			[sub_category_id] = @sub_category_id,
 			[product_name] = @product_name,
 			[product_price] = @product_price,
 			[product_final_price] = @product_final_price,
