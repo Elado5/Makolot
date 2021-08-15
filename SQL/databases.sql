@@ -491,7 +491,7 @@ create table Products (
 
 	product_id int IDENTITY(1,1) not null primary key,
 	category_id int not null foreign key references Category(category_id),
-	sub_category_id int not null foreign key references SubCategory(sub_category_id),
+	sub_category_id int not null foreign key references Sub_Categories(sub_category_id),
 	product_name nvarchar(150) not null,
 	product_price float(10) not null,
 	product_final_price float(10) not null,
@@ -557,6 +557,57 @@ create proc get_products_by_sub_category
 	@sub_category_id int
 as
 	select * from Products where [sub_category_id] = @sub_category_id;
+go
+
+create proc discount_product
+	@product_id int,
+	@discount int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [product_id] = @product_id
+go
+
+create proc discount_all_products_in_category
+	@category_id int,
+	@discount int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [category_id] = @category_id
+go
+
+create proc discount_all_products_in_sub_category
+	@sub_category_id int,
+	@discount int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [sub_category_id] = @sub_category_id
+go
+
+create proc cancel_all_discounts
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price]
+go
+
+create proc cancel_discount_product
+	@product_id int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] where [product_id] = @product_id
+go
+
+create proc cancel_all_discounts_in_category
+	@category_id int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] where [category_id] = @category_id
+go
+
+create proc cancel_all_discounts_in_sub_category
+	@sub_category_id int
+as
+update [dbo].[Products]
+	set [product_final_price] = [product_price] where [sub_category_id] = @sub_category_id
 go
 
 create proc update_product

@@ -70,7 +70,7 @@ route.get(`/byCategory/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`category_id`, sql.Int, params.id)
-    .execute(`get_product_by_category`);
+    .execute(`get_products_by_category`);
 
     let data = await query;
 
@@ -89,7 +89,7 @@ route.get(`/bySubCategory/:id`, async (req, res) => {
 
     let query = await db.request()
     .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`get_product_by_sub_category`);
+    .execute(`get_products_by_sub_category`);
 
     let data = await query;
 
@@ -208,6 +208,198 @@ route.put(`/update/:id` , async (req, res) =>{
     .input(`product_description`, sql.NVarChar(150), body.product_description)
     .input(`product_image`, sql.Image, body.product_image)
     .execute(`update_product`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+
+route.put(`/discount/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .input(`discount`, sql.Int, body.discount)
+    .execute(`discount_product`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/category/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`category_id`, sql.Int, params.id)
+    .input(`discount`, sql.Int, body.discount)
+    .execute(`discount_all_products_in_category`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/subCategory/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`sub_category_id`, sql.Int, params.id)
+    .input(`discount`, sql.Int, body.discount)
+    .execute(`discount_all_products_in_sub_category`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/cancelAll` , async (req, res) =>{
+
+    let body = req.body;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`discount`, sql.Int, body.discount)
+    .execute(`cancel_all_discounts`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/cancel/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`product_id`, sql.Int, params.id)
+    .execute(`cancel_discount_product`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/cancelCategory/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`category_id`, sql.Int, params.id)
+    .execute(`cancel_all_discounts_in_category`);
+
+    //get the data from the query result
+    let data = await query;
+
+    //close connection to server
+    await db.close();
+
+    //send the data to the client via api
+    res.send(data);
+    
+})
+
+route.put(`/discount/cancelSubCategory/:id` , async (req, res) =>{
+
+    let body = req.body;
+    let params = req.params;
+
+    //on error
+    sql.on(`error`, (error) => res.send(error));
+
+    //connect to the db
+    let db = await sql.connect(config.db);
+
+    //run the wanted query - this one shall be ?
+    let query = await db.request()
+    .input(`sub_category_id`, sql.Int, params.id)
+    .execute(`cancel_all_discounts_in_sub_category`);
 
     //get the data from the query result
     let data = await query;
