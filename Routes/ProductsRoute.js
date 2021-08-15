@@ -7,7 +7,7 @@ let route = express.Router();
 
 const fileStorageEngine = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './images' )
+        cb(null, './ProductImages' )
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '--' + file.originalname)
@@ -17,13 +17,13 @@ const fileStorageEngine = multer.diskStorage({
 const upload = multer({storage: fileStorageEngine});
 
 route.post('/singleUp', upload.single('image'), (req, res) => {
-    console.log(req.file);
-    res.send("Single file upload success");
+    console.log(req.file.filename);
+    res.send(req.file.filename + " upload success");
 });
 
 route.post(`/multipleUp`, upload.array('images', 3), (req, res) => {
     console.log(req.files);
-    res.send("Multiple files upload success");
+    res.send(req.files + " upload success");
 })
 
 route.get(`/all`, async (req, res) => {
