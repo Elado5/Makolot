@@ -658,7 +658,15 @@ AS
 	WHERE [product_id] = @product_id
 go
 
+create proc get_active_products
+as
+	select * from [dbo].[Products] where [isActive] = 1
+go
 
+create proc get_inactive_products
+as
+	select * from [dbo].[Products] where [isActive] = 0
+go
 --Grocery Shop
 
 

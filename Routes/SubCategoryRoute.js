@@ -4,133 +4,116 @@ const config = require(`../Utils/config`);
 
 let route = express.Router();
 
-route.get('/all', async (req, res) => {
+route.get("/all", async (req, res) => {
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().execute(`get_all_sub_categories`);
 
-    let query = await db.request().execute(`get_all_sub_categories`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
+	res.send(data);
+});
 
-    res.send(data);
-    
-})
+route.get("/:id", async (req, res) => {
+	let params = req.params;
 
-route.get('/:id', async (req, res) => {
+	sql.on(`error`, (error) => res.send(error));
 
-    let params = req.params
+	let db = await sql.connect(config.db);
 
-    sql.on(`error`, (error) => res.send(error));
+	let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_sub_category_by_id`);
 
-    let db = await sql.connect(config.db);
+	let data = await query;
 
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`get_sub_category_by_id`);
+	await db.close();
 
-    let data = await query;
+	res.send(data);
+});
+route.post(`/add`, async (req, res) => {
+	let body = req.body;
 
-    await db.close();
+	sql.on(`error`, (error) => res.send(error));
 
-    res.send(data);
-    
-})
-route.post(`/add`,async (req,res) => {
+	let db = await sql.connect(config.db);
 
-    let body = req.body;
+	let query = await db
+		.request()
+		.input(`category_id`, sql.Int, body.category_id)
+		.input(`sub_category_name`, sql.NVarChar(150), body.sub_category_name)
+		.input(`sub_category_info`, sql.NVarChar(150), body.sub_category_info)
+		.input(`sub_category_image`, sql.Image, body.sub_category_image)
+		.execute(`add_sub_category`);
 
-    sql.on(`error`, (error) => res.send(error));
+	let data = await query;
+	await db.close();
+	res.send(data);
+});
 
-    let db = await sql.connect(config.db);
+route.put(`/update/:id`, async (req, res) => {
+	let body = req.body;
+	let params = req.params;
 
-    let query = await db.request()
-        .input(`category_id`, sql.Int, body.category_id)
-        .input(`sub_category_name`, sql.NVarChar(150), body.sub_category_name)
-        .input(`sub_category_info`, sql.NVarChar(150), body.sub_category_info)
-        .input(`sub_category_image`, sql.Image, body.sub_category_image)
-        .execute(`add_sub_category`);
+	sql.on(`error`, (error) => res.send(error));
 
-    let data = await query;
-    await db.close();
-    res.send(data);
+	let db = await sql.connect(config.db);
 
-})
+	let query = await db
+		.request()
+		.input(`sub_category_id`, sql.Int, params.id)
+		.input(`sub_category_name`, sql.NVarChar(150), body.sub_category_name)
+		.input(`sub_category_info`, sql.NVarChar(150), body.sub_category_info)
+		.input(`sub_category_image`, sql.Image, body.sub_category_image)
+		.execute(`add_sub_category`);
 
-route.put(`/update/:id`,async (req,res) => {
-
-    let body = req.body;
-    let params = req.params;
-
-    sql.on(`error`, (error) => res.send(error));
-
-    let db = await sql.connect(config.db);
-
-    let query = await db.request()
-        .input(`sub_category_id`, sql.Int, params.id)
-        .input(`sub_category_name`, sql.NVarChar(150), body.sub_category_name)
-        .input(`sub_category_info`, sql.NVarChar(150), body.sub_category_info)
-        .input(`sub_category_image`, sql.Image, body.sub_category_image)
-        .execute(`add_sub_category`);
-
-    let data = await query;
-    await db.close();
-    res.send(data);
-
-})
+	let data = await query;
+	await db.close();
+	res.send(data);
+});
 
 route.put(`/deactivate/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`deactivate_sub_category`);
 
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-        .execute(`deactivate_sub_category`);
-
-    let data = await query;
-    await db.close();
-    res.send(data);
-})
+	let data = await query;
+	await db.close();
+	res.send(data);
+});
 
 route.put(`/activate/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`activate_sub_category`);
 
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`activate_sub_category`);
-
-    let data = await query;
-    await db.close();
-    res.send(data);
-})
+	let data = await query;
+	await db.close();
+	res.send(data);
+});
 
 route.delete(`/delete/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`delete_sub_category`);
 
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`delete_sub_category`);
-
-    let data = await query;
-    await db.close();
-    res.send(data);
-})
+	let data = await query;
+	await db.close();
+	res.send(data);
+});
 
 module.exports = route;

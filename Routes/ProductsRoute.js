@@ -1,494 +1,471 @@
-const express = require('express');
-const sql = require('mssql');
-const config = require('../Utils/config');
-const multer = require('multer');
+const express = require("express");
+const sql = require("mssql");
+const config = require("../Utils/config");
+const multer = require("multer");
 
 let route = express.Router();
 
 const fileStorageEngine = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './ProductImages' )
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '--' + file.originalname)
-    }
-})
-
-const upload = multer({storage: fileStorageEngine});
-
-route.post('/singleUp', upload.single('image'), (req, res) => {
-    console.log(req.file.filename);
-    res.send(req.file.filename + " upload success");
+	destination: (req, file, cb) => {
+		cb(null, "./ProductImages");
+	},
+	filename: (req, file, cb) => {
+		cb(null, Date.now() + "--" + file.originalname);
+	}
 });
 
-route.post(`/multipleUp`, upload.array('images', 3), (req, res) => {
-    console.log(req.files);
-    res.send(req.files + " upload success");
-})
+const upload = multer({ storage: fileStorageEngine });
+
+route.post("/singleUp", upload.single("image"), (req, res) => {
+	console.log(req.file.filename);
+	res.send(req.file.filename + " upload success");
+});
+
+route.post(`/multipleUp`, upload.array("images", 3), (req, res) => {
+	console.log(req.files);
+	res.send(req.files + " upload success");
+});
 
 route.get(`/all`, async (req, res) => {
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().execute(`get_all_products`);
 
-    let query = await db.request().execute(`get_all_products`);
+	let data = await query.recordset;
 
-    let data = await query.recordset;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_by_id`);
 
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`get_product_by_id`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/byCategory/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_products_by_category`);
 
-    let query = await db.request()
-    .input(`category_id`, sql.Int, params.id)
-    .execute(`get_products_by_category`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/bySubCategory/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_products_by_sub_category`);
 
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`get_products_by_sub_category`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/preview/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_image_and_price`);
 
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`get_product_image_and_price`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/preview2/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db
+		.request()
+		.input(`product_id`, sql.Int, params.id)
+		.execute(`get_product_image_price_and_description`);
 
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`get_product_image_price_and_description`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
-
-    res.send(data);
-})
+	res.send(data);
+});
 
 route.get(`/discount/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	sql.on(`error`, (error) => res.send(error));
 
-    sql.on(`error`, (error) => res.send(error));
+	let db = await sql.connect(config.db);
 
-    let db = await sql.connect(config.db);
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_discount`);
 
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`get_product_discount`);
+	let data = await query;
 
-    let data = await query;
+	await db.close();
 
-    await db.close();
+	res.send(data);
+});
 
-    res.send(data);
-})
+route.get(`/activeproducts`, async (req, res) => {
+	sql.on(`error`, (error) => res.send(error));
 
-route.post(`/add` , async (req, res) =>{
+	let db = await sql.connect(config.db);
 
-    let body = req.body;
+	let query = await db.request().execute(`get_active_products`);
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	let data = await query;
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	await db.close();
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`category_id`, sql.Int, body.id)
-    .input(`product_name`, sql.NVarChar(150), body.product_name)
-    .input(`product_price`, sql.Float(10), body.product_price)
-    .input(`product_final_price`, sql.Float(10), body.product_final_price)
-    .input(`product_details`, sql.NVarChar(150), body.product_details)
-    .input(`product_description`, sql.NVarChar(150), body.product_description)
-    .input(`product_image`, sql.Image, body.product_image)
-    .execute(`add_product`);
+	res.send(data);
+});
 
-    //get the data from the query result
-    let data = await query;
+route.get(`/allinactive`, async (req, res) => {
+	sql.on(`error`, (error) => res.send(error));
 
-    //close connection to server
-    await db.close();
+	let db = await sql.connect(config.db);
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	let query = await db.request().execute(`get_inactive_products`);
 
-route.put(`/update/:id` , async (req, res) =>{
+	let data = await query;
 
-    let body = req.body;
-    let params = req.params;
+	await db.close();
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	res.send(data);
+});
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+route.post(`/add`, async (req, res) => {
+	let body = req.body;
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .input(`product_name`, sql.NVarChar(150), body.product_name)
-    .input(`product_price`, sql.Float(10), body.product_price)
-    .input(`product_final_price`, sql.Float(10), body.product_final_price)
-    .input(`product_details`, sql.NVarChar(150), body.product_details)
-    .input(`product_description`, sql.NVarChar(150), body.product_description)
-    .input(`product_image`, sql.Image, body.product_image)
-    .execute(`update_product`);
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //get the data from the query result
-    let data = await query;
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //close connection to server
-    await db.close();
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`category_id`, sql.Int, body.id)
+		.input(`product_name`, sql.NVarChar(150), body.product_name)
+		.input(`product_price`, sql.Float(10), body.product_price)
+		.input(`product_final_price`, sql.Float(10), body.product_final_price)
+		.input(`product_details`, sql.NVarChar(150), body.product_details)
+		.input(`product_description`, sql.NVarChar(150), body.product_description)
+		.input(`product_image`, sql.Image, body.product_image)
+		.execute(`add_product`);
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//get the data from the query result
+	let data = await query;
 
+	//close connection to server
+	await db.close();
 
-route.put(`/discount/:id` , async (req, res) =>{
+	//send the data to the client via api
+	res.send(data);
+});
 
-    let body = req.body;
-    let params = req.params;
+route.put(`/update/:id`, async (req, res) => {
+	let body = req.body;
+	let params = req.params;
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .input(`discount`, sql.Int, body.discount)
-    .execute(`discount_product`);
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`product_id`, sql.Int, params.id)
+		.input(`product_name`, sql.NVarChar(150), body.product_name)
+		.input(`product_price`, sql.Float(10), body.product_price)
+		.input(`product_final_price`, sql.Float(10), body.product_final_price)
+		.input(`product_details`, sql.NVarChar(150), body.product_details)
+		.input(`product_description`, sql.NVarChar(150), body.product_description)
+		.input(`product_image`, sql.Image, body.product_image)
+		.execute(`update_product`);
 
-    //get the data from the query result
-    let data = await query;
+	//get the data from the query result
+	let data = await query;
 
-    //close connection to server
-    await db.close();
+	//close connection to server
+	await db.close();
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//send the data to the client via api
+	res.send(data);
+});
 
-route.put(`/discount/category/:id` , async (req, res) =>{
+route.put(`/discount/:id`, async (req, res) => {
+	let body = req.body;
+	let params = req.params;
 
-    let body = req.body;
-    let params = req.params;
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`product_id`, sql.Int, params.id)
+		.input(`discount`, sql.Int, body.discount)
+		.execute(`discount_product`);
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`category_id`, sql.Int, params.id)
-    .input(`discount`, sql.Int, body.discount)
-    .execute(`discount_all_products_in_category`);
+	//get the data from the query result
+	let data = await query;
 
-    //get the data from the query result
-    let data = await query;
+	//close connection to server
+	await db.close();
 
-    //close connection to server
-    await db.close();
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+route.put(`/discount/category/:id`, async (req, res) => {
+	let body = req.body;
+	let params = req.params;
 
-route.put(`/discount/subCategory/:id` , async (req, res) =>{
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    let body = req.body;
-    let params = req.params;
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`category_id`, sql.Int, params.id)
+		.input(`discount`, sql.Int, body.discount)
+		.execute(`discount_all_products_in_category`);
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//get the data from the query result
+	let data = await query;
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .input(`discount`, sql.Int, body.discount)
-    .execute(`discount_all_products_in_sub_category`);
+	//close connection to server
+	await db.close();
 
-    //get the data from the query result
-    let data = await query;
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //close connection to server
-    await db.close();
+route.put(`/discount/subCategory/:id`, async (req, res) => {
+	let body = req.body;
+	let params = req.params;
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-route.put(`/discount/cancelAll` , async (req, res) =>{
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    let body = req.body;
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`sub_category_id`, sql.Int, params.id)
+		.input(`discount`, sql.Int, body.discount)
+		.execute(`discount_all_products_in_sub_category`);
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//get the data from the query result
+	let data = await query;
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//close connection to server
+	await db.close();
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`discount`, sql.Int, body.discount)
-    .execute(`cancel_all_discounts`);
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //get the data from the query result
-    let data = await query;
+route.put(`/discount/cancelAll`, async (req, res) => {
+	let body = req.body;
 
-    //close connection to server
-    await db.close();
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-route.put(`/discount/cancel/:id` , async (req, res) =>{
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`discount`, sql.Int, body.discount).execute(`cancel_all_discounts`);
 
-    let body = req.body;
-    let params = req.params;
+	//get the data from the query result
+	let data = await query;
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//close connection to server
+	await db.close();
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`cancel_discount_product`);
+route.put(`/discount/cancel/:id`, async (req, res) => {
+	let params = req.params;
 
-    //get the data from the query result
-    let data = await query;
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //close connection to server
-    await db.close();
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`cancel_discount_product`);
 
-route.put(`/discount/cancelCategory/:id` , async (req, res) =>{
+	//get the data from the query result
+	let data = await query;
 
-    let body = req.body;
-    let params = req.params;
+	//close connection to server
+	await db.close();
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+route.put(`/discount/cancelCategory/:id`, async (req, res) => {
+	let params = req.params;
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`category_id`, sql.Int, params.id)
-    .execute(`cancel_all_discounts_in_category`);
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //get the data from the query result
-    let data = await query;
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //close connection to server
-    await db.close();
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`cancel_all_discounts_in_category`);
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//get the data from the query result
+	let data = await query;
 
-route.put(`/discount/cancelSubCategory/:id` , async (req, res) =>{
+	//close connection to server
+	await db.close();
 
-    let body = req.body;
-    let params = req.params;
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+route.put(`/discount/cancelSubCategory/:id`, async (req, res) => {
+	let params = req.params;
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`sub_category_id`, sql.Int, params.id)
-    .execute(`cancel_all_discounts_in_sub_category`);
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //get the data from the query result
-    let data = await query;
+	//run the wanted query - this one shall be ?
+	let query = await db
+		.request()
+		.input(`sub_category_id`, sql.Int, params.id)
+		.execute(`cancel_all_discounts_in_sub_category`);
 
-    //close connection to server
-    await db.close();
+	//get the data from the query result
+	let data = await query;
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//close connection to server
+	await db.close();
 
-route.put(`/activate/:id` , async (req, res) =>{
+	//send the data to the client via api
+	res.send(data);
+});
 
-    let params = req.params;
+route.put(`/activate/:id`, async (req, res) => {
+	let params = req.params;
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`activate_product`);
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`activate_product`);
 
-    //get the data from the query result
-    let data = await query;
+	//get the data from the query result
+	let data = await query;
 
-    //close connection to server
-    await db.close();
+	//close connection to server
+	await db.close();
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//send the data to the client via api
+	res.send(data);
+});
 
-route.put(`/deactivate/:id` , async (req, res) =>{
+route.put(`/deactivate/:id`, async (req, res) => {
+	let params = req.params;
 
-    let params = req.params;
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`deactivate_product`);
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`deactivate_product`);
+	//get the data from the query result
+	let data = await query;
 
-    //get the data from the query result
-    let data = await query;
+	//close connection to server
+	await db.close();
 
-    //close connection to server
-    await db.close();
+	//send the data to the client via api
+	res.send(data);
+});
 
-    //send the data to the client via api
-    res.send(data);
-    
-})
+route.delete(`/delete/:id`, async (req, res) => {
+	let params = req.params;
 
+	//on error
+	sql.on(`error`, (error) => res.send(error));
 
-route.delete(`/delete/:id` , async (req, res) =>{
+	//connect to the db
+	let db = await sql.connect(config.db);
 
-    let params = req.params;
+	//run the wanted query - this one shall be ?
+	let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`delete_product`);
 
-    //on error
-    sql.on(`error`, (error) => res.send(error));
+	//get the data from the query result
+	let data = await query;
 
-    //connect to the db
-    let db = await sql.connect(config.db);
+	//close connection to server
+	await db.close();
 
-    //run the wanted query - this one shall be ?
-    let query = await db.request()
-    .input(`product_id`, sql.Int, params.id)
-    .execute(`delete_product`);
-
-    //get the data from the query result
-    let data = await query;
-
-    //close connection to server
-    await db.close();
-
-    //send the data to the client via api
-    res.send(data);
-    
-})
+	//send the data to the client via api
+	res.send(data);
+});
 
 module.exports = route;
