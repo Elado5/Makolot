@@ -566,7 +566,7 @@ create proc discount_product
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [product_id] = @product_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [product_id] = @product_id
 go
 
 create proc discount_all_products_in_category
@@ -574,7 +574,7 @@ create proc discount_all_products_in_category
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [category_id] = @category_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [category_id] = @category_id;
 go
 
 create proc discount_all_products_in_sub_category
@@ -582,7 +582,7 @@ create proc discount_all_products_in_sub_category
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [sub_category_id] = @sub_category_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [sub_category_id] = @sub_category_id
 go
 
 create proc cancel_all_discounts
