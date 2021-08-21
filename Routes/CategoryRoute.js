@@ -67,7 +67,7 @@ route.post(`/add`, async (req, res) => {
 		.request()
 		.input(`category_name`, sql.NVarChar(150), body.category_name)
 		.input(`category_info`, sql.NVarChar(150), body.category_info)
-		.input(`category_image`, sql.Image, body.category_image)
+		.input(`category_image`, sql.Text, body.category_image)
 		.execute(`add_category`);
 
 	let data = await query;
@@ -88,7 +88,7 @@ route.put(`/update/:id`, async (req, res) => {
 		.input(`category_id`, sql.Int, params.id)
 		.input(`category_name`, sql.NVarChar(150), body.category_name)
 		.input(`category_info`, sql.NVarChar(150), body.category_info)
-		.input(`category_image`, sql.Image, body.category_image)
+		.input(`category_image`, sql.Text, body.category_image)
 		.execute(`add_category`);
 
 	let data = await query;
