@@ -353,7 +353,7 @@ create table Categories (
 	category_id int IDENTITY(1,1) not null primary key,
 	category_name nvarchar(150) not null,
 	category_info nvarchar(150) not null,
-	category_image image not null,
+	category_image Text not null,
 	isActive bit default 1
 )
 go
@@ -362,7 +362,7 @@ create proc add_category
 
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image image
+	@category_image Text
 AS
 	insert into [dbo].[Categories]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
@@ -383,7 +383,7 @@ create proc update_category
 	@category_id int,
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image Image
+	@category_image Text
 as
 	update [dbo].[Categories]
 		set [category_name] = @category_name,
@@ -423,7 +423,7 @@ create table Sub_Categories
 	category_id int not null foreign key references Categories(category_id),
 	sub_category_name nvarchar(150) not null,
 	sub_category_info nvarchar(150) not null,
-	sub_category_image image not null,
+	sub_category_image Text not null,
 	isActive bit default 1
 )
 go
@@ -432,7 +432,7 @@ create proc add_sub_category
 	@category_id int,
 	@sub_category_name nvarchar(150),
 	@sub_category_info nvarchar(150),
-	@sub_category_image image
+	@sub_category_image Text
 AS
 	insert into [dbo].[sub_Categories]([category_id],[sub_category_name],[sub_category_info],[sub_category_image])
 	values (@category_id,@sub_category_name, @sub_category_info, @sub_category_image)
@@ -453,7 +453,7 @@ create proc update_sub_category
 	@sub_category_id int,
 	@sub_category_name nvarchar(150),
 	@sub_category_info nvarchar(150),
-	@sub_category_image Image
+	@sub_category_image Text
 as
 	update [dbo].[Sub_Categories]
 		set [sub_category_name] = @sub_category_name,

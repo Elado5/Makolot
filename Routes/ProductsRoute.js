@@ -179,13 +179,15 @@ route.post(`/add`, async (req, res) => {
 	//run the wanted query - this one shall be ?
 	let query = await db
 		.request()
-		.input(`category_id`, sql.Int, body.id)
+		.input(`category_id`, sql.Int, body.category_id)
+		.input(`sub_category_id`, sql.Int, body.sub_category_id)
 		.input(`product_name`, sql.NVarChar(150), body.product_name)
 		.input(`product_price`, sql.Float(10), body.product_price)
 		.input(`product_final_price`, sql.Float(10), body.product_final_price)
 		.input(`product_details`, sql.NVarChar(150), body.product_details)
 		.input(`product_description`, sql.NVarChar(150), body.product_description)
-		.input(`product_image`, sql.Image, body.product_image)
+		.input(`product_image`, sql.Text, body.product_image)
+		.input(`product_suppliers`, sql.NVarChar(150), body.product_suppliers)
 		.execute(`add_product`);
 
 	//get the data from the query result
@@ -212,12 +214,15 @@ route.put(`/update/:id`, async (req, res) => {
 	let query = await db
 		.request()
 		.input(`product_id`, sql.Int, params.id)
+		.input(`category_id`, sql.Int, body.category_id)
+		.input(`sub_category_id`, sql.Int, body.sub_category_id)
 		.input(`product_name`, sql.NVarChar(150), body.product_name)
 		.input(`product_price`, sql.Float(10), body.product_price)
 		.input(`product_final_price`, sql.Float(10), body.product_final_price)
 		.input(`product_details`, sql.NVarChar(150), body.product_details)
 		.input(`product_description`, sql.NVarChar(150), body.product_description)
-		.input(`product_image`, sql.Image, body.product_image)
+		.input(`product_image`, sql.Text, body.product_image)
+		.input(`product_suppliers`, sql.NVarChar(150), body.product_suppliers)
 		.execute(`update_product`);
 
 	//get the data from the query result
