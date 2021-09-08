@@ -234,9 +234,9 @@ go
 
 
 create table Customer_Addresses_Connector (
-	cac_id int IDENTITY(1,1) NOT NULL primary key,
 	customer_id int not null foreign key references Customers(customer_id),
-	address_id int not null foreign key references Addresses(address_id)
+	address_id int not null foreign key references Addresses(address_id),
+	primary key (customer_id, address_id)
 )
 go
 
@@ -246,9 +246,10 @@ as
 go
 
 create proc get_cac_by_id
-	@cac_id int
+	@customer_id int,
+	@address_id int
 as
-	select * from Customer_Addresses_Connector where [cac_id] = @cac_id
+	select * from Customer_Addresses_Connector where [customer_id] = @customer_id and [address_id] = @address_id
 go
 
 create proc add_cac
@@ -260,9 +261,10 @@ as
 go
 
 create proc delete_cac
-	@cac_id int
+	@customer_id int,
+	@address_id int
 as
-	delete from [dbo].[Customer_Addresses_Connector] where [cac_id] = @cac_id
+	delete from [dbo].[Customer_Addresses_Connector] where [customer_id] = @customer_id and [address_id] = @address_id
 go
 
 
@@ -351,7 +353,7 @@ create table Categories (
 	category_id int IDENTITY(1,1) not null primary key,
 	category_name nvarchar(150) not null,
 	category_info nvarchar(150) not null,
-	category_image image not null,
+	category_image Text not null,
 	isActive bit default 1
 )
 go
@@ -360,7 +362,7 @@ create proc add_category
 
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image image
+	@category_image Text
 AS
 	insert into [dbo].[Categories]([category_name],[category_info],[category_image])
 	values (@category_name, @category_info, @category_image)
@@ -381,7 +383,7 @@ create proc update_category
 	@category_id int,
 	@category_name nvarchar(150),
 	@category_info nvarchar(150),
-	@category_image Image
+	@category_image Text
 as
 	update [dbo].[Categories]
 		set [category_name] = @category_name,
@@ -421,7 +423,7 @@ create table Sub_Categories
 	category_id int not null foreign key references Categories(category_id),
 	sub_category_name nvarchar(150) not null,
 	sub_category_info nvarchar(150) not null,
-	sub_category_image image not null,
+	sub_category_image Text not null,
 	isActive bit default 1
 )
 go
@@ -430,7 +432,7 @@ create proc add_sub_category
 	@category_id int,
 	@sub_category_name nvarchar(150),
 	@sub_category_info nvarchar(150),
-	@sub_category_image image
+	@sub_category_image Text
 AS
 	insert into [dbo].[sub_Categories]([category_id],[sub_category_name],[sub_category_info],[sub_category_image])
 	values (@category_id,@sub_category_name, @sub_category_info, @sub_category_image)
@@ -451,7 +453,7 @@ create proc update_sub_category
 	@sub_category_id int,
 	@sub_category_name nvarchar(150),
 	@sub_category_info nvarchar(150),
-	@sub_category_image Image
+	@sub_category_image Text
 as
 	update [dbo].[Sub_Categories]
 		set [sub_category_name] = @sub_category_name,
@@ -497,7 +499,7 @@ create table Products (
 	product_final_price float(10) not null,
 	product_details nvarchar(150),
 	product_description nvarchar(150),
-	product_image Image not null,
+	product_image Text not null,
 	product_suppliers nvarchar(150),
 	isActive bit default 1
 )
@@ -511,7 +513,7 @@ create proc add_product
 	@product_final_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
-	@product_image Image,
+	@product_image Text,
 	@product_suppliers nvarchar(150)
 AS
 	insert into [dbo].[Products]([category_id],[sub_category_id],[product_name],[product_price],[product_final_price],[product_details],[product_description], [product_image], [product_suppliers])
@@ -564,7 +566,7 @@ create proc discount_product
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [product_id] = @product_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [product_id] = @product_id
 go
 
 create proc discount_all_products_in_category
@@ -572,7 +574,7 @@ create proc discount_all_products_in_category
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [category_id] = @category_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [category_id] = @category_id;
 go
 
 create proc discount_all_products_in_sub_category
@@ -580,7 +582,7 @@ create proc discount_all_products_in_sub_category
 	@discount int
 as
 update [dbo].[Products]
-	set [product_final_price] = [product_price] - ([product_price] / @discount * 100) where [sub_category_id] = @sub_category_id
+	set [product_final_price] = ROUND ( [product_final_price] - [product_price] - ([product_price] / @discount * 10), 2 , 1 ) where [sub_category_id] = @sub_category_id
 go
 
 create proc cancel_all_discounts
@@ -619,7 +621,7 @@ create proc update_product
 	@product_final_price float(10),
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
-	@product_image Image,
+	@product_image Text,
 	@product_suppliers nvarchar(150)
 as
 	update [dbo].[Products]
