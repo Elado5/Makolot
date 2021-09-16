@@ -1,7 +1,25 @@
-import React from 'react'
-
+import React, {useEffect} from 'react'
+import {customers} from '../api/api';
+import {GET} from '../api/fetch';
 
 export default function Main() {
+
+    const LoadSpecificUser = async (id) => {
+        let c1 = await GET(customers.get_by_id,[id]);
+        console.info(c1);
+    }
+
+    const LoadCustomers = async () => {
+        let c = await GET(customers.get_all);
+        console.table(c);
+    }
+    useEffect(() => {
+        LoadSpecificUser(1);
+        LoadSpecificUser(2);
+        LoadCustomers();
+    }, [])
+
+
     return (
         <div class="main-container">
             <div class="video-container">

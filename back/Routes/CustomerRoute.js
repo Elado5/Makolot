@@ -31,7 +31,11 @@ route.get(`/:id`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	if(data.recordset.length == 0){
+		res.send({message: "customer not found."});
+		return;
+	}
+	res.send(data.recordset[0]);
 });
 
 route.post(`/register`, async (req, res) => {
