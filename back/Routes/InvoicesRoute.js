@@ -5,7 +5,8 @@ const config = require(`../Utils/config`);
 let route = express.Router();
 
 route.get(`/all`, async (req, res) => {
-	sql.on(`error`, (error) => res.send(error));
+	try {
+		sql.on(`error`, (error) => res.send(error));
 
 	let db = await sql.connect(config.db);
 
@@ -16,10 +17,15 @@ route.get(`/all`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
+	
 });
 
 route.get(`/:id`, async (req, res) => {
-	let params = req.params;
+	try {
+		let params = req.params;
 
 	sql.on(`error`, (error) => res.send(error));
 
@@ -32,10 +38,14 @@ route.get(`/:id`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 route.post(`/add`, async (req, res) => {
-	let body = req.body;
+	try {
+		let body = req.body;
 
 	//on error
 	sql.on(`error`, (error) => res.send(error));
@@ -60,10 +70,14 @@ route.post(`/add`, async (req, res) => {
 
 	//send the data to the client via api
 	res.send(data);
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 //do we need an option to update invoices??
 route.put(`/update/:id`, async (req, res) => {
+try {
 	let params = req.params;
 	let body = req.body;
 
@@ -85,9 +99,13 @@ route.put(`/update/:id`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+} catch (error) {
+	console.error(error);
+}
 });
 
 route.delete(`/delete/:id`, async (req, res) => {
+try {
 	let params = req.params;
 
 	sql.on(`error`, (error) => res.send(error));
@@ -101,6 +119,9 @@ route.delete(`/delete/:id`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+} catch (error) {
+	console.error(error);
+}
 });
 
 module.exports = route;

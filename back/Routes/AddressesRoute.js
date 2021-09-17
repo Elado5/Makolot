@@ -7,7 +7,8 @@ let route = express.Router();
 //route.get('/', (req, res) =>{res.send('user route')})
 
 route.get(`/all`, async (req, res) => {
-	//on error
+	try {
+		//on error
 	sql.on(`error`, (error) => res.send(error));
 
 	//connect to the db
@@ -24,9 +25,14 @@ route.get(`/all`, async (req, res) => {
 
 	//send the data to the client via api
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 route.get(`/:id`, async (req, res) => {
+	try {
+		
 	let params = req.params;
 
 	sql.on(`error`, (error) => console.log(error));
@@ -42,9 +48,13 @@ route.get(`/:id`, async (req, res) => {
 
 	//מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 route.get(`/preview/:id`, async (req, res) => {
+try {
 	let params = req.params;
 
 	sql.on(`error`, (error) => console.log(error));
@@ -60,10 +70,14 @@ route.get(`/preview/:id`, async (req, res) => {
 
 	//מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
 	res.send(data);
+} catch (error) {
+	console.error(error);
+}
 });
 
 route.post(`/add`, async (req, res) => {
-	let body = req.body;
+	try {
+		let body = req.body;
 
 	sql.on(`error`, (error) => res.send(error));
 
@@ -82,9 +96,13 @@ route.post(`/add`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 route.put(`/activate/:id`, async (req, res) => {
+try {
 	let params = req.params;
 
 	sql.on(`error`, (error) => res.send(error));
@@ -94,9 +112,13 @@ route.put(`/activate/:id`, async (req, res) => {
 	let data = await query;
 	await db.close();
 	res.send(data);
+} catch (error) {
+	console.error(error);
+}
 });
 
 route.put(`/deactivate/:id`, async (req, res) => {
+try {
 	let params = req.params;
 
 	sql.on(`error`, (error) => res.send(error));
@@ -106,22 +128,31 @@ route.put(`/deactivate/:id`, async (req, res) => {
 	let data = await query;
 	await db.close();
 	res.send(data);
+} catch (error) {
+	console.error(error);
+}
 });
 
 route.delete(`/delete/:id`, async (req, res) => {
-	let params = req.params;
+	try {
+		let params = req.params;
 
-	sql.on(`error`, (error) => res.send(error));
+		sql.on(`error`, (error) => res.send(error));
+	
+		let db = await sql.connect(config.db);
+		let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`delete_address`);
+		let data = await query;
+		await db.close();
+		res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 
-	let db = await sql.connect(config.db);
-	let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`delete_address`);
-	let data = await query;
-	await db.close();
-	res.send(data);
 });
 
 route.put(`/update/:id`, async (req, res) => {
-	let params = req.params;
+	try {
+		let params = req.params;
 	let body = req.body;
 
 	sql.on(`error`, (error) => res.send(error));
@@ -141,6 +172,9 @@ route.put(`/update/:id`, async (req, res) => {
 	await db.close();
 
 	res.send(data);
+	} catch (error) {
+		console.error(error);
+	}
 });
 
 module.exports = route;
