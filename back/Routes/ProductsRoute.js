@@ -167,7 +167,7 @@ route.get(`/discount/:id`, async (req, res) => {
 	}
 });
 
-route.get(`/activeproducts`, async (req, res) => {
+route.get(`/allactive`, async (req, res) => {
 	try {
 		sql.on(`error`, (error) => res.send(error));
 
