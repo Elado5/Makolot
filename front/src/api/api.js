@@ -42,14 +42,14 @@ export const sub_categories = {
     put_update: `${baseAPI}/subcategories/update/`,
     put_activate: `${baseAPI}/subcategories/activate/`,
     put_deactivate: `${baseAPI}/subcategories/deactivate/`,
-    delete_category: `${baseAPI}/subcategories/delete/`
+    delete_subcategory: `${baseAPI}/subcategories/delete/`
 }
 
 export const CAC = {
     get_all: `${baseAPI}/CAC/all`,
     get_by_id: `${baseAPI}/CAC/`,
     post_add: `${baseAPI}/CAC/add`,
-    delete_category: `${baseAPI}/CAC/delete/`
+    delete_cac: `${baseAPI}/CAC/delete/`
 }
 
 export const products = {
@@ -73,7 +73,7 @@ export const products = {
     put_cancel_discount_by_id: `${baseAPI}/products/discount/cancel/`,
     put_cancel_discount_by_category: `${baseAPI}/products/discount/cancelCategory/`,
     put_cancel_discount_by_subcategory: `${baseAPI}/products/discount/cancelSubCategory/`,
-    delete_category: `${baseAPI}/products/delete/`
+    delete_product: `${baseAPI}/products/delete/`
 }
 
 export const shops = {
@@ -83,5 +83,18 @@ export const shops = {
     put_update: `${baseAPI}/shops/update/`,
     put_activate: `${baseAPI}/shops/activate/`,
     put_deactivate: `${baseAPI}/shops/deactivate/`,
-    delete_category: `${baseAPI}/shops/delete/`
+    delete_shop: `${baseAPI}/shops/delete/`
 }
+
+export const orders = {
+    get_all: `${baseAPI}/orders/all`,
+    get_by_id: `${baseAPI}/orders/`,
+    post_add: `${baseAPI}/orders/add`,
+    put_update: `${baseAPI}/orders/update/`,
+    delete_order: `${baseAPI}/orders/delete/`
+}
+
+//? Transaction route?
+//? invoice route?
+//? Credit Card route?
+//? Reseed needed?
