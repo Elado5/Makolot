@@ -10,6 +10,7 @@ export default function PopUpRegister() {
         }
         let res = await POST(customers.post_register, {id: 1, name: "Moshe"} );
         //* res is the response from the server
+        //* states need to be created for the api to work
     }
 
     return (

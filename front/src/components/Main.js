@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {customers} from '../api/api';
+import {customers, addresses, categories, sub_categories, CAC, products, shops, orders} from '../api/api';
 import {GET, POST, PUT, DELETE} from '../api/fetch';
 
 export default function Main() {
@@ -15,81 +15,153 @@ export default function Main() {
         console.table(c);
     }
 
-    const RegisterCustomer = async () => {
-    }
+
 
     const LoginCustomer = async () => {
+        let res = await POST(customers.post_login);
     }
 
-    const UpdateCustomer = async () => {
+    const UpdateCustomer = async (id) => {
+        let res = await PUT(customers.put_update, [id]);
     }
 
-    const DeleteCustomer = async () => {
+    const DeleteCustomer = async (id) => {
+        let res = await DELETE(customers.delete_customer, [id]);
     }
 
     //* Address
-    const LoadAllAdresses = async () => {}
-    const LoadSpecificAdress = async () => {}
-    const AddAddress = async () => {}
-    const ActivateAddress = async () => {}
-    const DeactivateAddress = async () => {}
-    const DeleteAddress = async () => {}
+    const LoadAllAdresses = async () => {
+        let res = await GET(addresses.get_all)
+    }
+    const LoadSpecificAdress = async (id) => {
+        let res = await GET(addresses.get_by_id, [id]);
+    }
+    const AddAddress = async () => {
+        let res = await POST(addresses.post_add)
+    }
+    const ActivateAddress = async (id) => {
+        let res = await PUT(addresses.put_activate, [id]);
+    }
+    const DeactivateAddress = async (id) => {
+        let res = await PUT(addresses.put_deactivate, [id]);
+
+    }
+    const DeleteAddress = async (id) => {
+        let res = await DELETE(addresses.delete_address, [id])
+    }
 
     //* Category
-    const LoadAllCategories = async () => {}
-    const LoadSpecificCategory = async () => {}
-    const AddCategory = async () => {}
-    const UploadCategoryImage = async () => {}
-    const UploadMultipleCategoryImages = async () => {}
-    const UpdateCategory = async () => {}
-    const ActivateCategory = async () => {}
-    const DeactivateCategory = async () => {}
-    const DeleteCategory = async () => {}
+    const LoadAllCategories = async () => {
+        let res = await GET(categories.get_all)
+    }
+    const LoadSpecificCategory = async (id) => {
+        let res = await GET(categories.get_by_id, [id])
+    }
+    const AddCategory = async () => {
+        let res = await POST(categories.post_add)
+    }
+    const UploadCategoryImage = async () => {
+        let res = await POST(categories.post_single_upload)
+    }
+    const UploadMultipleCategoryImages = async () => {
+        let res = await POST(categories.post_multi_upload)
+
+    }
+    const UpdateCategory = async (id) => {
+        let res = await PUT(categories.put_update, [id])
+    }
+    const ActivateCategory = async (id) => {
+        let res = await PUT(categories.put_activate, [id])
+    }
+    const DeactivateCategory = async (id) => {
+        let res = await PUT(categories.put_deactivate, [id])
+    }
+    const DeleteCategory = async (id) => {
+        let res = await DELETE(categories.delete_category, [id])
+    }
+
+      //* Sub_Category
+    const LoadAllSubCategories = async () => {
+        let res = await GET(sub_categories.get_all)
+    }
+    const LoadSpecificSubCategory = async (id) => {
+        let res = await GET(sub_categories.get_by_id, [id])
+    }
+    const AddSubCategory = async () => {
+        let res = await POST(sub_categories.post_add)
+    }
+    const UploadSubCategoryImage = async () => {
+        let res = await POST(sub_categories.post_single_upload)
+    }
+    const UploadMultipleSubCategoryImages = async () => {
+        let res = await POST(sub_categories.post_multi_upload)
+
+    }
+    const UpdateSubCategory = async (id) => {
+        let res = await PUT(sub_categories.put_update, [id])
+    }
+    const ActivateSubCategory = async (id) => {
+        let res = await PUT(sub_categories.put_activate, [id])
+    }
+    const DeactivateSubCategory = async (id) => {
+        let res = await PUT(sub_categories.put_deactivate, [id])
+    }
+    const DeleteSubCategory = async (id) => {
+        let res = await DELETE(sub_categories.delete_subcategory, [id])
+    }
 
     //* CAC
-    const LoadAllCACs = async () => {}
-    const LoadSpecificCAC = async () => {}
-    const AddCAC = async () => {}
-    const DeleteCAC = async () => {}
+    const LoadAllCACs = async () => {
+        let res = await GET(CAC.get_all)
+    }
+    const LoadSpecificCAC = async (id) => {
+        let res = await GET(CAC.get_by_id, [id])
+    }
+    const AddCAC = async () => {
+        let res = await POST(CAC.post_add)
+    }
+    const DeleteCAC = async (id) => {
+        let res = await DELETE(CAC.delete_cac, [id])
+    }
 
     //* Product
     const LoadAllProducts = async () => {}
-    const LoadSpecificProduct = async () => {}
-    const LoadProductPreview = async () => {}
-    const LoadProductPreview2 = async () => {}
-    const LoadProductDiscount = async () => {}
+    const LoadSpecificProduct = async (id) => {}
+    const LoadProductPreview = async (id) => {}
+    const LoadProductPreview2 = async (id) => {}
+    const LoadProductDiscount = async (id) => {}
     const LoadActiveProducts = async () => {}
     const LoadInactiveProducts = async () => {}
     const AddProduct = async () => {}
     const UploadProductImage = async () => {}
     const UploadMultipleProductImages = async () => {}
-    const UpdateProduct = async () => {}
-    const ChangeProductDiscount = async () => {}
-    const ChangeCategoryDiscount = async () => {}
-    const ChangeSubCategoryDiscount = async () => {}
+    const UpdateProduct = async (id) => {}
+    const ChangeProductDiscount = async (id) => {}
+    const ChangeCategoryDiscount = async (id) => {}
+    const ChangeSubCategoryDiscount = async (id) => {}
     const CancelAllDiscounts = async () => {}
-    const CancelProductDiscount = async () => {}
-    const CancelCategoryDiscount = async () => {}
-    const CancelSubCategoryDiscount = async () => {}
-    const ActivateProduct = async () => {}
-    const DeactivateProduct = async () => {}
-    const DeleteProduct = async () => {}
+    const CancelProductDiscount = async (id) => {}
+    const CancelCategoryDiscount = async (id) => {}
+    const CancelSubCategoryDiscount = async (id) => {}
+    const ActivateProduct = async (id) => {}
+    const DeactivateProduct = async (id) => {}
+    const DeleteProduct = async (id) => {}
 
     //* Shop
     const LoadAllShops = async () => {}
-    const LoadSpecificShop = async () => {}
+    const LoadSpecificShop = async (id) => {}
     const AddShop = async () => {}
-    const ActivateShop = async () => {}
-    const DeactivateShop = async () => {}
-    const DeleteShop = async () => {}
+    const ActivateShop = async (id) => {}
+    const DeactivateShop = async (id) => {}
+    const DeleteShop = async (id) => {}
 
     //* Order
     const LoadAllOrders = async () => {}
-    const LoadSpecificOrder = async () => {}
+    const LoadSpecificOrder = async (id) => {}
     const AddOrder = async () => {}
-    const ActivateOrder = async () => {}
-    const DeactivateOrder = async () => {}
-    const DeleteOrder = async () => {}
+    const ActivateOrder = async (id) => {}
+    const DeactivateOrder = async (id) => {}
+    const DeleteOrder = async (id) => {}
 
     //בדיקה
     useEffect(() => {
