@@ -70,7 +70,7 @@ export const products = {
     put_discount_category: `${baseAPI}/products/discount/category/`,
     put_discount_subcategory: `${baseAPI}/products/discount/subcategory/`,
     put_cancel_all_discount: `${baseAPI}/products/discount/cancelAll`,
-    put_cancel_discount_by_id: `${baseAPI}/products/discount/cancel/`,
+    put_cancel_discount: `${baseAPI}/products/discount/cancel/`,
     put_cancel_discount_by_category: `${baseAPI}/products/discount/cancelCategory/`,
     put_cancel_discount_by_subcategory: `${baseAPI}/products/discount/cancelSubCategory/`,
     delete_product: `${baseAPI}/products/delete/`

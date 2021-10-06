@@ -125,35 +125,99 @@ export default function Main() {
     }
 
     //* Product
-    const LoadAllProducts = async () => {}
-    const LoadSpecificProduct = async (id) => {}
-    const LoadProductPreview = async (id) => {}
-    const LoadProductPreview2 = async (id) => {}
-    const LoadProductDiscount = async (id) => {}
-    const LoadActiveProducts = async () => {}
-    const LoadInactiveProducts = async () => {}
-    const AddProduct = async () => {}
-    const UploadProductImage = async () => {}
-    const UploadMultipleProductImages = async () => {}
-    const UpdateProduct = async (id) => {}
-    const ChangeProductDiscount = async (id) => {}
-    const ChangeCategoryDiscount = async (id) => {}
-    const ChangeSubCategoryDiscount = async (id) => {}
-    const CancelAllDiscounts = async () => {}
-    const CancelProductDiscount = async (id) => {}
-    const CancelCategoryDiscount = async (id) => {}
-    const CancelSubCategoryDiscount = async (id) => {}
-    const ActivateProduct = async (id) => {}
-    const DeactivateProduct = async (id) => {}
-    const DeleteProduct = async (id) => {}
+    const LoadAllProducts = async () => {
+        let res = await GET(products.get_all)
+    }
+    const LoadSpecificProduct = async (id) => {
+        let res = await GET(products.get_by_id, [id])
+    }
+    const LoadProductPreview = async (id) => {
+        let res = await GET(products.get_preview_by_id, [id])
+    }
+    const LoadProductPreview2 = async (id) => {
+        let res = await GET(products.get_preview2_by_id, [id])
+    }
+    const LoadProductDiscount = async (id) => {
+        let res = await GET(products.get_product_discount, [id])
+
+    }
+    const LoadActiveProducts = async () => {
+        let res = await GET(products.get_active_products)
+    }
+    const LoadInactiveProducts = async () => {
+        let res = await GET(products.get_inactive_products)
+    }
+    const AddProduct = async () => {
+        let res = await POST(products.post_add)
+    }
+    const UploadProductImage = async () => {
+        let res = await POST(products.post_single_upload)
+    }
+    const UploadMultipleProductImages = async () => {
+        let res = await POST(products.post_multi_upload)
+
+    }
+    const UpdateProduct = async (id) => {
+        let res = await PUT(products.put_update, [id])
+    }
+    const ChangeProductDiscount = async (id) => {
+        let res = await PUT(products.put_discount , [id])
+    }
+    const ChangeCategoryDiscount = async (id) => {
+        let res = await PUT(products.put_discount_category , [id])
+
+    }
+    const ChangeSubCategoryDiscount = async (id) => {
+        let res = await PUT(products.put_discount_subcategory , [id])
+
+    }
+    const CancelAllDiscounts = async () => {
+        let res = await PUT(products.put_cancel_all_discount)
+
+    }
+    const CancelProductDiscount = async (id) => {
+        let res = await PUT(products.put_cancel_discount , [id])
+
+    }
+    const CancelCategoryDiscount = async (id) => {
+        let res = await PUT(products.put_cancel_discount_by_category , [id])
+
+    }
+    const CancelSubCategoryDiscount = async (id) => {
+        let res = await PUT(products.put_cancel_discount_by_subcategory , [id])
+
+    }
+    const ActivateProduct = async (id) => {
+        let res = await PUT(products.put_activate , [id])
+
+    }
+    const DeactivateProduct = async (id) => {
+        let res = await PUT(products.put_deactivate , [id])
+
+    }
+    const DeleteProduct = async (id) => {
+        let res = await DELETE(products.delete_product, [id])
+    }
 
     //* Shop
-    const LoadAllShops = async () => {}
-    const LoadSpecificShop = async (id) => {}
-    const AddShop = async () => {}
-    const ActivateShop = async (id) => {}
-    const DeactivateShop = async (id) => {}
-    const DeleteShop = async (id) => {}
+    const LoadAllShops = async () => {
+        let res = await GET(shops.get_all)
+    }
+    const LoadSpecificShop = async (id) => {
+        let res = await GET(shops.get_by_id, [id])
+    }
+    const AddShop = async () => {
+        let res = await POST(shops.post_add)
+    }
+    const ActivateShop = async (id) => {
+        let res = await PUT(shops.put_activate, [id])
+    }
+    const DeactivateShop = async (id) => {
+        let res = await PUT(shops.put_deactivate, [id])
+    }
+    const DeleteShop = async (id) => {
+        let res = await PUT(shops.put_deactivate, [id])
+    }
 
     //* Order
     const LoadAllOrders = async () => {}
