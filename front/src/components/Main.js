@@ -220,12 +220,21 @@ export default function Main() {
     }
 
     //* Order
-    const LoadAllOrders = async () => {}
-    const LoadSpecificOrder = async (id) => {}
-    const AddOrder = async () => {}
-    const ActivateOrder = async (id) => {}
-    const DeactivateOrder = async (id) => {}
-    const DeleteOrder = async (id) => {}
+    const LoadAllOrders = async () => {
+        let res = await GET(orders.get_all)
+    }
+    const LoadSpecificOrder = async (id) => {
+        let res = await GET(orders.get_by_id, [id])
+    }
+    const AddOrder = async () => {
+        let res = await POST(orders.post_add)
+    }
+    const UpdateOrder = async (id) => {
+        let res = await PUT(orders.put_update, [id])
+    }
+    const DeleteOrder = async (id) => {
+        let res = await DELETE(orders.delete_order, [id])
+    }
 
     //בדיקה
     useEffect(() => {
