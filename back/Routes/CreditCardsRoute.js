@@ -15,7 +15,7 @@ route.get(`/all`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 });
 
 route.get(`/:id`, async (req, res) => {
@@ -31,7 +31,7 @@ route.get(`/:id`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 });
 
 route.post(`/add`, async (req, res) => {
@@ -53,7 +53,7 @@ route.post(`/add`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 });
 
 route.put(`/update/:id`, async (req, res) => {
@@ -77,7 +77,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 });
 
 route.delete(`/delete/:id`, async (req, res) => {
@@ -93,7 +93,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 });
 
 module.exports = route;

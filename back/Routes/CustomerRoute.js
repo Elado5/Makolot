@@ -12,11 +12,11 @@ route.get(`/all`, async (req, res) => {
 
 		let query = await db.request().query(`SELECT * FROM Customers`);
 
-		let data = await query.recordset;
+		let data = await query;
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -80,7 +80,7 @@ route.post(`/register`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -111,7 +111,7 @@ route.post(`/login`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -138,7 +138,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -161,7 +161,7 @@ route.put(`/update_card/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -180,7 +180,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}

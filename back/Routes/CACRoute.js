@@ -16,7 +16,7 @@ route.get("/all", async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -36,7 +36,7 @@ route.get("/:id", async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -60,7 +60,7 @@ route.post("/add", async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -80,7 +80,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}

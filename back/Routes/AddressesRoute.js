@@ -47,7 +47,7 @@ route.get(`/:id`, async (req, res) => {
 	await db.close();
 
 	//מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
-	res.send(data);
+	res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -69,7 +69,7 @@ try {
 	await db.close();
 
 	//מפני שהנתונים הם רשומות אפשר לגשת לרשומה הראשונה ולקבל את האובייקט עצמו
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }
@@ -95,7 +95,7 @@ route.post(`/add`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -111,7 +111,7 @@ try {
 	let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`activate_address`);
 	let data = await query;
 	await db.close();
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }
@@ -127,7 +127,7 @@ try {
 	let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`deactivate_address`);
 	let data = await query;
 	await db.close();
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }
@@ -143,7 +143,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`delete_address`);
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -171,7 +171,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}

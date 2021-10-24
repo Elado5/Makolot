@@ -16,7 +16,7 @@ route.get(`/all`, async (req, res) => {
 	
 		await db.close();
 	
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -37,7 +37,7 @@ try {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }
@@ -67,7 +67,7 @@ try {
 
 	await db.close();
 
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }
@@ -97,7 +97,7 @@ route.post(`/login`, async (req, res) => {
 	await db.close();
 
 	//send the data to the client via api
-	res.send(data);
+	res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -124,7 +124,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 	let data = await query;
 	await db.close();
-	res.send(data);
+	res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -142,7 +142,7 @@ try {
 
 	let data = await query;
 	await db.close();
-	res.send(data);
+	res.send(data.recordset);
 } catch (error) {
 	console.error(error);
 }

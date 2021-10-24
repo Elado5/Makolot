@@ -34,11 +34,11 @@ route.get(`/all`, async (req, res) => {
 
 		let query = await db.request().execute(`get_all_products`);
 
-		let data = await query.recordset;
+		let data = await query;
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -98,7 +98,7 @@ route.get(`/bySubCategory/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -118,7 +118,7 @@ route.get(`/preview/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -141,7 +141,7 @@ route.get(`/preview2/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -161,7 +161,7 @@ route.get(`/discount/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -179,7 +179,7 @@ route.get(`/allactive`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -197,7 +197,7 @@ route.get(`/allinactive`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -234,7 +234,7 @@ route.post(`/add`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -273,7 +273,7 @@ route.put(`/update/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -304,7 +304,7 @@ route.put(`/discount/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -335,7 +335,7 @@ route.put(`/discount/category/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -366,7 +366,7 @@ route.put(`/discount/subCategory/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -392,7 +392,7 @@ route.put(`/discount/cancelAll`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -418,7 +418,7 @@ route.put(`/discount/cancel/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -444,7 +444,7 @@ route.put(`/discount/cancelCategory/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -473,7 +473,7 @@ route.put(`/discount/cancelSubCategory/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -499,7 +499,7 @@ route.put(`/activate/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -525,7 +525,7 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -551,7 +551,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}

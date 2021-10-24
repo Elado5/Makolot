@@ -12,11 +12,11 @@ route.get(`/all`, async (req, res) => {
 
 		let query = await db.request().execute(`get_all_grocery_shops`);
 
-		let data = await query.recordset;
+		let data = await query;
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -36,7 +36,7 @@ route.get(`/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -66,7 +66,7 @@ route.post(`/add`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -98,7 +98,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -118,7 +118,7 @@ route.put(`/deactivate/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -138,7 +138,7 @@ route.put(`/activate/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
@@ -158,7 +158,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 	}
