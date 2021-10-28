@@ -1,9 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
+
+
 const Product = (props) => {
 
     const { product, addItem, removeItem, cartItems } = props;
+
+  
 
     return (
         <div key={product.product_id} className="card">

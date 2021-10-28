@@ -2,6 +2,7 @@ const express = require("express");
 const sql = require("mssql");
 const config = require("../Utils/config");
 const multer = require("multer");
+require('events').EventEmitter.defaultMaxListeners = 15;
 
 let route = express.Router();
 
@@ -237,6 +238,7 @@ route.post(`/add`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 

@@ -11,16 +11,26 @@ import { addItemToCart, productsData } from '../actionsRedux/productActionRedux'
 
 import SplashLoading from '../components/SplashLoading';
 import MessageBox from '../components/MessageBox';
+import { GET } from '../api/fetch.js';
+import {products as productsAPI} from '../api/api';
 
 
 const HomeScreen = () => {
+
+    const [allProducts, setAllProducts] = useState([]);
     const productsItems = useSelector((state) => state.productsItems)
     const { loading, error, products } = productsItems;
     const dispatch = useDispatch();
     const [cartItems, setCartItems] = useState([]);
 
+    const loadAllProducts = async () => {
+        let products = await GET(productsAPI.get_all);
+        setAllProducts(products);
+    }
+
     useEffect(() => {
         dispatch(productsData());
+        loadAllProducts();
     }, [])
 
     const addItem = (product) => {
@@ -60,8 +70,8 @@ const HomeScreen = () => {
                         <div className="article-slider">
                             <div className="carousel-wrapper" >
                                 <div className="carousel" data-flickity >
-                                    {data.products.map((product, key) => (
-                                        <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} className="carousel-cell" />
+                                    {allProducts.map((product) => (
+                                        <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={product.product_id} product={product} className="carousel-cell" />
                                     ))}
                                 </div>
                             </div>
@@ -73,8 +83,8 @@ const HomeScreen = () => {
                         <div className="products-manage">
                             <div className="products-manage-areas">
                                 <div className="main-products">
-                                    {data.products.map((product, key) => (
-                                        <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems}></Product>
+                                    {allProducts.map((product) => (
+                                        <Product addItem={addItem} removeItem={removeItem} key={product.product_id} product={product} cartItems={cartItems}></Product>
                                     ))}
                                 </div>
 
@@ -83,8 +93,8 @@ const HomeScreen = () => {
                                     <div className="article-slider">
                                         <div className="carousel-wrapper">
                                             <div className="carousel" data-flickity>
-                                                {data.products.map((product, key) => (
-                                                    <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} className="carousel-cell" />
+                                                {allProducts.map((product) => (
+                                                    <Product addItem={addItem} removeItem={removeItem} key={product.product_id} product={product} cartItems={cartItems} className="carousel-cell" />
                                                 ))}
                                             </div>
                                         </div>

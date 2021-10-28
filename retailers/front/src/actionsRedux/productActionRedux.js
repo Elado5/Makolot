@@ -1,5 +1,7 @@
 import { PRODUCT_REQUEST, PRODUCT_SUCCESS, PRODUCT_ERROR, PRODUCT_DATA_REQUEST, PRODUCT_DATA_SUCCESS, PRODUCT_DATA_ERROR, ADD_ITEM_TO_CART } from '../const/constants'
 import Axios from 'axios';
+import {GET, POST, PUT, DELETE} from '../api/fetch';
+import {products} from '../api/api';
 
 export const productsData = () => async (dispatch) => {
     dispatch({
@@ -7,7 +9,7 @@ export const productsData = () => async (dispatch) => {
     });
 
     try {
-        const { data } = await Axios.get('/api/products');
+        const data = await GET(products.get_all)
         dispatch({ type: PRODUCT_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: PRODUCT_ERROR, payload: error.message });
