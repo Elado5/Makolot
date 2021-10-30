@@ -525,6 +525,17 @@ as
 	select * from Products
 go
 
+create proc get_all_discounted_products
+AS
+	select * from Products where [product_price] != [product_final_price]
+go
+
+create proc get_products_by_name
+	@product_name nvarchar(150)
+as
+	select * from Products where [product_name] LIKE '%' + @product_name + '%'
+go
+
 create proc get_product_by_id
 	@product_id int
 as

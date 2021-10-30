@@ -41,8 +41,52 @@ route.get(`/all`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
+
+route.get(`/all_discounted`, async (req, res) => {
+
+	try {
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().execute(`get_all_discounted_products`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+})
+
+route.get(`/:name`, async (req, res) => {
+
+	try {
+
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`product_name`,sql.NVarChar(150), params.name).execute(`get_products_by_name`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+})
 
 route.get(`/:id`, async (req, res) => {
 	try {
@@ -61,6 +105,7 @@ route.get(`/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -81,6 +126,7 @@ route.get(`/byCategory/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -101,6 +147,7 @@ route.get(`/bySubCategory/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -121,6 +168,7 @@ route.get(`/preview/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -144,6 +192,7 @@ route.get(`/preview2/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -164,6 +213,7 @@ route.get(`/discount/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -182,6 +232,7 @@ route.get(`/allactive`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -200,6 +251,7 @@ route.get(`/allinactive`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -276,6 +328,7 @@ route.put(`/update/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -307,6 +360,7 @@ route.put(`/discount/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -338,6 +392,7 @@ route.put(`/discount/category/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -369,6 +424,7 @@ route.put(`/discount/subCategory/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -395,6 +451,7 @@ route.put(`/discount/cancelAll`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -421,6 +478,7 @@ route.put(`/discount/cancel/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -447,6 +505,7 @@ route.put(`/discount/cancelCategory/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -476,6 +535,7 @@ route.put(`/discount/cancelSubCategory/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -502,6 +562,7 @@ route.put(`/activate/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -528,6 +589,7 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -554,6 +616,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 

@@ -19,6 +19,7 @@ route.get(`/all`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 
 });
@@ -44,6 +45,7 @@ route.get(`/:id`, async (req, res) => {
 		res.send(data.recordset[0]);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 
 });
@@ -83,6 +85,7 @@ route.post(`/register`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 
 });
@@ -114,6 +117,7 @@ route.post(`/login`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 
 });
@@ -141,6 +145,7 @@ route.put(`/update/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -164,6 +169,7 @@ route.put(`/update_card/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -183,6 +189,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 

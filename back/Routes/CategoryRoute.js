@@ -22,6 +22,7 @@ route.post("/singleUp", upload.single("image"), (req, res) => {
 		res.send("Single file upload success");
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 
 });
@@ -32,6 +33,7 @@ route.post(`/multipleUp`, upload.array("images", 3), (req, res) => {
 		res.send("Multiple files upload success");
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -50,6 +52,7 @@ route.get(`/all`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -70,6 +73,7 @@ route.get(`/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -93,6 +97,7 @@ route.post(`/add`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -118,21 +123,28 @@ route.put(`/update/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
 route.put(`/deactivate/:id`, async (req, res) => {
-	let params = req.params;
+	try {
+		let params = req.params;
 
-	sql.on(`error`, (error) => res.send(error));
-
-	let db = await sql.connect(config.db);
-
-	let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`deactivate_category`);
-
-	let data = await query;
-	await db.close();
-	res.send(data);
+		sql.on(`error`, (error) => res.send(error));
+	
+		let db = await sql.connect(config.db);
+	
+		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`deactivate_category`);
+	
+		let data = await query;
+		await db.close();
+		res.send(data);
+	
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
 });
 
 route.put(`/activate/:id`, async (req, res) => {
@@ -150,6 +162,7 @@ route.put(`/activate/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
@@ -168,6 +181,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		res.send(data);
 	} catch (error) {
 		console.error(error);
+		res.send(error);
 	}
 });
 
