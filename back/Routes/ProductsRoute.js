@@ -65,7 +65,7 @@ route.get(`/all_discounted`, async (req, res) => {
 	}
 })
 
-route.get(`/:name`, async (req, res) => {
+route.get(`/by_name/:name`, async (req, res) => {
 
 	try {
 
@@ -88,7 +88,7 @@ route.get(`/:name`, async (req, res) => {
 	}
 })
 
-route.get(`/:id`, async (req, res) => {
+route.get(`/by_id/:id`, async (req, res) => {
 	try {
 		let params = req.params;
 

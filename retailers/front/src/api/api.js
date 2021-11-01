@@ -54,7 +54,9 @@ export const CAC = {
 
 export const products = {
     get_all: `${baseAPI}/products/all`,
-    get_by_id: `${baseAPI}/products/`,
+    get_all_discounted: `${baseAPI}/products/all_discounted`,
+    get_by_id: `${baseAPI}/products/by_id/`,
+    get_by_name: `${baseAPI}/products/by_name/`,
     get_preview_by_id: `${baseAPI}/products/preview/`,
     get_preview2_by_id: `${baseAPI}/products/preview2/`,
     get_product_discount: `${baseAPI}/products/discount/`,
@@ -97,3 +99,4 @@ export const orders = {
 //? Transaction route?
 //? invoice route?
 //? Credit Card route?
+//leaving that to the owner of the site to chose the relevant way of handling transactions/payment.
