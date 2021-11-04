@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function PaymentSuccessScreen() {
+const PaymentSuccessScreen = () => {
     return (
         <div>
             
         </div>
     )
 }
+export default PaymentSuccessScreen;

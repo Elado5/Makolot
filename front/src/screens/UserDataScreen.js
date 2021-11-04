@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function UserDataScreen() {
+const UserDataScreen = () => {
     return (
         <div>
             
         </div>
     )
 }
+export default UserDataScreen;

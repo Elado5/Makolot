@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function MapScreen() {
+const MapScreen = () => {
     return (
         <div>
             
         </div>
     )
 }
+export default MapScreen;

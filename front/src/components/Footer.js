@@ -1,71 +1,121 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-export default function Footer() {
+const Footer = () => {
     return (
-        <div class="footer">
-            <div class="footer-links">
-                <div class="footer-blocks">
-                    <div class="links-element">
-                        <h5>יצירת קשר</h5>
+        <FooterBox>
+            <FooterLinks>
+                <FooterBlocks>
+                    <LinksElement>
+                        <h4>יצירת קשר</h4>
                         <p>055-6663999</p>
 
-                        <ul class="list-inline">
-                            <li>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                        </ul>
-                    </div>
+                        <ListInline>
+                            <Link to="/"><i className="fa fa-facebook"></i></Link>
+                            <Link to="/"><i className="fa fa-instagram"></i></Link>
+                            <Link to="/"><i className="fa fa-twitter"></i></Link>
+                        </ListInline>
+                    </LinksElement>
 
-                    <div class="links-element">
-                        <h5>על העמותה</h5>
-                        <a href="#">עלינו</a>
-                        <a href="#">המרכולים שאיתנו</a>
-                        <a href="#">העמותה למען הקהילה</a>
-                    </div>
+                    <LinksElement>
+                        <h4>על העמותה</h4>
+                        <Link to="/">עלינו</Link>
+                        <Link to="/">המרכולים שאיתנו</Link>
+                        <Link to="/">העמותה למען הקהילה</Link>
+                    </LinksElement>
 
-                    <div class="links-element">
-                        <h5>מזון ומכולת</h5>
-                        <a href="#">אזור אישי</a>
-                        <a href="#">הזמנות קודמות</a>
-                    </div>
+                    <LinksElement>
+                        <h4>מזון ומכולת</h4>
+                        <Link to="/">אזור אישי</Link>
+                        <Link to="/">הזמנות קודמות</Link>
+                    </LinksElement>
 
-                    <div class="links-element">
-                        <h5>עזרה</h5>
-                        <a href="#">שירות לקוחות</a>
-                        <a href="#">שאלות נפוצות</a>
-                        <a href="#">מדיניות פרטיות</a>
-                        <a href="#">תקנות ותנאי שימוש</a>
-                        <a href="#">מוצרים בפיקוח</a>
-                    </div>
+                    <LinksElement>
+                        <h4>עזרה</h4>
+                        <Link to="/">שירות לקוחות</Link>
+                        <Link to="/">שאלות נפוצות</Link>
+                        <Link to="/">מדיניות פרטיות</Link>
+                        <Link to="/">תקנות ותנאי שימוש</Link>
+                        <Link to="/">מוצרים בפיקוח</Link>
+                    </LinksElement>
 
-                    <div class="form-subscribe">
-                        <div class="">
+                    <FormSubscribe>
+                        <div>
                             <div>
                                 <h2>דמרו איתנו</h2>
                                 <p>Sign up for our Newsletter and receive updates on events, collections and exclusive promotions.</p>
                             </div>
                         </div>
-                        <div class="footer-copyright">
-                            <div class="text-center text-uppercase">
+                        <div className="footer-copyright">
+                            <div className="text-center text-uppercase">
                                 <p>© 2021 כל הזכויות שמורות </p>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </FormSubscribe>
+                </FooterBlocks>
 
-                <div class="footer-img">
-                    <img src="/images/imgbin_cherry-tomato-vegetable-fruit-orange-png.png" />
-                </div>
-            </div>
-        </div>
+                <FooterImg>
+                    <img alt="footer-background" src="/images/imgbin_cherry-tomato-vegetable-fruit-orange-png.png" />
+                </FooterImg>
+            </FooterLinks>
+        </FooterBox>
     )
 }
 
 
+const FooterBox = styled.footer`{
+    background-color: #fafafa;
+  }`
 
+const FooterLinks = styled.div`{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    text-align: right;
+    color: #27407f;
+    height: 32em;
+    width: 100%;
+    background-color: #fafafa;
+  }`
+
+const FooterBlocks = styled.div`{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    height: 30em;
+  }`
+
+const LinksElement = styled.div`{
+    display: flex;
+    flex-direction: column;
+    margin: 2%;
+    width: 11em;
+  }`
+
+const ListInline = styled.ul`{
+    margin-left: 3em;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    color: #27407f;
+  }`
+
+const FormSubscribe = styled.div`{
+    background-color: #eaebf1;
+    border-radius: 26% 50% 0% 42%;
+    height: 108%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }`
+
+
+const FooterImg = styled.div`{
+    position: absolute;
+    margin-top: 13em;
+    margin-left: 15em;
+  }`
+
+export default Footer;

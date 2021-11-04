@@ -1,38 +1,164 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ShoppingCart from '../components/ShoppingCart';
+import MenuSideBar from './MenuSideBar';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-export default function Navbar() {
+const Navbar = (props) => {
+    const { addItem, removeItem, cartItems } = props;
+    const [open, setOpen] = useState(true);
+
     return (
-        <div class="navbar">
-            <div class="container-left">
-                <a href="/" class="logo">
-                    <img class="nav-img" src="/images/logo.png" />
-                </a>
+        <Nav>
+            <ContainerLeft>
+                <Link to="/">
+                    <NavImg alt="logo" src="/images/logo.png" />
+                </Link>
 
-                <div class="basket">
-                    <img class="basket-icon" src="/images/icons8-shopping-cart-96.png"></img>
-                    <span id="counter-basket">
-                        <span>{18}</span>
-                    </span>
-                </div>
+                <BtnBasket onClick={() => setOpen(!open)}>
+                    <Basket>
+                        <BasketIcon alt="basket" src="/images/icons8-shopping-cart-96.png"></BasketIcon>
+                        <CounterBasket>
+                            {cartItems.length ? (<span> {cartItems.length} </span>) : 0}
+                        </CounterBasket>
+                    </Basket>
+                </BtnBasket>
 
-                <hr />
-                <span class="">אודות העמותה</span>
-                <hr />
-                <span class="">055-6663999</span>
+                {open &&
+                    <DropdownShoppingCart>
+                        <ShoppingCart cartItems={cartItems} addItem={addItem} removeItem={removeItem} open={open} setOpen={setOpen} />
+                    </DropdownShoppingCart>
+                }
 
-            </div>
+                <HrNav/>
+                <span className="">אודות העמותה</span>
+                <HrNav/>
+                <span className="">055-6663999</span>
+            </ContainerLeft>
 
-            <div class="container-right">
-                {/* <a href="/" class="">card</a>
-                <a href="/" class="">sing in</a> */}
+            <ContainerRight>
+                <SearchSomeBtn>
+                    <SearchSome alt="search" src="/images/icons8-search-500.png" />
+                </SearchSomeBtn>
+                
+                <InputSearch type="text" placeholder="?מה תרצה למצוא" />
 
-                <button class="search-some-btn"> <img class="search-some" src="/images/icons8-search-500.png" /></button>
-                <input class="input-search" type="text" placeholder="?מה תרצה למצוא" />
-
-                <div>
-                    <button class="burger-icon-btn"> <img class="burger-icon-img" src="/images/icons8-menu-256.png" /></button>
-                </div>
-            </div>
-        </div>
+                <MenuSideBar />
+            
+            </ContainerRight>
+        </Nav>
     )
 }
+
+
+const Nav = styled.nav`{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    background-color: #fafafa;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+    height: 6em;
+}`
+
+const ContainerLeft = styled.div`{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    color: #27407f;
+    width: 32em;
+    margin-left: 35px;
+    font-weight: 500;
+}`
+
+const NavImg = styled.img`{
+    height: 4em;
+}`
+
+const BtnBasket = styled.button`{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}`
+
+const Basket = styled.div`{
+  margin-left: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}`
+
+const BasketIcon = styled.img`{
+    height: 3em;
+}`
+
+const CounterBasket = styled.span`{
+    background-color: rgb(255 255 255);
+    height: 20px;
+    z-index: 9;
+    position: absolute;
+    width: 20px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 3px #27407f66;
+    font-size: smaller;
+    font-weight: 400;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}`
+
+const DropdownShoppingCart = styled.div`{
+    overflow: hidden;
+}`
+
+const HrNav = styled.hr`{
+  height: 65px;
+  display: inline-block;
+  border: 1px solid #00968838;
+  width: 0px;
+  margin: 17px;
+}`
+
+const ContainerRight = styled.div`{
+    display: flex;
+    align-items: center;
+    width: 42%;
+    justify-content: space-between;
+    margin-right: 35px;
+}`
+
+const SearchSomeBtn = styled.button`{
+    background-color: #ffffff00;
+    border: none;
+    height: 4em;
+    position: absolute;
+    margin-left: 10px;
+}`
+
+const SearchSome = styled.img`{
+    height: 3em;
+}`
+
+const InputSearch = styled.input`{
+    height: 4em;
+    display: flex;
+    align-self: center;
+    border: none;
+    border-bottom: 2px solid #27407f;
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    color: #27407f;
+    background-color: #fafafa;
+
+    &::placeholder{
+        color: #27407f;
+        font-size: 1.5em;
+    }
+}`
+export default Navbar;

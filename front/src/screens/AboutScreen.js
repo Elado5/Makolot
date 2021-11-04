@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function AboutScreen() {
+const AboutScreen = () => {
     return (
         <div>
             
         </div>
     )
 }
+export default AboutScreen;

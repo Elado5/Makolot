@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function AdminHomeScreen() {
+const AdminHomeScreen = () => {
     return (
         <div>
             
         </div>
     )
 }
+export default AdminHomeScreen;
