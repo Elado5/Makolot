@@ -7,6 +7,8 @@ import Main from '../components/Main';
 import Category from '../components/Category';
 import SortingPanel from '../components/SortingPanel';
 import styled from 'styled-components';
+import {GET, POST, PUT, DELETE} from '../api/fetch';
+import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI, productsAPI, shopsAPI, ordersAPI} from '../api/api';
 
 const HomeScreen = () => {
     const [cartItems, setCartItems] = useState([]);
@@ -31,31 +33,31 @@ const HomeScreen = () => {
 
 
     const loadCategories = async () => {
-        let res = await fetch('api/Categories/all');
+        let res = await GET(categoriesAPI.get_all);
         let data = await res.json();
         setCategories(data);
     }
 
     const loadSubCategories = async () => {
-        let res = await fetch('api/SubCategories/all');
+        let res = await GET(sub_categoriesAPI.get_all);
         let data = await res.json();
         setSubCategories(data);
     }
 
     const loadProducts = async () => {
-        let res = await fetch('api/Products/all');
+        let res = await GET(productsAPI.get_all);
         let data = await res.json();
         setProducts(data);
     }
 
-    const loadProductsInCategory = async () => {
-        let res = await fetch('api/Products/byCategory/1');
+    const loadProductsInCategory = async (id) => {
+        let res = await GET(categoriesAPI.get_by_id, [id]);
         let data = await res.json();
         setProductsInCategory(data);
     }
 
-    const loadProductsInSubCategory = async () => {
-        let res = await fetch('api/Products/bySubCategory/1');
+    const loadProductsInSubCategory = async (id) => {
+        let res = await GET(sub_categoriesAPI.get_by_id, [id]);
         let data = await res.json();
         setProductsInSubCategory(data);
     }
@@ -68,13 +70,14 @@ const HomeScreen = () => {
 
 
     const loadAddresses = async () => {
-        let res = await fetch('api/Addresses/all');
+        //do we connect outer source here?
+        let res = await GET(addressesAPI.get_all)
         let data = await res.json();
         setAddresses(data);
     }
 
     const loadCustomers = async () => {
-        let res = await fetch('api/Customers/all');
+        let res = await GET(customersAPI.get_all);
         let data = await res.json();
         setCustomers(data);
     }
@@ -86,7 +89,7 @@ const HomeScreen = () => {
     }
 
     const loadShops = async () => {
-        let res = await fetch('api/Shops/all');
+        let res = await GET(shopsAPI.get_all)
         let data = await res.json();
         setShops(data);
     }
@@ -104,7 +107,7 @@ const HomeScreen = () => {
     }
 
     const loadOrders = async () => {
-        let res = await fetch('api/Orders/all');
+        let res = await GET(ordersAPI.get_all)
         let data = await res.json();
         setOrders(data);
     }

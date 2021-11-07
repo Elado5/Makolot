@@ -1,6 +1,6 @@
 import { baseAPI } from './baseAPI';
 
-export const customers = {
+export const customersAPI = {
     get_all: `${baseAPI}/customers/all`,
     get_by_id: `${baseAPI}/customers/`,
     post_register: `${baseAPI}/customers/register`,
@@ -10,7 +10,7 @@ export const customers = {
     delete_customer: `${baseAPI}/customers/delete`
 }
 
-export const addresses = {
+export const addressesAPI = {
     get_all: `${baseAPI}/addresses/all`,
     get_by_id: `${baseAPI}/addresses/`,
     get_preview_by_id: `${baseAPI}/addresses/preview/`,
@@ -21,7 +21,7 @@ export const addresses = {
     delete_address: `${baseAPI}/addresses/delete/`
 }
 
-export const categories = {
+export const categoriesAPI = {
     get_all: `${baseAPI}/categories/all`,
     get_by_id: `${baseAPI}/categories/`,
     post_add: `${baseAPI}/categories/add`,
@@ -33,7 +33,7 @@ export const categories = {
     delete_category: `${baseAPI}/categories/delete/`
 }
 
-export const sub_categories = {
+export const sub_categoriesAPI = {
     get_all: `${baseAPI}/subcategories/all`,
     get_by_id: `${baseAPI}/subcategories/`,
     post_add: `${baseAPI}/subcategories/add`,
@@ -45,14 +45,14 @@ export const sub_categories = {
     delete_subcategory: `${baseAPI}/subcategories/delete/`
 }
 
-export const CAC = {
+export const CACAPI = {
     get_all: `${baseAPI}/CAC/all`,
     get_by_id: `${baseAPI}/CAC/`,
     post_add: `${baseAPI}/CAC/add`,
     delete_cac: `${baseAPI}/CAC/delete/`
 }
 
-export const products = {
+export const productsAPI = {
     get_all: `${baseAPI}/products/all`,
     get_all_discounted: `${baseAPI}/products/all_discounted`,
     get_by_id: `${baseAPI}/products/by_id/`,
@@ -78,7 +78,7 @@ export const products = {
     delete_product: `${baseAPI}/products/delete/`
 }
 
-export const shops = {
+export const shopsAPI = {
     get_all: `${baseAPI}/shops/all`,
     get_by_id: `${baseAPI}/shops/`,
     post_add: `${baseAPI}/shops/add`,
@@ -88,7 +88,7 @@ export const shops = {
     delete_shop: `${baseAPI}/shops/delete/`
 }
 
-export const orders = {
+export const ordersAPI = {
     get_all: `${baseAPI}/orders/all`,
     get_by_id: `${baseAPI}/orders/`,
     post_add: `${baseAPI}/orders/add`,
