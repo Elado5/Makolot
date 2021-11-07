@@ -34,88 +34,74 @@ const HomeScreen = () => {
 
     const loadCategories = async () => {
         let res = await GET(categoriesAPI.get_all);
-        let data = await res.json();
-        setCategories(data);
+        setCategories(res);
     }
 
     const loadSubCategories = async () => {
         let res = await GET(sub_categoriesAPI.get_all);
-        let data = await res.json();
-        setSubCategories(data);
+        setSubCategories(res);
     }
 
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
-        let data = await res.json();
-        setProducts(data);
+        setProducts(res);
     }
 
     const loadProductsInCategory = async (id) => {
         let res = await GET(categoriesAPI.get_by_id, [id]);
-        let data = await res.json();
-        setProductsInCategory(data);
+        setProductsInCategory(res);
     }
 
     const loadProductsInSubCategory = async (id) => {
         let res = await GET(sub_categoriesAPI.get_by_id, [id]);
-        let data = await res.json();
-        setProductsInSubCategory(data);
+        setProductsInSubCategory(res);
     }
 
     const loadProductDiscount = async () => {
         let res = await fetch('api/Products/byCategory/1');
-        let data = await res.json();
-        setProductDiscount(data);
+        setProductDiscount(res);
     }
 
 
     const loadAddresses = async () => {
         //do we connect outer source here?
         let res = await GET(addressesAPI.get_all)
-        let data = await res.json();
-        setAddresses(data);
+        setAddresses(res);
     }
 
     const loadCustomers = async () => {
         let res = await GET(customersAPI.get_all);
-        let data = await res.json();
-        setCustomers(data);
+        setCustomers(res);
     }
 
     const loadCreditCards = async () => {
         let res = await fetch('api/CreditCards/all');
-        let data = await res.json();
-        setCreditCards(data);
+        setCreditCards(res);
     }
 
     const loadShops = async () => {
         let res = await GET(shopsAPI.get_all)
-        let data = await res.json();
-        setShops(data);
+        setShops(res);
     }
 
     const loadManagers = async () => {
         let res = await fetch('api/Managers/all');
-        let data = await res.json();
-        setManagers(data);
+        setManagers(res);
     }
 
     const loadInvoices = async () => {
         let res = await fetch('api/Invoices/all');
-        let data = await res.json();
-        setInvoices(data);
+        setInvoices(res);
     }
 
     const loadOrders = async () => {
         let res = await GET(ordersAPI.get_all)
-        let data = await res.json();
-        setOrders(data);
+        setOrders(res);
     }
 
     const loadTransactions = async () => {
         let res = await fetch('api/transactions/all');
-        let data = await res.json();
-        setTransactions(data);
+        setTransactions(res);
     }
 
     useEffect(() => {
@@ -169,7 +155,7 @@ const HomeScreen = () => {
                 <ArticleSlider>
                     <CarouselWrapper>
                         <Carousel data-flickity >
-                            {data.products.map((product, key) => (
+                            {products.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} ></Product>
                             ))}
                         </Carousel>
@@ -182,7 +168,7 @@ const HomeScreen = () => {
                 <ProductsManage>
                     <ProductsManageAreas>
                         <MainProducts>
-                            {data.products.map((product, key) => (
+                            {products.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} />
                             ))}
                         </MainProducts>
@@ -192,7 +178,7 @@ const HomeScreen = () => {
                             <ArticleSlider>
                                 <CarouselWrapper>
                                     <Carousel data-flickity>
-                                        {data.products.map((product, key) => (
+                                        {products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} />
                                         ))}
                                     </Carousel>

@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
-
+import addRes from '../api/addressesAPI';
 const Main = () => {
+
     return (
         <MainContainer>
             <VideoContainer>
@@ -41,12 +42,12 @@ const Main = () => {
                 </RightDataMain>
 
                 <InputLocationArea>
-                    <InputSearchLocationMain type="text" placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
+                    <InputSearchLocationMain type="text" options={addRes} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
 
                     <SearchSomeBtn>
                         <SearchSome alt="search-location" src="/images/icons8-search-500.png" />
                     </SearchSomeBtn>
-                    
+
                 </InputLocationArea>
             </RightData>
         </MainContainer>
