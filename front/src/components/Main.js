@@ -1,7 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import addRes from '../api/addressesAPI';
+import {addrData} from '../api/addressesAPI';
+
 const Main = () => {
+
+    //? this needs to be the state of the input value
+    const [productSearch, setProductSearch] = useState("");
+
+
 
     return (
         <MainContainer>
@@ -42,8 +49,10 @@ const Main = () => {
                 </RightDataMain>
 
                 <InputLocationArea>
-                    <InputSearchLocationMain type="text" options={addRes} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
-
+                    <InputSearchLocationMain type="text" list="israelAddresses" placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
+                    <datalist id="israelAddresses">
+                        <option value="yaaaa"></option>
+                    </datalist>
                     <SearchSomeBtn>
                         <SearchSome alt="search-location" src="/images/icons8-search-500.png" />
                     </SearchSomeBtn>
