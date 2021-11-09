@@ -1,7 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import {GET} from '../api/fetch'
+import{productsAPI} from '../api/api'
 
-const SortingPanel = () => {
+const SortingPanel = ({products, setProducts}) => {
+
+    const [searchBox, setSearchBox] = useState('');
+
+    const LoadProductsByName = async (name) => {
+        let res = await GET(productsAPI.get_by_name, [name])
+        setProducts(res);
+    }
+
+     useEffect(() => {
+        if(searchBox){
+       LoadProductsByName(searchBox);
+        }
+     }, [searchBox])
+
     return (
         <SortingPanelBox>
             <ContainerSorting>
@@ -20,7 +36,7 @@ const SortingPanel = () => {
                 <SearchSomeBtn>
                     <SearchSome alt="search" src="/images/icons8-search-500.png" />
                 </SearchSomeBtn>
-                <InputSearch type="text" placeholder="חיפוש מוצר" />
+                <InputSearch type="text" placeholder="חיפוש מוצר" value={searchBox} onChange={(e) => setSearchBox(e.target.value)} />
             </ContainerRight>
         </SortingPanelBox>
     )

@@ -10,12 +10,13 @@ import styled from 'styled-components';
 import {GET, POST, PUT, DELETE} from '../api/fetch';
 import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI, productsAPI, shopsAPI, ordersAPI} from '../api/api';
 
-const HomeScreen = () => {
+const HomeScreen = ({products, setProducts}) => {
     const [cartItems, setCartItems] = useState([]);
+    const [searchBox, setSearchBox] = useState('');
 
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
-    const [products, setProducts] = useState([]);
+    //const [products, setProducts] = useState([]);
     const [productsInCategory, setProductsInCategory] = useState([]);
     const [productsInSubCategory, setProductsInSubCategory] = useState([]);
     const [productDiscount, setProductDiscount] = useState([]);
@@ -44,6 +45,11 @@ const HomeScreen = () => {
 
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
+        setProducts(res);
+    }
+
+    const LoadProductsByName = async (name) => {
+        let res = await GET(products.get_by_name, [name])
         setProducts(res);
     }
 
@@ -164,7 +170,7 @@ const HomeScreen = () => {
             </SalesSlider>
 
             <ProductsArea>
-                <SortingPanel />
+                <SortingPanel products={products} setProducts={setProducts} />
                 <ProductsManage>
                     <ProductsManageAreas>
                         <MainProducts>
