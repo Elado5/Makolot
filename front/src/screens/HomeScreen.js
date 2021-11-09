@@ -115,8 +115,8 @@ const HomeScreen = () => {
         loadInvoices();
         loadOrders();
         loadTransactions();
-        loadProductsInCategory();;
-        loadProductsInSubCategory();
+        loadProductsInCategory(1);
+        loadProductsInSubCategory(1);
         loadProductDiscount();
         loadSubCategories();
     }, [])

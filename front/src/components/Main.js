@@ -5,24 +5,24 @@ import { ADDRESS_DATA } from '../api/addressesAPI';
 
 const Main = () => {
 
-    //? this needs to be the state of the input value
-    //const [productSearch, setProductSearch] = useState("");
+    //* States
+    const [streets, SetStreets] = useState([]); //State of street suggestions array
+    const [searchStreet, setSearchStreet] = useState(''); //state of search box value
 
-    const [streets, SetStreets] = useState([]);
-    const [searchStreet, setSearchStreet] = useState('');
-
-    const loadStreets = async () => {
+    //Loads streets from Israel's API
+    const LoadStreets = async () => {
         let res; 
-        if(searchStreet == ''){
-           res = await ADDRESS_DATA(500);
+        if(searchStreet === ''){
+           res = await ADDRESS_DATA(0);
         }else   
-            res =  await ADDRESS_DATA(500, searchStreet);
+            res =  await ADDRESS_DATA(50, searchStreet);
         SetStreets(res)
     }
 
+    //Refresh the street suggestions every time the state of the search box is changed.
     useEffect(() => {
-        loadStreets();
-    }, [])
+        LoadStreets();
+    }, [searchStreet]);
 
 
     return (
@@ -64,7 +64,7 @@ const Main = () => {
                 </RightDataMain>
 
                 <InputLocationArea>
-                    <InputSearchLocationMain type="text" list="israelAddresses" placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
+                    <InputSearchLocationMain type="text" list="israelAddresses" value={searchStreet} onChange={e => setSearchStreet(e.target.value)} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
                     <datalist id="israelAddresses" >
                         {
                             streets.map((item) => {
