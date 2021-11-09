@@ -1,13 +1,28 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {addrData} from '../api/addressesAPI';
+import { ADDRESS_DATA } from '../api/addressesAPI';
 
 const Main = () => {
 
     //? this needs to be the state of the input value
-    const [productSearch, setProductSearch] = useState("");
+    //const [productSearch, setProductSearch] = useState("");
 
+    const [streets, SetStreets] = useState([]);
+    const [searchStreet, setSearchStreet] = useState('');
+
+    const loadStreets = async () => {
+        let res; 
+        if(searchStreet == ''){
+           res = await ADDRESS_DATA(500);
+        }else   
+            res =  await ADDRESS_DATA(500, searchStreet);
+        SetStreets(res)
+    }
+
+    useEffect(() => {
+        loadStreets();
+    }, [])
 
 
     return (
@@ -50,8 +65,13 @@ const Main = () => {
 
                 <InputLocationArea>
                     <InputSearchLocationMain type="text" list="israelAddresses" placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
-                    <datalist id="israelAddresses">
-                        <option value="yaaaa"></option>
+                    <datalist id="israelAddresses" >
+                        {
+                            streets.map((item) => {
+                                let value = `${item.city_name}, ${item.street_name}`;
+                                return <option>{value}</option>
+                            })
+                        }
                     </datalist>
                     <SearchSomeBtn>
                         <SearchSome alt="search-location" src="/images/icons8-search-500.png" />
@@ -59,7 +79,7 @@ const Main = () => {
 
                 </InputLocationArea>
             </RightData>
-        </MainContainer>
+        </MainContainer >
     )
 }
 
