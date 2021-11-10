@@ -539,25 +539,25 @@ go
 create proc get_product_by_id
 	@product_id int
 as
-	select * from Products where [product_id] = product_id
+	select * from Products where [product_id] = @product_id
 go
 
 create proc get_product_image_and_price
 	@product_id int
 as
-	select [product_name], [product_image], [product_price], [product_final_price] from Products where [product_id] = product_id
+	select [product_name], [product_image], [product_price], [product_final_price] from Products where [product_id] = @product_id
 go
 
 create proc get_product_image_price_and_description
 	@product_id int
 as
-	select [product_name], [product_image], [product_price], [product_final_price], [product_description] from Products where [product_id] = product_id
+	select [product_name], [product_image], [product_price], [product_final_price], [product_description] from Products where [product_id] = @product_id
 go
 
 create proc get_product_discount
 	@product_id int
 as
-	select (100 - [product_final_price] / [product_price]) from Products where [product_id] = product_id
+	select (100 - [product_final_price] / [product_price]) from Products where [product_id] = @product_id
 go
 
 create proc get_products_by_category

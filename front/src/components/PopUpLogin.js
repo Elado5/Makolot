@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import {customersAPI} from '../api/api';
+import {GET, POST} from '../api/fetch';
 
 const PopUpLogin = (props) => {
     const [email, setEmail] = useState('');
@@ -11,6 +13,15 @@ const PopUpLogin = (props) => {
         event.preventDefault();
         console.log("log user:" + email, pass)
     }
+
+    const LoginCustomer = async (email, password) => {
+        let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password});
+        //תנאי התחברות?
+        if (res) {
+            //
+        }
+    }
+
 
     // useEffect(() => {
     //     if (userData) {
@@ -30,13 +41,13 @@ const PopUpLogin = (props) => {
                             <InputsReg>
                                 <div>
                                     <PopupLogAreaInput onChange={event => setEmail(event.target.value)}
-                                        type="text" id="user_email" placeholder="דואר אלקטרוני" />
+                                        type="text" id="user_email" placeholder="דואר אלקטרוני" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
 
                                 <div>
                                     <PopupLogAreaInput onChange={event => setPassword(event.target.value)}
-                                        type="password" id="user_pass" placeholder="סיסמה" />
+                                        type="password" id="user_pass" placeholder="סיסמה" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" />
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
                                 {/* {error && <div className="error-input">{error}</div>} */}
