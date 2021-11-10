@@ -154,7 +154,7 @@ const HomeScreen = ({products, setProducts}) => {
 
     return (
         <div>
-            <Navbar addItem={addItem} removeItem={removeItem} cartItems={cartItems}></Navbar>
+            <Navbar addItem={addItem} removeItem={removeItem} cartItems={cartItems} products={products} setProducts={setProducts}></Navbar>
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>

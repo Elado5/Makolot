@@ -5,13 +5,16 @@ import{productsAPI} from '../api/api'
 
 const SortingPanel = ({products, setProducts}) => {
 
+    //*states
     const [searchBox, setSearchBox] = useState('');
 
+    //*Load products by name form API
     const LoadProductsByName = async (name) => {
         let res = await GET(productsAPI.get_by_name, [name])
         setProducts(res);
     }
 
+    //*When stuff are written in the box, call the load function
      useEffect(() => {
         if(searchBox){
        LoadProductsByName(searchBox);
