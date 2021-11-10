@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Product from './Product';
 import { Link } from 'react-router-dom';
 import data from '../data.json';
 import styled from 'styled-components';
+import {GET} from '../api/fetch';
+import {productsAPI} from '../api/api';
 
 const ProductScreen = (props) => {
     const [cartItems, setCartItems] = useState([]);
-    const product = data.products.find((item) => item.product_id === props.match.params.id);
+
+    const [product, setProduct] = useState([]);
+    const [productsInCategory, setProductsInCategory] = useState([]);
+
+    //loads the product by ID and gives recommendations from it's category
+    const LoadProductAndSuggestions = async (id) => {
+        let res = await GET(productsAPI.get_by_id, [id])
+        setProduct(res[0]);
+        let productCategory = res[0].category_id;
+        console.log(productCategory);
+        let res2 = await GET(productsAPI.get_by_category, [productCategory])
+        console.log("res -- ", res2);
+        setProductsInCategory(res2);
+    }
 
     const addItem = (product) => {
         const existing = cartItems.find((item) => item.product_id === product.product_id);
@@ -33,7 +48,7 @@ const ProductScreen = (props) => {
     }
 
     return (
-        <ContainerPopup >
+        <ContainerPopup componentDidMount={LoadProductAndSuggestions(props.match.params.id)}>
             <ProductContainerPopup>
 
                 <Link className="close-popup-link" to="/">
@@ -43,8 +58,8 @@ const ProductScreen = (props) => {
                 <ProductData>
                     <ProductLeftDescription>
                         <div>{product.product_name}</div>
-                        <div>{product.product_price.toFixed(2)}</div>
-                        <span>מאפיינים</span>
+                        <div>{product.product_price}</div>
+                        <span>{product.product_suppliers}</span>
                         <div>{product.product_description}</div>
                         <BtnAddProduct>הוספה לסל</BtnAddProduct>
                     </ProductLeftDescription>
@@ -63,7 +78,7 @@ const ProductScreen = (props) => {
                     <div className="product-slider">
                         <CarouselWrapper>
                             <Carousel data-flickity>
-                                {data.products.map((product, key) => (
+                                {productsInCategory.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product}/>
                                 ))}
                             </Carousel>

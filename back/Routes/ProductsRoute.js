@@ -124,7 +124,7 @@ route.get(`/byCategory/:id`, async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
