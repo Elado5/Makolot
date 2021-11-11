@@ -13,12 +13,12 @@ const ProductScreen = (props) => {
 
     //loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
-        let res = await GET(productsAPI.get_by_id, [id])
+        let res = await GET(productsAPI.get_by_id, [id]) //get product by id
         console.log("res =", res);
         setProduct(res[0]);
-        let productCategory = res[0].category_id;
+        let productCategory = res[0].category_id; //get the product's category id
         console.log(productCategory);
-        let res2 = await GET(productsAPI.get_by_category, [productCategory])
+        let res2 = await GET(productsAPI.get_by_category, [productCategory]) //get the item's category as suggestion
         console.log("res -- ", res2);
         setProductsInCategory(res2);
     }
