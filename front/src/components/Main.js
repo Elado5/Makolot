@@ -10,17 +10,20 @@ const Main = () => {
     const [searchStreet, setSearchStreet] = useState(''); //state of search box value
 
     //Loads streets from Israel's API
-    const LoadStreets = async () => {
-        let res; 
-        if(searchStreet === ''){
-           res = await ADDRESS_DATA(0);
-        }else   
-            res =  await ADDRESS_DATA(50, searchStreet);
-        SetStreets(res)
-    }
+    
 
     //Refresh the street suggestions every time the state of the search box is changed.
     useEffect(() => {
+        const LoadStreets = async () => {
+            let res; 
+            if(searchStreet === ''){
+               res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
+            }else   
+                res =  await ADDRESS_DATA(10, searchStreet);
+            SetStreets(res)
+        }
+
+        console.log("loading streets");
         LoadStreets();
     }, [searchStreet]);
 

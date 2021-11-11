@@ -10,8 +10,6 @@ import PaymentScreen from './screens/PaymentScreen';
 
 function App() {
 
-  const [products, setProducts] = useState([]);
-
   return (
     <BrowserRouter>
       <Route path="/forgot" component={ForgotPass}></Route>
@@ -19,7 +17,7 @@ function App() {
       <Route path="/login" component={PopUpLogin}></Route>
       <Route path="/product/:id" component={ProductScreen}></Route>
       <Route path="/payment" component={PaymentScreen}></Route>
-      <HomeScreen path="/" exact  products={products} setProducts={setProducts}></HomeScreen>
+      <HomeScreen path="/" exact></HomeScreen>
     </BrowserRouter>
   );
 }

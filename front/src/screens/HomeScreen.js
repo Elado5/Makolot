@@ -10,7 +10,9 @@ import styled from 'styled-components';
 import {GET, POST, PUT, DELETE} from '../api/fetch';
 import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI, productsAPI, shopsAPI, ordersAPI} from '../api/api';
 
-const HomeScreen = ({products, setProducts}) => {
+const HomeScreen = () => {
+    const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
+    const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
     const [searchBox, setSearchBox] = useState('');
 
@@ -110,9 +112,21 @@ const HomeScreen = ({products, setProducts}) => {
         setTransactions(res);
     }
 
+    //*Making sure the 'products' state is loaded ONCE.
+    useEffect(() => {
+        if (!allProductsLoaded) {
+                loadProducts();
+                console.log("loaded!");
+                setAllProductsLoaded(true);
+            
+        }
+        else{
+            console.log("wow");
+        }
+    }, [allProductsLoaded])
+
     useEffect(() => {
         loadCategories();
-        loadProducts();
         loadAddresses();
         loadCustomers();
         loadCreditCards();
