@@ -116,7 +116,7 @@ route.put(`/update/:id`, async (req, res) => {
 			.input(`category_name`, sql.NVarChar(150), body.category_name)
 			.input(`category_info`, sql.NVarChar(150), body.category_info)
 			.input(`category_image`, sql.Text, body.category_image)
-			.execute(`add_category`);
+			.execute(`update_category`);
 
 		let data = await query;
 		await db.close();
