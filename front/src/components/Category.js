@@ -1,18 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
+import {categoriesAPI} from '../api/api';
+import {GET} from '../api/fetch';
+
 
 const Category = (props) => {
     const [sidebar, setSidebar] = useState(true);
     const showSidebar = () => setSidebar(!sidebar);
+    const [categories, setCategories] = useState([]);
+    const [allCategoriesLoaded, setAllCategoriesLoaded] = useState(false); 
+
+    const LoadCategories = async () => {
+        let res = await GET(categoriesAPI.get_all);
+        console.log("categ res ---", res)
+        setCategories(res);
+    }
+    
+    //*Making sure the 'products' state is loaded ONCE.
+    useEffect(() => {
+        if (!allCategoriesLoaded) {
+                LoadCategories();
+                console.log("Categ loaded!");
+                setAllCategoriesLoaded(true);
+        }
+        else{
+            console.log("Categ done loading");
+        }
+    }, [allCategoriesLoaded])
 
     return (
         <div>
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
                     <button onClick={showSidebar}>X</button>
-                    {SidebarData.map((item, key) => {
+                    {categories.map((item, key) => {
                         return <SidebarCategory key={key}>
                             <SubMenu item={item} />
                         </SidebarCategory>

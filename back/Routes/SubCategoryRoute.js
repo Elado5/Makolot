@@ -16,7 +16,7 @@ route.get("/all", async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -37,12 +37,35 @@ route.get("/:id", async (req, res) => {
 
 		await db.close();
 
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
 	}
 });
+
+
+route.get("/byCategory/:id", async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_sub_categories_from_category`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.post(`/add`, async (req, res) => {
 	try {
 		let body = req.body;
@@ -61,7 +84,7 @@ route.post(`/add`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -87,7 +110,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -106,7 +129,7 @@ route.put(`/deactivate/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -125,7 +148,7 @@ route.put(`/activate/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -144,7 +167,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

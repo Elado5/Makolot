@@ -16,9 +16,9 @@ const ProductScreen = (props) => {
         let res = await GET(productsAPI.get_by_id, [id]) //get product by id
         console.log("res =", res);
         setProduct(res[0]);
-        let productCategory = res[0].category_id; //get the product's category id
-        console.log(productCategory);
-        let res2 = await GET(productsAPI.get_by_category, [productCategory]) //get the item's category as suggestion
+        let productSubCategory = res[0].sub_category_id; //get the product's category id
+        console.log(productSubCategory);
+        let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //get the item's category as suggestion
         console.log("res -- ", res2);
         setProductsInCategory(res2);
     }
