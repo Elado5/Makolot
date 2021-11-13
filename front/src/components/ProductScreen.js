@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
-import { Link } from 'react-router-dom';
-import data from '../data.json';
+import {Link} from 'react-router-dom';
+//import data from '../data.json';
 import styled from 'styled-components';
 import {GET} from '../api/fetch';
 import {productsAPI} from '../api/api';
 
 const ProductScreen = (props) => {
     const [cartItems, setCartItems] = useState([]);
-
     const [product, setProduct] = useState([]);
     const [productsInCategory, setProductsInCategory] = useState([]);
 
-    //loads the product by ID and gives recommendations from it's category
+    //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
-        let res = await GET(productsAPI.get_by_id, [id])
+        let res = await GET(productsAPI.get_by_id, [id]) //*get product by id
+        //console.log("Load Product and Suggestions res: ", res);
         setProduct(res[0]);
-        let productCategory = res[0].category_id;
-        let res2 = await GET(productsAPI.get_by_category, [productCategory])
+        let productSubCategory = res[0].sub_category_id; //*get the product's category id
+        //console.log(productSubCategory);
+        let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //*get the item's category as suggestion
+        //console.log("res -- ", res2);
         setProductsInCategory(res2);
     }
 
@@ -45,9 +47,11 @@ const ProductScreen = (props) => {
         }
     }
 
+    //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
-        LoadProductAndSuggestions(props.match.params.id)
-    })
+            LoadProductAndSuggestions(props.match.params.id)
+                console.log("loaded!");
+    }, [props.match.params.id])
 
     return (
         <ContainerPopup>
