@@ -449,6 +449,12 @@ as
 	select * from sub_categories where [sub_category_id] = @sub_category_id
 go
 
+create proc get_sub_categories_from_category
+	@category_id int
+as
+	select * from sub_categories where [category_id] = @category_id
+go
+
 create proc update_sub_category
 	@sub_category_id int,
 	@sub_category_name nvarchar(150),
