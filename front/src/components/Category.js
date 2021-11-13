@@ -35,9 +35,9 @@ const Category = (props) => {
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
                     <button onClick={showSidebar}>X</button>
-                    {categories.map((item, key) => {
+                    {categories.map((category, key) => {
                         return <SidebarCategory key={key}>
-                            <SubMenu item={item} />
+                            <SubMenu category={category} />
                         </SidebarCategory>
                     })}
                 </SidebarWrap>

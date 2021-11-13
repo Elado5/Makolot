@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {sub_categoriesAPI} from '../api/api';
 import {GET} from '../api/fetch';
+//'category' comes from Category.js
 
-const SubMenu = ({ item }) => {
+
+const SubMenu = ({ category }) => {
   const [subnav, setSubnav] = useState(false);
   const showSubnav = () => setSubnav(!subnav);
 
@@ -13,6 +15,9 @@ const SubMenu = ({ item }) => {
    return res; 
   }
 
+  //TODO - load subcategory by category id for each category and replace the subnav with proper info from the subcategory
+  //? shall it be done in the onclick?
+/*
   const [subnav1, setSubnav1] = useState([]);
   const [subnav2, setSubnav2] = useState([]);
   const [subnav3, setSubnav3] = useState([]);
@@ -22,10 +27,11 @@ const SubMenu = ({ item }) => {
   const [subnav7, setSubnav7] = useState([]);
   const [subnav8, setSubnav8] = useState([]);
   const [subnav9, setSubnav9] = useState([]);
+*/
 
   return (
     <div>
-      <div to={item.path} onClick={item.subNav && showSubnav}>
+      <div to={category.path} onClick={category.subNav && showSubnav}>
         <hr />
         
         <CategorySection>
@@ -33,21 +39,21 @@ const SubMenu = ({ item }) => {
           {subnav && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
 
           <TitleIconSection>
-            <div>{item.category_name}</div>
-            <CategoryIcon alt="icon-category" src={item.category_image} />
+            <div>{category.category_name}</div>
+            <CategoryIcon alt="icon-category" src={category.category_image} />
           </TitleIconSection>
 
         </CategorySection>
         <div>
-          {item.subNav && subnav ? item.iconOpened
-            : item.subNav ? item.iconClosed : null}
+          {category.subNav && subnav ? category.iconOpened
+            : category.subNav ? category.iconClosed : null}
         </div>
       </div>
-      {subnav && item.subNav.map((item, key) => {
+      {subnav && category.subNav.map((category, key) => {
         return (
-          <DropdownLink href={item.path} key={key}>
-            {item.icon}
-            <SidebarLabel>{item.title}</SidebarLabel>
+          <DropdownLink href={category.path} key={key}>
+            {category.icon}
+            <SidebarLabel>{category.title}</SidebarLabel>
           </DropdownLink>
         );
       })}

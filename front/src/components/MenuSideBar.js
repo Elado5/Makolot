@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { MainMenuSidebarData } from './MainMenuSidebarData';
+import {categoriesAPI} from '../api/api';
+import {GET} from '../api/fetch';
 import MainMenuSub from './MainMenuSub';
 
 const MenuSideBar = (props) => {
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
+    const [categories, setCategories] = useState([]);
+    const [allCategoriesLoaded, setAllCategoriesLoaded] = useState(false); 
+
+
+    const LoadCategories = async () => {
+        let res = await GET(categoriesAPI.get_all);
+        console.log("Subnav categ res ---", res)
+        setCategories(res);
+    }
+    
+    //*Making sure the 'products' state is loaded ONCE.
+    useEffect(() => {
+        if (!allCategoriesLoaded) {
+                LoadCategories();
+                console.log("Subnav Categ loaded!");
+                setAllCategoriesLoaded(true);
+        }
+        else{
+            console.log("Subnav Categ done loading");
+        }
+    }, [allCategoriesLoaded])
 
     return (
         <div>
@@ -15,10 +38,10 @@ const MenuSideBar = (props) => {
 
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
-                    {MainMenuSidebarData.map((item, key) => {
+                    {categories.map((category, key) => {
                         return <SidebarCategory key={key}>
                             <hr />
-                            <MainMenuSub item={item} />
+                            <MainMenuSub category={category} />
                         </SidebarCategory>
                     })}
                 </SidebarWrap>
