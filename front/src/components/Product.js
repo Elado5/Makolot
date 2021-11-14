@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import {products} from '../api/api';
-import {GET} from '../api/fetch';
 
 const Product = (props) => {
     const { product, addItem, removeItem, cartItems } = props;

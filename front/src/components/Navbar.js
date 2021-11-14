@@ -16,6 +16,7 @@ const Navbar = (props) => {
     //*Load products by name form API
     const LoadProductsByName = async (name) => {
         let res = await GET(productsAPI.get_by_name, [name])
+        console.log("products loaded by name: " + res);
         setProducts(res);
     }
 
@@ -24,6 +25,7 @@ const Navbar = (props) => {
         if(searchBox){
        LoadProductsByName(searchBox);
         }
+
      }, [searchBox])
 
     return (

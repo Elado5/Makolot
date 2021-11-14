@@ -13,15 +13,15 @@ const SubMenu = ({ item }) => {
    return res; 
   }
 
-  const [subnav1, setSubnav1] = useState([]);
-  const [subnav2, setSubnav2] = useState([]);
-  const [subnav3, setSubnav3] = useState([]);
-  const [subnav4, setSubnav4] = useState([]);
-  const [subnav5, setSubnav5] = useState([]);
-  const [subnav6, setSubnav6] = useState([]);
-  const [subnav7, setSubnav7] = useState([]);
-  const [subnav8, setSubnav8] = useState([]);
-  const [subnav9, setSubnav9] = useState([]);
+  // const [subnav1, setSubnav1] = useState([]);
+  // const [subnav2, setSubnav2] = useState([]);
+  // const [subnav3, setSubnav3] = useState([]);
+  // const [subnav4, setSubnav4] = useState([]);
+  // const [subnav5, setSubnav5] = useState([]);
+  // const [subnav6, setSubnav6] = useState([]);
+  // const [subnav7, setSubnav7] = useState([]);
+  // const [subnav8, setSubnav8] = useState([]);
+  // const [subnav9, setSubnav9] = useState([]);
 
   return (
     <div>

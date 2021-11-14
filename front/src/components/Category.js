@@ -14,7 +14,6 @@ const Category = (props) => {
 
     const LoadCategories = async () => {
         let res = await GET(categoriesAPI.get_all);
-        console.log("categ res ---", res)
         setCategories(res);
     }
     
@@ -22,11 +21,10 @@ const Category = (props) => {
     useEffect(() => {
         if (!allCategoriesLoaded) {
                 LoadCategories();
-                console.log("Categ loaded!");
                 setAllCategoriesLoaded(true);
         }
         else{
-            console.log("Categ done loading");
+            console.log("Categories done loading");
         }
     }, [allCategoriesLoaded])
 

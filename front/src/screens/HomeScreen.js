@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import data from '../data.json';
+// import data from '../data.json';
 import Product from '../components/Product'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar';
@@ -7,138 +7,139 @@ import Main from '../components/Main';
 import Category from '../components/Category';
 import SortingPanel from '../components/SortingPanel';
 import styled from 'styled-components';
-import {GET, POST, PUT, DELETE} from '../api/fetch';
-import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI, productsAPI, shopsAPI, ordersAPI} from '../api/api';
+import {GET} from '../api/fetch';
+// import { POST, PUT, DELETE} from '../api/fetch';
+import { productsAPI} from '../api/api';
+// import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 const HomeScreen = () => {
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
-    const [searchBox, setSearchBox] = useState('');
+    // const [searchBox, setSearchBox] = useState('');
 
-    const [categories, setCategories] = useState([]);
-    const [subCategories, setSubCategories] = useState([]);
-    //const [products, setProducts] = useState([]);
-    const [productsInCategory, setProductsInCategory] = useState([]);
-    const [productsInSubCategory, setProductsInSubCategory] = useState([]);
-    const [productDiscount, setProductDiscount] = useState([]);
-
-
-    const [addresses, setAddresses] = useState([]);
-    const [customers, setCustomers] = useState([]);
-    const [creditCards, setCreditCards] = useState([]);
-    const [shops, setShops] = useState([]);
-    const [managers, setManagers] = useState([]);
-    const [invoices, setInvoices] = useState([]);
-    const [orders, setOrders] = useState([]);
-    const [transactions, setTransactions] = useState([]);
+    // const [categories, setCategories] = useState([]);
+    // const [subCategories, setSubCategories] = useState([]);
+    // //const [products, setProducts] = useState([]);
+    // const [productsInCategory, setProductsInCategory] = useState([]);
+    // const [productsInSubCategory, setProductsInSubCategory] = useState([]);
+    // const [productDiscount, setProductDiscount] = useState([]);
 
 
+    // const [addresses, setAddresses] = useState([]);
+    // const [customers, setCustomers] = useState([]);
+    // const [creditCards, setCreditCards] = useState([]);
+    // const [shops, setShops] = useState([]);
+    // const [managers, setManagers] = useState([]);
+    // const [invoices, setInvoices] = useState([]);
+    // const [orders, setOrders] = useState([]);
+    // const [transactions, setTransactions] = useState([]);
 
-    const loadCategories = async () => {
-        let res = await GET(categoriesAPI.get_all);
-        setCategories(res);
-    }
 
-    const loadSubCategories = async () => {
-        let res = await GET(sub_categoriesAPI.get_all);
-        setSubCategories(res);
-    }
+
+    // const loadCategories = async () => {
+    //     let res = await GET(categoriesAPI.get_all);
+    //     setCategories(res);
+    // }
+
+    // const loadSubCategories = async () => {
+    //     let res = await GET(sub_categoriesAPI.get_all);
+    //     setSubCategories(res);
+    // }
 
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
         setProducts(res);
     }
 
-    const LoadProductsByName = async (name) => {
-        let res = await GET(products.get_by_name, [name])
-        setProducts(res);
-    }
+    // const LoadProductsByName = async (name) => {
+    //     let res = await GET(products.get_by_name, [name])
+    //     setProducts(res);
+    // }
 
-    const loadProductsInCategory = async (id) => {
-        let res = await GET(categoriesAPI.get_by_id, [id]);
-        setProductsInCategory(res);
-    }
+    // const loadProductsInCategory = async (id) => {
+    //     let res = await GET(categoriesAPI.get_by_id, [id]);
+    //     setProductsInCategory(res);
+    // }
 
-    const loadProductsInSubCategory = async (id) => {
-        let res = await GET(sub_categoriesAPI.get_by_id, [id]);
-        setProductsInSubCategory(res);
-    }
+    // const loadProductsInSubCategory = async (id) => {
+    //     let res = await GET(sub_categoriesAPI.get_by_id, [id]);
+    //     setProductsInSubCategory(res);
+    // }
 
-    const loadProductDiscount = async () => {
-        let res = await fetch('api/Products/byCategory/1');
-        setProductDiscount(res);
-    }
+    // const loadProductDiscount = async () => {
+    //     let res = await fetch('api/Products/byCategory/1');
+    //     setProductDiscount(res);
+    // }
 
 
-    const loadAddresses = async () => {
-        //do we connect outer source here?
-        let res = await GET(addressesAPI.get_all)
-        setAddresses(res);
-    }
+    // const loadAddresses = async () => {
+    //     //do we connect outer source here?
+    //     let res = await GET(addressesAPI.get_all)
+    //     setAddresses(res);
+    // }
 
-    const loadCustomers = async () => {
-        let res = await GET(customersAPI.get_all);
-        setCustomers(res);
-    }
+    // const loadCustomers = async () => {
+    //     let res = await GET(customersAPI.get_all);
+    //     setCustomers(res);
+    // }
 
-    const loadCreditCards = async () => {
-        let res = await fetch('api/CreditCards/all');
-        setCreditCards(res);
-    }
+    // const loadCreditCards = async () => {
+    //     let res = await fetch('api/CreditCards/all');
+    //     setCreditCards(res);
+    // }
 
-    const loadShops = async () => {
-        let res = await GET(shopsAPI.get_all)
-        setShops(res);
-    }
+    // const loadShops = async () => {
+    //     let res = await GET(shopsAPI.get_all)
+    //     setShops(res);
+    // }
 
-    const loadManagers = async () => {
-        let res = await fetch('api/Managers/all');
-        setManagers(res);
-    }
+    // const loadManagers = async () => {
+    //     let res = await fetch('api/Managers/all');
+    //     setManagers(res);
+    // }
 
-    const loadInvoices = async () => {
-        let res = await fetch('api/Invoices/all');
-        setInvoices(res);
-    }
+    // const loadInvoices = async () => {
+    //     let res = await fetch('api/Invoices/all');
+    //     setInvoices(res);
+    // }
 
-    const loadOrders = async () => {
-        let res = await GET(ordersAPI.get_all)
-        setOrders(res);
-    }
+    // const loadOrders = async () => {
+    //     let res = await GET(ordersAPI.get_all)
+    //     setOrders(res);
+    // }
 
-    const loadTransactions = async () => {
-        let res = await fetch('api/transactions/all');
-        setTransactions(res);
-    }
+    // const loadTransactions = async () => {
+    //     let res = await fetch('api/transactions/all');
+    //     setTransactions(res);
+    // }
 
     //*Making sure the 'products' state is loaded ONCE.
     useEffect(() => {
         if (!allProductsLoaded) {
                 loadProducts();
-                console.log("loaded!");
                 setAllProductsLoaded(true);
             
         }
         else{
-            console.log("wow");
+            console.log("Homescreen products loaded!");
         }
     }, [allProductsLoaded])
 
     useEffect(() => {
-        loadCategories();
-        loadAddresses();
-        loadCustomers();
-        loadCreditCards();
-        loadShops();
-        loadManagers();
-        loadInvoices();
-        loadOrders();
-        loadTransactions();
-        loadProductsInCategory(1);
-        loadProductsInSubCategory(1);
-        loadProductDiscount();
-        loadSubCategories();
+        // loadCategories();
+        // loadAddresses();
+        // loadCustomers();
+        // loadCreditCards();
+        // loadShops();
+        // loadManagers();
+        // loadInvoices();
+        // loadOrders();
+        // loadTransactions();
+        // loadProductsInCategory(1);
+        // loadProductsInSubCategory(1);
+        // loadProductDiscount();
+        // loadSubCategories();
     }, [])
 
 

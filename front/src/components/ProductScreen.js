@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 //import data from '../data.json';
 import styled from 'styled-components';
-import {GET} from '../api/fetch';
-import {productsAPI} from '../api/api';
+import { GET } from '../api/fetch';
+import { productsAPI } from '../api/api';
 
 const ProductScreen = (props) => {
     const [cartItems, setCartItems] = useState([]);
     const [product, setProduct] = useState([]);
     const [productsInCategory, setProductsInCategory] = useState([]);
+    const [isCanceled, setIsCanceled] = useState(false);
 
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
         let res = await GET(productsAPI.get_by_id, [id]) //*get product by id
-        //console.log("Load Product and Suggestions res: ", res);
         setProduct(res[0]);
         let productSubCategory = res[0].sub_category_id; //*get the product's category id
-        //console.log(productSubCategory);
         let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //*get the item's category as suggestion
-        //console.log("res -- ", res2);
         setProductsInCategory(res2);
     }
 
@@ -49,51 +47,60 @@ const ProductScreen = (props) => {
 
     //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
-            LoadProductAndSuggestions(props.match.params.id)
-                console.log("loaded!");
+        setIsCanceled(false);
+        if(!isCanceled){
+        LoadProductAndSuggestions(props.match.params.id)
+        console.log("product and suggestions loaded!");
+        }
+        else{
+            console.log("product is cleaned up -> no state update.")
+        }
+        return () => {
+            setIsCanceled(true);
+        }
     }, [props.match.params.id])
 
-    return (
-        <ContainerPopup>
-            <ProductContainerPopup>
+return (
+    <ContainerPopup>
+        <ProductContainerPopup>
 
-                <Link className="close-popup-link" to="/">
-                    <ClosePopup>X</ClosePopup>
-                </Link>
+            <Link className="close-popup-link" to="/">
+                <ClosePopup>X</ClosePopup>
+            </Link>
 
-                <ProductData>
-                    <ProductLeftDescription>
-                        <div>{product.product_name}</div>
-                        <div>{product.product_price}</div>
-                        <span>{product.product_suppliers}</span>
-                        <div>{product.product_description}</div>
-                        <BtnAddProduct>הוספה לסל</BtnAddProduct>
-                    </ProductLeftDescription>
+            <ProductData>
+                <ProductLeftDescription>
+                    <div>{product.product_name}</div>
+                    <div>{product.product_price}</div>
+                    <span>{product.product_suppliers}</span>
+                    <div>{product.product_description}</div>
+                    <BtnAddProduct>הוספה לסל</BtnAddProduct>
+                </ProductLeftDescription>
 
-                    <ProductContainerRight>
-                        <AddItemIcon>
-                            <Button onClick={() => addItem(product)}>+</Button>
-                            <Button onClick={() => removeItem(product)}>-</Button>
-                        </AddItemIcon>
-                        <ProductItemImage src={product.product_image} alt={product.product_name} />
-                    </ProductContainerRight>
-                </ProductData>
+                <ProductContainerRight>
+                    <AddItemIcon>
+                        <Button onClick={() => addItem(product)}>+</Button>
+                        <Button onClick={() => removeItem(product)}>-</Button>
+                    </AddItemIcon>
+                    <ProductItemImage src={product.product_image} alt={product.product_name} />
+                </ProductContainerRight>
+            </ProductData>
 
-                <HrLine />
-                    <TitleSlider>מוצרים דומים</TitleSlider>
-                    <div className="product-slider">
-                        <CarouselWrapper>
-                            <Carousel data-flickity>
-                                {productsInCategory.map((product, key) => (
-                                    <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product}/>
-                                ))}
-                            </Carousel>
-                        </CarouselWrapper>
-                    </div>
-  
-            </ProductContainerPopup>
-        </ContainerPopup >
-    )
+            <HrLine />
+            <TitleSlider>מוצרים דומים</TitleSlider>
+            <div className="product-slider">
+                <CarouselWrapper>
+                    <Carousel data-flickity>
+                        {productsInCategory.map((product, key) => (
+                            <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} />
+                        ))}
+                    </Carousel>
+                </CarouselWrapper>
+            </div>
+
+        </ProductContainerPopup>
+    </ContainerPopup >
+)
 }
 
 const ContainerPopup = styled.div`{
