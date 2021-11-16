@@ -47,9 +47,26 @@ route.get(`/all`, async (req, res) => {
 
 		let data = await query;
 
+		let categories = data.recordset;
+
+		for (let i = 0; i < categories.length; i++) {
+
+			try {
+				let db = await sql.connect(config.db);
+
+				let query = await db.request().input(`category_id`, sql.Int, categories[i].category_id).execute(`get_sub_categories_from_category`);
+
+				categories[i].sub_categories = query.recordset;
+
+			} catch (error) {
+				console.error(error.message);
+			}
+		}
+
 		await db.close();
 
-		res.send(data.recordset);
+		res.send(categories);
+
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -132,15 +149,15 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		let params = req.params;
 
 		sql.on(`error`, (error) => res.send(error));
-	
+
 		let db = await sql.connect(config.db);
-	
+
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`deactivate_category`);
-	
+
 		let data = await query;
 		await db.close();
 		res.send(data.recordset);
-	
+
 	} catch (error) {
 		console.error(error);
 		res.send(error);

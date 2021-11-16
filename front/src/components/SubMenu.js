@@ -8,29 +8,19 @@ const SubMenu = ({ item }) => {
   const showSubnav = () => setSubnav(!subnav);
 
 
-  const LoadSubCategory = (id) => {
-   let res = GET(sub_categoriesAPI.get_by_category_id, [id]);
-   return res; 
-  }
-
-  // const [subnav1, setSubnav1] = useState([]);
-  // const [subnav2, setSubnav2] = useState([]);
-  // const [subnav3, setSubnav3] = useState([]);
-  // const [subnav4, setSubnav4] = useState([]);
-  // const [subnav5, setSubnav5] = useState([]);
-  // const [subnav6, setSubnav6] = useState([]);
-  // const [subnav7, setSubnav7] = useState([]);
-  // const [subnav8, setSubnav8] = useState([]);
-  // const [subnav9, setSubnav9] = useState([]);
+  // const LoadSubCategory = (id) => {
+  //  let res = GET(sub_categoriesAPI.get_by_category_id, [id]);
+  //  return res; 
+  // }
 
   return (
     <div>
-      <div to={item.path} onClick={item.subNav && showSubnav}>
+      <div to={item.path} onClick={item.sub_categories && showSubnav}>
         <hr />
         
         <CategorySection>
-          {!subnav && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" />}
-          {subnav && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
+          {item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" />}
+          {item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
 
           <TitleIconSection>
             <div>{item.category_name}</div>
@@ -39,15 +29,15 @@ const SubMenu = ({ item }) => {
 
         </CategorySection>
         <div>
-          {item.subNav && subnav ? item.iconOpened
-            : item.subNav ? item.iconClosed : null}
+          {item.sub_categories ? item.iconOpened
+            : item.sub_categories? item.iconClosed : null}
         </div>
       </div>
-      {subnav && item.subNav.map((item, key) => {
+      {item.sub_categories.map((sub, key) => {
         return (
-          <DropdownLink href={item.path} key={key}>
-            {item.icon}
-            <SidebarLabel>{item.title}</SidebarLabel>
+          <DropdownLink href={sub.sub_category_name} key={key}>
+            {sub.sub_category_image}
+            <SidebarLabel>{sub.sub_category_name}</SidebarLabel>
           </DropdownLink>
         );
       })}
