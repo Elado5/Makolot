@@ -3,8 +3,8 @@ import ShoppingCart from '../components/ShoppingCart';
 import MenuSideBar from './MenuSideBar';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {GET} from '../api/fetch';
-import{productsAPI} from '../api/api';
+import { GET } from '../api/fetch';
+import { productsAPI } from '../api/api';
 
 const Navbar = (props) => {
     const { addItem, removeItem, cartItems, products, setProducts } = props;
@@ -20,13 +20,29 @@ const Navbar = (props) => {
         setProducts(res);
     }
 
+    //*Bring back all products to the screen
+    const LoadAllProducts = async () => {
+        let res = await GET(productsAPI.get_all);
+        console.log("search bar empty -> loading back all products");
+        setProducts(res);
+    }
+
     //*When stuff are written in the box, call the load function
-     useEffect(() => {
-        if(searchBox){
-       LoadProductsByName(searchBox);
+    useEffect(() => {
+        if (searchBox) {
+            if (searchBox === " "){
+                setSearchBox("");
+            }
+            else if (searchBox !== "") {
+                console.log(searchBox);
+                LoadProductsByName(searchBox);
+            }
+            else {
+                LoadAllProducts(); //doesn't trigger when deleting the text - why?
+            }
         }
 
-     }, [searchBox])
+    }, [searchBox])
 
     return (
         <Nav>
@@ -50,9 +66,9 @@ const Navbar = (props) => {
                     </DropdownShoppingCart>
                 }
 
-                <HrNav/>
+                <HrNav />
                 <span className="">אודות העמותה</span>
-                <HrNav/>
+                <HrNav />
                 <span className="">055-6663999</span>
             </ContainerLeft>
 
@@ -60,11 +76,11 @@ const Navbar = (props) => {
                 <SearchSomeBtn>
                     <SearchSome alt="search" src="/images/icons8-search-500.png" />
                 </SearchSomeBtn>
-                
-                <InputSearch type="text" placeholder="?מה תרצה למצוא" value={searchBox} onChange={(e) => setSearchBox(e.target.value)}/>
+
+                <InputSearch type="text" placeholder="?מה תרצה למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
                 <MenuSideBar />
-            
+
             </ContainerRight>
         </Nav>
     )

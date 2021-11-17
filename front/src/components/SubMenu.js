@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {sub_categoriesAPI} from '../api/api';
-import {GET} from '../api/fetch';
 
 const SubMenu = ({ item }) => {
   const [subnav, setSubnav] = useState(false);
   const showSubnav = () => setSubnav(!subnav);
-
-
-  // const LoadSubCategory = (id) => {
-  //  let res = GET(sub_categoriesAPI.get_by_category_id, [id]);
-  //  return res; 
-  // }
 
   return (
     <div>
@@ -19,8 +11,8 @@ const SubMenu = ({ item }) => {
         <hr />
         
         <CategorySection>
-          {item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" />}
-          {item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
+          {item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" onClick={showSubnav} /> }
+          {item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" onClick={showSubnav} />}
 
           <TitleIconSection>
             <div>{item.category_name}</div>
