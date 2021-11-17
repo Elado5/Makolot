@@ -34,7 +34,6 @@ const Navbar = (props) => {
                 setSearchBox("");
             }
             else if (searchBox !== "") {
-                console.log(searchBox);
                 LoadProductsByName(searchBox);
             }
             else {

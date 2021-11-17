@@ -11,8 +11,8 @@ const SubMenu = ({ item }) => {
         <hr />
         
         <CategorySection>
-          {item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" onClick={showSubnav} /> }
-          {item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" onClick={showSubnav} />}
+          {!subnav && item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png"/> }
+          {subnav && item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
 
           <TitleIconSection>
             <div>{item.category_name}</div>
@@ -21,11 +21,10 @@ const SubMenu = ({ item }) => {
 
         </CategorySection>
         <div>
-          {item.sub_categories ? item.iconOpened
-            : item.sub_categories? item.iconClosed : null}
+          {subnav && item.sub_categories ? item.iconOpened: item.sub_categories? item.iconClosed : null}
         </div>
       </div>
-      {item.sub_categories.map((sub, key) => {
+      {subnav && item.sub_categories.map((sub, key) => {
         return (
           <DropdownLink href={sub.sub_category_name} key={key}>
             {sub.sub_category_image}

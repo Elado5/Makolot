@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {GET} from '../api/fetch'
-import{productsAPI} from '../api/api'
+import { GET } from '../api/fetch'
+import { productsAPI } from '../api/api'
 
-const SortingPanel = ({products, setProducts}) => {
+const SortingPanel = ({ products, setProducts }) => {
 
     //*states
     const [searchBox, setSearchBox] = useState('');
@@ -15,18 +15,26 @@ const SortingPanel = ({products, setProducts}) => {
     }
 
     //*When stuff are written in the box, call the load function
-     useEffect(() => {
-        if(searchBox){
-       LoadProductsByName(searchBox);
+    useEffect(() => {
+        if (searchBox) {
+            if (searchBox === " ") {
+                setSearchBox("");
+            }
+            else if (searchBox !== "") {
+                LoadProductsByName(searchBox);
+            }
+            else {
+                //LoadAllProducts(); //doesn't trigger when deleting the text - why?
+            }
         }
-     }, [searchBox])
+    }, [searchBox])
 
     return (
         <SortingPanelBox>
             <ContainerSorting>
                 <SortingBtn>
-                        <SortingBtnImg alt="sorting" src="/images/icons8-expand-arrow-100.png" />
-                        מיין לפי
+                    <SortingBtnImg alt="sorting" src="/images/icons8-expand-arrow-100.png" />
+                    מיין לפי
                 </SortingBtn>
 
                 <SortingTagBtn>
