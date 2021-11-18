@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { GET } from '../api/fetch';
+import { productsAPI } from '../api/api';
+
 
 const Product = (props) => {
     const { product, addItem, removeItem, cartItems } = props;
@@ -32,12 +35,18 @@ const Product = (props) => {
 
                 <RightBlock>
                     <Link to={`/product/${product.product_id}`}>
-                        <span>{product.product_name}</span>
+                        <ProductName>{product.product_name}</ProductName>
                     </Link>
 
-                    <Price>
+                    {product.product_price !== product.product_final_price && 
+                    <DiscountedPrice> 
                         <Currency> ₪ </Currency>
                         {product.product_price.toFixed(2)}
+                    </DiscountedPrice>
+                    }
+                    <Price>
+                        <Currency> ₪ </Currency>
+                        {product.product_final_price.toFixed(2)}
                     </Price>
                 </RightBlock>
             </CardBody>
@@ -55,6 +64,10 @@ const Card = styled.div`{
     background-color: white;
     direction: ltr;
     position: relative;
+    &:hover {
+        transition: 0.8s ease;
+        box-shadow: 0px 8px 15px 0px rgba(25, 61, 224, 0.4);
+    }
 }`
 
 const ImageContainer = styled.div`{
@@ -104,6 +117,19 @@ const BtnAddProduct = styled.button`{
     width: 10em;
     font-family: system-ui;
     cursor: pointer;
+    :hover{
+        transition: 0.5s ease;
+        box-shadow: 0px 0px 4px navy;
+    }
+    :active{
+        transition: 1s ease;
+        background-color: #14257f;
+        box-shadow: 0px 0px 7px navy;
+    }
+}`
+
+const ProductName = styled.div`{
+    text-shadow: 0px 0px 2px darkgray;
 }`
 
 const RightBlock = styled.div`{
@@ -112,6 +138,13 @@ const RightBlock = styled.div`{
     align-items: flex-end;
     text-align: right;
     width: 6em;
+}`
+
+const DiscountedPrice = styled.div`{
+    text-decoration: line-through darkblue;
+    color: #39668f;
+    font-size: 13px;
+    font-weight: light;
 }`
 
 const Price = styled.div`{
