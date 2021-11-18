@@ -311,7 +311,6 @@ const CarouselWrapper = styled.div`{
 
 const Carousel = styled.div`{
     display: flex;
-    flex-direction: row;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

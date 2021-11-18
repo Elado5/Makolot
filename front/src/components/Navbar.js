@@ -76,7 +76,7 @@ const Navbar = (props) => {
                     <SearchSome alt="search" src="/images/icons8-search-500.png" />
                 </SearchSomeBtn>
 
-                <InputSearch type="text" placeholder="?מה תרצה למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
+                <InputSearch type="text" placeholder="?מה תרצו למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
                 <MenuSideBar />
 
