@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import data from '../data.json';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 const PaymentScreen = (props) => {
     const [fullName, setFullName] = useState('');
@@ -13,8 +13,12 @@ const PaymentScreen = (props) => {
         console.log(event.value);
     }
 
+    useEffect(() => {
+        
+    })
+
     return (
-        <div>
+        <ContainerPopup>
             {/* <Navbar ></Navbar> */}
             <ContainerPayment>
 
@@ -204,18 +208,27 @@ const PaymentScreen = (props) => {
 
                         <PaymentButtons>
                             <BtnReturnToShop>
-                            <Link to="/">המשך בקניה </Link>
+                                <Link to="/">המשך בקניה </Link>
                             </BtnReturnToShop>
-                            
+
                             <BtnPay> תשלום </BtnPay>
                         </PaymentButtons>
                     </PaymentBox>
                 </OrderDataBox>
             </ContainerPayment>
             <Footer />
-        </div>
+        </ContainerPopup>
     )
 }
+
+const ContainerPopup = styled.div`{
+    position: fixed;
+    z-index: 4;
+    background-color: #fafafa;
+    height: 100vh;
+    width: 100%;
+    overflow: scroll;
+}`
 
 const ContainerPayment = styled.div`{
     display: flex;

@@ -12,10 +12,12 @@ import {GET} from '../api/fetch';
 import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
+const cartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems') || []);
+
 const HomeScreen = () => {
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(cartFromLocalStorage);
     // const [searchBox, setSearchBox] = useState('');
 
     // const [categories, setCategories] = useState([]);
@@ -34,8 +36,6 @@ const HomeScreen = () => {
     // const [invoices, setInvoices] = useState([]);
     // const [orders, setOrders] = useState([]);
     // const [transactions, setTransactions] = useState([]);
-
-
 
     // const loadCategories = async () => {
     //     let res = await GET(categoriesAPI.get_all);
@@ -119,12 +119,14 @@ const HomeScreen = () => {
         if (!allProductsLoaded) {
                 loadProducts();
                 setAllProductsLoaded(true);
-            
         }
         else{
             console.log("Homescreen products loaded!");
         }
-    }, [allProductsLoaded])
+
+        // set items in local storage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [allProductsLoaded, cartItems])
 
     useEffect(() => {
         // loadCategories();
