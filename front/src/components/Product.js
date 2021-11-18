@@ -35,7 +35,7 @@ const Product = (props) => {
 
                 <RightBlock>
                     <Link to={`/product/${product.product_id}`}>
-                        <span>{product.product_name}</span>
+                        <ProductName>{product.product_name}</ProductName>
                     </Link>
 
                     {product.product_price !== product.product_final_price && 
@@ -126,6 +126,10 @@ const BtnAddProduct = styled.button`{
         background-color: #14257f;
         box-shadow: 0px 0px 7px navy;
     }
+}`
+
+const ProductName = styled.div`{
+    text-shadow: 0px 0px 2px darkgray;
 }`
 
 const RightBlock = styled.div`{
