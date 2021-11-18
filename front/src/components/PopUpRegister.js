@@ -33,15 +33,17 @@ const PopUpRegister = () => {
 		event.preventDefault();
 		if (state.customer_password === state.passConfirm) {
 			RegisterCustomer();
-			RegisterCustomer(state.customer_email, state.customer_password);
 		} else {
 			alert('Please check your password and try again!');
 		}
 	};
 
+
 	const RegisterCustomer = () => {
-		// let res = await POST(customersAPI.post_login, [{ customer_email: customer_email, customer_password: customer_password}] );
+
+		// let res = await POST(customersAPI.post_register, [{ customer_email: customer_email, customer_password: customer_password}] );
 		// console.log(res); //see if it worked
+
 		if (state.customer_email.length && state.customer_password.length) {
 			const payload = {
 				"customer_first_name": state.customer_first_name,

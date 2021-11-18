@@ -99,7 +99,10 @@ const ShoppingCard = (props) => {
 
             <div className="pay-area">
 
-                <Link to={{ pathname: "/payment", propsSearch: cartItems }}>
+                <Link to={{
+                    pathname: "/payment",
+                    propsSearch: cartItems
+                }}>
                     <button className="btn-pay">לתשלום</button>
                 </ Link>
 

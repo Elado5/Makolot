@@ -139,7 +139,7 @@ const HomeScreen = () => {
         }
 
         // set items in local storage
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [allProductsLoaded, cartItems])
 
         //*Making sure the 'discountedProducts' state is loaded ONCE.
