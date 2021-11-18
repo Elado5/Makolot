@@ -13,8 +13,12 @@ import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 const HomeScreen = () => {
+
+    //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
+    const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
+    const [discountedProducts, setDiscountedProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
     // const [searchBox, setSearchBox] = useState('');
 
@@ -35,7 +39,7 @@ const HomeScreen = () => {
     // const [orders, setOrders] = useState([]);
     // const [transactions, setTransactions] = useState([]);
 
-
+    //* Funcs
 
     // const loadCategories = async () => {
     //     let res = await GET(categoriesAPI.get_all);
@@ -50,6 +54,11 @@ const HomeScreen = () => {
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
         setProducts(res);
+    }
+
+    const loadDiscountedProducts = async () => {
+        let res = await GET(productsAPI.get_all_discounted)
+        setDiscountedProducts(res);
     }
 
     // const LoadProductsByName = async (name) => {
@@ -114,17 +123,30 @@ const HomeScreen = () => {
     //     setTransactions(res);
     // }
 
+    //* UseEffects
+
     //*Making sure the 'products' state is loaded ONCE.
     useEffect(() => {
         if (!allProductsLoaded) {
                 loadProducts();
                 setAllProductsLoaded(true);
-            
         }
         else{
             console.log("Homescreen products loaded!");
         }
     }, [allProductsLoaded])
+
+        //*Making sure the 'discountedProducts' state is loaded ONCE.
+        useEffect(() => {
+            if (!discountedProductsLoaded) {
+                    loadDiscountedProducts();
+                    setDiscountedProductsLoaded(true);
+                
+            }
+            else{
+                console.log("Discounted Homescreen products loaded!");
+            }
+        }, [discountedProductsLoaded])
 
     useEffect(() => {
         // loadCategories();
@@ -176,7 +198,7 @@ const HomeScreen = () => {
                 <ArticleSlider>
                     <CarouselWrapper>
                         <Carousel data-flickity >
-                            {products.map((product, key) => (
+                            {discountedProducts.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} ></Product>
                             ))}
                         </Carousel>
@@ -208,7 +230,7 @@ const HomeScreen = () => {
                         </SalesSlider>
                     </ProductsManageAreas>
 
-                    <Category />
+                    <Category setProductsState={setProducts} />
 
                 </ProductsManage>
             </ProductsArea>
@@ -288,12 +310,15 @@ const CarouselWrapper = styled.div`{
 }`
 
 const Carousel = styled.div`{
+    display: flex;
+    flex-direction: row;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
     height: auto;
     height: 335px;
+    ג
 }`
 
 const ProductsManageAreas = styled.div`{

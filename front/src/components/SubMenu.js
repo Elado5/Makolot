@@ -1,32 +1,44 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { productsAPI } from '../api/api';
+import { GET } from '../api/fetch';
 
-const SubMenu = ({ item }) => {
+const SubMenu = ({ item, setProductsState }) => {
   const [subnav, setSubnav] = useState(false);
   const showSubnav = () => setSubnav(!subnav);
+
+  const LoadProductsFromSubCategory = async (id) => {
+    let res = await GET(productsAPI.get_by_sub_category, [id]);
+    setProductsState(res);
+  }
+
+  const LoadProductsFromCategory = async (id) => {
+    let res = await GET(productsAPI.get_by_category, [id]);
+    setProductsState(res);
+  }
 
   return (
     <div>
       <div to={item.path} onClick={item.sub_categories && showSubnav}>
         <hr />
-        
+
         <CategorySection>
-          {!subnav && item.sub_categories.length ===0 && <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png"/> }
-          {subnav && item.sub_categories.length !==0 && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
+          {!subnav &&  <DropImgClose alt="dropdown-menu-when-close" src="/images/icons8-chevron-left-96.png" />}
+          {subnav && <DropImgOpen alt="dropdown-menu-when-open" src="/images/icons8-expand-arrow-96.png" />}
 
           <TitleIconSection>
-            <div>{item.category_name}</div>
+            <CategoryName onClick={() => {LoadProductsFromCategory(item.category_id)}}> {item.category_name} </CategoryName>
             <CategoryIcon alt="icon-category" src={item.category_image} />
           </TitleIconSection>
 
         </CategorySection>
         <div>
-          {subnav && item.sub_categories ? item.iconOpened: item.sub_categories? item.iconClosed : null}
+          {subnav && item.sub_categories ? item.iconOpened : item.sub_categories ? item.iconClosed : null}
         </div>
       </div>
       {subnav && item.sub_categories.map((sub, key) => {
         return (
-          <DropdownLink href={sub.sub_category_name} key={key}>
+          <DropdownLink onClick={() => {LoadProductsFromSubCategory(sub.sub_category_id)}} key={key}>
             {sub.sub_category_image}
             <SidebarLabel>{sub.sub_category_name}</SidebarLabel>
           </DropdownLink>
@@ -44,12 +56,30 @@ const CategorySection = styled.div`{
   align-items: center;
 }`
 
+const CategoryName = styled.div`{
+  cursor: pointer;
+  font-weight: bold;
+  :hover {
+    text-decoration: underline;
+}
+}`
+
 const DropImgClose = styled.img`{
   height: 2em;
+  cursor: pointer;
+  :hover {
+  font-size:1.1rem;
+  transition: 0.5s ease-out;
+}
 }`
 
 const DropImgOpen = styled.img`{
   height: 3em;
+  cursor: pointer;
+  :hover {
+    font-size:1.1rem;
+    transition: 0.5s ease-out;
+  }
 }`
 
 const TitleIconSection = styled.div`{
@@ -61,6 +91,7 @@ const TitleIconSection = styled.div`{
 
 const CategoryIcon = styled.img`{
   height: 3em;
+  cursor: pointer;
 }`
 
 const DropdownLink = styled.a`{
