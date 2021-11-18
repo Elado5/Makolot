@@ -12,14 +12,18 @@ import {GET} from '../api/fetch';
 import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
+// get items from local storage
+const cartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems') || []);
+
 const HomeScreen = () => {
 
     //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
+    const [cartItems, setCartItems] = useState(cartFromLocalStorage);
     const [discountedProducts, setDiscountedProducts] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
+
     // const [searchBox, setSearchBox] = useState('');
 
     // const [categories, setCategories] = useState([]);
@@ -81,7 +85,6 @@ const HomeScreen = () => {
     //     setProductDiscount(res);
     // }
 
-
     // const loadAddresses = async () => {
     //     //do we connect outer source here?
     //     let res = await GET(addressesAPI.get_all)
@@ -134,7 +137,10 @@ const HomeScreen = () => {
         else{
             console.log("Homescreen products loaded!");
         }
-    }, [allProductsLoaded])
+
+        // set items in local storage
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [allProductsLoaded, cartItems])
 
         //*Making sure the 'discountedProducts' state is loaded ONCE.
         useEffect(() => {

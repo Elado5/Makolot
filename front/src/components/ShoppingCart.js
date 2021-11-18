@@ -30,7 +30,7 @@ const ShoppingCard = (props) => {
                         </div>
                         {/* } */}
                     </div>
-                    <i className="user-icon fa fa-user-o" aria-hidden="true"/>
+                    <i className="user-icon fa fa-user-o" aria-hidden="true" />
                 </LoginArea>
 
             </RegLogArea>
@@ -98,9 +98,11 @@ const ShoppingCard = (props) => {
             </ShoppingItems>
 
             <div className="pay-area">
-                <Link to={"/payment"}>
-                    <button onClick={() => console.log(cartItems)} className="btn-pay">לתשלום</button>
-                </Link>
+
+                <Link to={{ pathname: "/payment", propsSearch: cartItems }}>
+                    <button className="btn-pay">לתשלום</button>
+                </ Link>
+
                 <hr />
                 <button onClick={() => setOpen(!open)} className="btn-close-basket">^</button>
             </div>

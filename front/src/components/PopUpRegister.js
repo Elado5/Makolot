@@ -1,21 +1,72 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { customersAPI } from '../api/api';
+import { POST, PUT, DELETE } from '../api/fetch';
+
 
 const PopUpRegister = () => {
-	const [ firstName, setFirstName ] = useState("");
-	const [ lastName, setLastName ] = useState("");
-	const [ email, setEmail ] = useState("");
-	const [ pass, setPassword ] = useState("");
-	const [ passConfirm, setPassConfirm ] = useState("");
-	const [ passID, setPassID ] = useState("");
-	const [ checkboxFirst, setCheckboxFirst ] = useState("");
-	const [ checkboxSec, setCheckboxSec ] = useState("");
+	const [state, setState] = useState({
+		customer_first_name: "",
+		customer_last_name: "",
+		customer_email: "",
+		customer_phone_number: "",
+		customer_birthdate: "",
+		customer_password: "",
+		passConfirm: "",
+		customer_city: "",
+		address_id: "",
+		credit_card_id: "", // what about credit card date & cvv?
+		checkboxFirst: "",
+		checkboxSec: ""
+	})
+
+	const handleChange = (event) => {
+		const { id, value } = event.target
+		setState(prevState => ({
+			...prevState,
+			[id]: value
+		}))
+	}
 
 	const submitFunc = (event) => {
 		event.preventDefault();
-		console.log("reg user: " + firstName, lastName, email, pass, passConfirm, passID, checkboxFirst, checkboxSec);
+		if (state.customer_password === state.passConfirm) {
+			RegisterCustomer();
+			RegisterCustomer(state.customer_email, state.customer_password);
+		} else {
+			alert('Please check your password and try again!');
+		}
 	};
+
+	const RegisterCustomer = () => {
+		// let res = await POST(customersAPI.post_login, [{ customer_email: customer_email, customer_password: customer_password}] );
+		// console.log(res); //see if it worked
+		if (state.customer_email.length && state.customer_password.length) {
+			const payload = {
+				"customer_first_name": state.customer_first_name,
+				"customer_last_name": state.customer_last_name,
+				"customer_email": state.customer_email,
+				"customer_phone_number": state.customer_phone_number,
+				"customer_birthdate": state.customer_birthdate,
+				"customer_password": state.customer_password,
+				"customer_city": state.customer_city,
+				"address_id": state.address_id,
+				"credit_card_id": state.credit_card_id, // what about credit card date & cvv?
+			}
+			console.log("payload" + payload)
+			
+			// // axios.post(customersAPI.post_register, payload) // axios??
+			// .then(function (response) {
+
+			// })
+			// .catch(function (error) {
+			// 	console.log(error);
+			// });
+		} else {
+			alert('Please check your data and try again!')
+		}
+	}
 
 	//לא מיושם עדיין
 	const is_israeli_id_number = (id) => {
@@ -27,44 +78,49 @@ const PopUpRegister = () => {
 				const step = digit * (i % 2 + 1);
 				return counter + (step > 9 ? step - 9 : step);
 			}) %
-				10 ===
-			0
+			10 === 0
 		);
 	};
 
 	return (
-		<form onSubmit={submitFunc}>
-			<ContainerPopup>
-				<PopupReg>
-					<Link className="close-button" to="/">
-						X
-					</Link>
-					<PopupRegArea>
-						<PopupRegAreaSpan>הרשמה לאתר</PopupRegAreaSpan>
-						<PopupRegInputs>
+		<ContainerPopup>
+			<PopupReg>
+				<Link className="close-button" to="/">
+					X
+				</Link>
+				<PopupRegArea>
+					<PopupRegAreaSpan>הרשמה לאתר</PopupRegAreaSpan>
+					<PopupRegInputs>
+						<RegUserName>
+							<UserData>
+								<PopupRegAreaInput
+									id="customer_first_name"
+									onChange={handleChange}
+									value={state.customer_first_name}
+									type="text"
+									placeholder="שם פרטי"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
+							<UserData>
+								<PopupRegAreaInput
+									id="customer_last_name"
+									onChange={handleChange}
+									value={state.customer_last_name}
+									type="text"
+									placeholder="שם משפחה"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
+						</RegUserName>
+
+						<InputsReg>
 							<RegUserName>
 								<UserData>
 									<PopupRegAreaInput
-										onChange={(event) => setFirstName(event.target.value)}
-										type="text"
-										placeholder="שם פרטי"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
-								<UserData>
-									<PopupRegAreaInput
-										onChange={(event) => setLastName(event.target.value)}
-										type="text"
-										placeholder="שם משפחה "
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
-							</RegUserName>
-
-							<InputsReg>
-								<UserData>
-									<PopupRegAreaInput
-										onChange={(event) => setEmail(event.target.value)}
+										id="customer_email"
+										onChange={handleChange}
+										value={state.customer_email}
 										type="text"
 										placeholder="דואר אלקטרוני"
 										pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
@@ -73,62 +129,84 @@ const PopUpRegister = () => {
 								</UserData>
 								<UserData>
 									<PopupRegAreaInput
-										onChange={(event) => setPassword(event.target.value)}
-										type="password"
-										placeholder="סיסמה"
-										pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
-								<UserData>
-									<PopupRegAreaInput
-										onChange={(event) => setPassConfirm(event.target.value)}
-										type="password"
-										placeholder="אימות סיסמה"
-										pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
-								<UserData>
-									<PopupRegAreaInput
-										onChange={(event) => setPassID(event.target.value)}
+										id="customer_phone_number"
+										onChange={handleChange}
+										value={state.customer_phone_number}
 										type="text"
-										placeholder="תעודת זהות"
-										required={(e) => is_israeli_id_number(e.target.value)}
+										placeholder="מספר נייד"
+										pattern="" // regex pattern for phone numbers
 									/>
 									<InputMustSpan>*</InputMustSpan>
 								</UserData>
-							</InputsReg>
+							</RegUserName>
+							<UserData>
+								<PopupRegAreaInput
+									id="customer_password"
+									onChange={handleChange}
+									value={state.customer_password}
+									type="password"
+									placeholder="סיסמה"
+									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
 
-							<div>
-								<CheckboxInput>
-									<h6>
-										Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
-										out print, graphic or web designs
-									</h6>
-									<Checkbox
-										onChange={(event) => setCheckboxFirst(event.target.value)}
-										type="checkbox"
-									/>
-								</CheckboxInput>
-								<CheckboxInput>
-									<h6>
-										Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
-										out print, graphic or web designs
-									</h6>
-									<Checkbox
-										onChange={(event) => setCheckboxSec(event.target.value)}
-										type="checkbox"
-									/>
-								</CheckboxInput>
-							</div>
+							<UserData>
+								<PopupRegAreaInput
+									id="passConfirm"
+									onChange={handleChange}
+									value={state.passConfirm}
+									type="password"
+									placeholder="אימות סיסמה"
+									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
+							<UserData>
+								{/* <PopupRegAreaInput
+									id="passID"
+									onChange={handleChange}
+									value={state.passID}
+									type="text"
+									placeholder="תעודת זהות"
+									required={(e) => is_israeli_id_number(e.target.value)}
+								/>
+								<InputMustSpan>*</InputMustSpan> */}
+							</UserData>
+						</InputsReg>
 
-							<BtnDefault type="submit"> הרשמה</BtnDefault>
-						</PopupRegInputs>
-					</PopupRegArea>
-				</PopupReg>
-			</ContainerPopup>
-		</form>
+						<div>
+							<CheckboxInput>
+								<h6>
+									Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
+									out print, graphic or web designs
+								</h6>
+								<Checkbox
+									id="checkboxFirst"
+									onChange={handleChange}
+									value={state.checkboxFirst}
+									type="checkbox"
+								/>
+							</CheckboxInput>
+							<CheckboxInput>
+								<h6>
+									Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
+									out print, graphic or web designs
+								</h6>
+								<Checkbox
+									id="checkboxSec"
+									onChange={handleChange}
+									value={state.checkboxSec}
+									type="checkbox"
+								/>
+							</CheckboxInput>
+						</div>
+
+						<BtnDefault onClick={submitFunc} type="submit"> הרשמה</BtnDefault>
+					</PopupRegInputs>
+				</PopupRegArea>
+			</PopupReg>
+		</ContainerPopup>
 	);
 };
 
