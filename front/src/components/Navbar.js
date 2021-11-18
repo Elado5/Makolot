@@ -7,7 +7,7 @@ import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 
 const Navbar = (props) => {
-    const { addItem, removeItem, cartItems, products, setProducts } = props;
+    const { addItem, removeItem, cartItems, setProducts } = props;
 
     //*states
     const [open, setOpen] = useState(true);
@@ -20,10 +20,23 @@ const Navbar = (props) => {
         setProducts(res);
     }
 
+    //*Bring back all products to the screen
+    const LoadAllProducts = async () => {
+        let res = await GET(productsAPI.get_all);
+        console.log("search bar empty -> loading back all products");
+        setProducts(res);
+    }
+
     //*When stuff are written in the box, call the load function
     useEffect(() => {
-        if (searchBox) {
+        if (searchBox === " ") {
+            setSearchBox("");
+        }
+        else if (searchBox !== "") {
             LoadProductsByName(searchBox);
+        }
+        else {
+            LoadAllProducts(); //doesn't trigger when deleting the text - why?
         }
     }, [searchBox])
 
@@ -60,10 +73,9 @@ const Navbar = (props) => {
                     <SearchSome alt="search" src="/images/icons8-search-500.png" />
                 </SearchSomeBtn>
 
-                <InputSearch type="text" placeholder="?מה תרצה למצוא" value={searchBox} onChange={(e) => setSearchBox(e.target.value)} />
+                <InputSearch type="text" placeholder="?מה תרצה למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
                 <MenuSideBar />
-
             </ContainerRight>
         </Nav>
     )

@@ -6,7 +6,7 @@ import {categoriesAPI} from '../api/api';
 import {GET} from '../api/fetch';
 
 
-const Category = (props) => {
+const Category = ({setProductsState}) => {
     const [sidebar, setSidebar] = useState(true);
     const showSidebar = () => setSidebar(!sidebar);
     const [categories, setCategories] = useState([]);
@@ -33,9 +33,9 @@ const Category = (props) => {
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
                     <button onClick={showSidebar}>X</button>
-                    {categories.map((item, key) => {
+                    {categories.map((category, key) => {
                         return <SidebarCategory key={key}>
-                            <SubMenu item={item} />
+                            <SubMenu item={category} setProductsState={setProductsState} />
                         </SidebarCategory>
                     })}
                 </SidebarWrap>
