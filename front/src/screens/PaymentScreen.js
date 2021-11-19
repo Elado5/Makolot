@@ -5,7 +5,10 @@ import data from '../data.json';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 
-const PaymentScreen = (props) => {
+const PaymentScreen = ({ cartItems, setCartItems }) => {
+
+    const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
+    const delieveryPrice = 0;
     const [fullName, setFullName] = useState('');
     const [phone, setPhone] = useState('');
 
@@ -13,9 +16,7 @@ const PaymentScreen = (props) => {
         console.log(event.value);
     }
 
-    useEffect(() => {
-        
-    })
+    console.log(cartItems);
 
     return (
         <ContainerPopup>
@@ -187,22 +188,58 @@ const PaymentScreen = (props) => {
                     </PaymentBox>
 
                     <PaymentBox>
+                        <div className="basket-main"> <hr />
+                            <div>רשימת הקניות</div>
+                            <hr></hr>
+                            <div> {cartItems.length === 0 && <div>.הסל ריק, אנא הכנס מוצרים</div>}</div>
+                            {cartItems.map((item, key) =>
+                                <div key={key}>
+                                    <PaymentBasket className="product-item-basket">
+                                        <div className="product-remove-basket">
+                                            <div className="">
+                                                <span className="currency-basket">₪</span>
+                                                {item.product_final_price.toFixed(2)}
+                                            </div>
+                                        </div>
+
+                                        <div>{item.product_name}</div>
+
+                                        <div className="item-basket">
+                                            <div className="image-container-basket">
+                                                <div className="count-manage">
+                                                    {item.qty}
+                                                </div>
+
+                                               
+                                                    <img className="product-image-basket"
+                                                        src={item.product_image}
+                                                        alt={item.product_name} />
+                                            </div>
+                                        </div>
+                                    </PaymentBasket>
+                                    <hr></hr>
+                                </div>
+                            )}
+                        </div>
+                        <hr />
                         <h3> סיכום הזמנה </h3>
                         <hr />
                         <PaymentTotalData>
                             <PaymentTotalDataBox>
-                                <h3> סכום הזמנה </h3>
-                                <h4>₪ 100.00 </h4>
+                                <h3>  סה״כ לתשלום </h3>
+                                <h4>₪ {(totalPrice + delieveryPrice).toFixed(2)} </h4>
                             </PaymentTotalDataBox>
 
                             <PaymentTotalDataBox>
                                 <h3> עלות משלוח </h3>
-                                <h4>₪ 00.00 </h4>
+                                {delieveryPrice === 0 && <h4>!חינם</h4>}
+                                {delieveryPrice > 0 && <h4>₪ {delieveryPrice.toFixed(2)} </h4>}
                             </PaymentTotalDataBox>
 
                             <PaymentTotalDataBox>
-                                <h3>  סה״כ לתשלום </h3>
-                                <h4>₪ 100.00 </h4>
+
+                                <h3> סכום הזמנה </h3>
+                                <h4>₪ {totalPrice.toFixed(2)}</h4>
                             </PaymentTotalDataBox>
                         </PaymentTotalData>
 
@@ -334,8 +371,13 @@ const PayDataBox = styled.div`{
         box-shadow: 1px 2px 3px #27407f66;
     }
 }`
+
 const PaymentBox = styled.div`{
     background-color: #fafafa;
+}`
+
+const PaymentBasket = styled.div`{
+    align-items: center;
 }`
 
 const BtnRemovePaymentBox = styled.button`{
@@ -403,6 +445,7 @@ const PaymentButtons = styled.div`{
     justify-content: flex-end;
     margin: 1em;
 }`
+
 
 const BtnReturnToShop = styled.button`{
     background-color: #fafafa;

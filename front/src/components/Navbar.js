@@ -7,7 +7,7 @@ import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 
 const Navbar = (props) => {
-    const { addItem, removeItem, cartItems, setProducts } = props;
+    const { addItem, removeItem, completelyRemoveItem, cartItems, setProducts } = props;
 
     //*states
     const [open, setOpen] = useState(true);
@@ -58,7 +58,7 @@ const Navbar = (props) => {
 
                 {open &&
                     <DropdownShoppingCart>
-                        <ShoppingCart cartItems={cartItems} addItem={addItem} removeItem={removeItem} open={open} setOpen={setOpen} />
+                        <ShoppingCart cartItems={cartItems} addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} open={open} setOpen={setOpen} />
                     </DropdownShoppingCart>
                 }
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
@@ -14,6 +15,9 @@ import AdminHomeScreen from './screens/AdminHomeScreen';
 
 function App() {
 
+  const [cartFromLocalStorage, setCartFromLocalStorage] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+
+
   return (
     <BrowserRouter>
       <Route path="/admin" component={AdminHomeScreen}></Route>
@@ -25,8 +29,10 @@ function App() {
       <Route path="/register" component={PopUpRegister}></Route>
       <Route path="/login" component={PopUpLogin}></Route>
       <Route path="/product/:id" component={ProductScreen}></Route>
-      <Route path="/payment" component={PaymentScreen}></Route>
-      <HomeScreen path="/" exact></HomeScreen>
+      <Route path="/payment">
+        <PaymentScreen cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage} />
+      </Route>
+      <HomeScreen path="/" exact cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage}></HomeScreen>
     </BrowserRouter>
   );
 }

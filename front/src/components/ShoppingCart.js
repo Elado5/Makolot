@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ShoppingCard = (props) => {
-    const { cartItems, addItem, removeItem, open, setOpen } = props;
+    const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen } = props;
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
+
 
     const logOutFunc = () => {
 
@@ -66,7 +67,7 @@ const ShoppingCard = (props) => {
                         <div key={key}>
                             <div className="product-item-basket">
                                 <div className="product-remove-basket">
-                                    <button className="remove-item-basket">x</button>
+                                    <button className="remove-item-basket" onClick={() => completelyRemoveItem(item)}>x</button>
                                     <div className="">
                                         <span className="currency-basket">₪</span>
                                         {item.product_final_price.toFixed(2)}

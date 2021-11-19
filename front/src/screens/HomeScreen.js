@@ -13,15 +13,13 @@ import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 // get items from local storage
-const cartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-
-const HomeScreen = () => {
-
+const HomeScreen = ({cartItems, setCartItems}) => {
+    console.log(cartItems);
     //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState(cartFromLocalStorage || []); //cartFromLocalStorage
+    // const [cartItems, setCartItems] = useState(cartFromLocalStorage || []); //cartFromLocalStorage
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
     // const [searchBox, setSearchBox] = useState('');
@@ -195,9 +193,17 @@ const HomeScreen = () => {
         }
     }
 
+    const completelyRemoveItem = (product) => {
+        const existing = cartItems.find((item) => item.product_id === product.product_id);
+
+        if (existing) {
+            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+        }
+    }
+
     return (
         <div>
-            <Navbar addItem={addItem} removeItem={removeItem} cartItems={cartItems} products={products} setProducts={setProducts}></Navbar>
+            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem= {completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}></Navbar>
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>

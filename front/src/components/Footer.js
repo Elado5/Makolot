@@ -43,7 +43,7 @@ const Footer = () => {
                     <FormSubscribe>
                         <div>
                             <div>
-                                <h2>דמרו איתנו</h2>
+                                <h2>דברו איתנו</h2>
                                 <p>Sign up for our Newsletter and receive updates on events, collections and exclusive promotions.</p>
                             </div>
                         </div>
