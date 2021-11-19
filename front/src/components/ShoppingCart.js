@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const ShoppingCard = (props) => {
     const { cartItems, addItem, removeItem, open, setOpen } = props;
-    const totalPrice = cartItems.reduce((x, obj) => x + obj.product_price * obj.qty, 0);
+    const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
 
     const logOutFunc = () => {
 
@@ -69,7 +69,7 @@ const ShoppingCard = (props) => {
                                     <button className="remove-item-basket">x</button>
                                     <div className="">
                                         <span className="currency-basket">₪</span>
-                                        {item.product_price.toFixed(2)}
+                                        {item.product_final_price.toFixed(2)}
                                     </div>
                                 </div>
 

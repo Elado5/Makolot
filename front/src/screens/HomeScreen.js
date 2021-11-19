@@ -13,7 +13,7 @@ import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 // get items from local storage
-const cartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems') || []);
+const cartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
 
 const HomeScreen = () => {
 
@@ -21,7 +21,7 @@ const HomeScreen = () => {
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState(cartFromLocalStorage);
+    const [cartItems, setCartItems] = useState(cartFromLocalStorage || []); //cartFromLocalStorage
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
     // const [searchBox, setSearchBox] = useState('');
