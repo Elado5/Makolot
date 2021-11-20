@@ -207,6 +207,7 @@ h4 {
 .item-basket button {
   border: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .btn-pay {

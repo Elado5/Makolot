@@ -65,6 +65,27 @@ route.get(`/byName/:name`, async (req, res) => {
 	}
 });
 
+route.get(`/byCity/:city`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`grocery_shop_name`, sql.Int, params.city).execute(`get_grocery_shop_by_city_name`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.post(`/add`, async (req, res) => {
 	try {
 		let body = req.body;

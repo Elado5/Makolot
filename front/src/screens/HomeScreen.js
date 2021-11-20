@@ -19,7 +19,6 @@ const HomeScreen = ({cartItems, setCartItems}) => {
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
-    // const [cartItems, setCartItems] = useState(cartFromLocalStorage || []); //cartFromLocalStorage
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
     // const [searchBox, setSearchBox] = useState('');

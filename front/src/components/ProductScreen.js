@@ -14,8 +14,8 @@ const ProductScreen = (props) => {
 
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
-        let res = await GET(productsAPI.get_by_id, [id]) //*get product by id
-        console.log(res);
+        let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
+        console.log(res); //! no way to handle error value
         setProduct(res[0]);
         let productSubCategory = res[0].sub_category_id; //*get the product's category id
         let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //*get the item's category as suggestion

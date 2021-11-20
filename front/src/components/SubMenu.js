@@ -39,7 +39,6 @@ const SubMenu = ({ item, setProductsState }) => {
       {subnav && item.sub_categories.map((sub, key) => {
         return (
           <DropdownLink onClick={() => {LoadProductsFromSubCategory(sub.sub_category_id)}} key={key}>
-            {sub.sub_category_image}
             <SidebarLabel>{sub.sub_category_name}</SidebarLabel>
           </DropdownLink>
         );

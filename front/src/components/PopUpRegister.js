@@ -39,10 +39,12 @@ const PopUpRegister = () => {
 	};
 
 
-	const RegisterCustomer = () => {
+	const RegisterCustomer = async () => {
 
-		// let res = await POST(customersAPI.post_register, [{ customer_email: customer_email, customer_password: customer_password}] );
-		// console.log(res); //see if it worked
+		console.log("customer reg state: ", state)
+		let res = await POST(customersAPI.post_register, [{ customer_first_name: state.customer_first_name, customer_last_name: state.customer_last_name, customer_email: state.customer_email, customer_phone_number: state.customer_phone_number, customer_customer_password: state.customer_password}] );
+		//! doesn't recognize the input in brackets - why?
+		console.log("user added: " ,res); //see if it worked
 
 		if (state.customer_email.length && state.customer_password.length) {
 			const payload = {
@@ -136,7 +138,7 @@ const PopUpRegister = () => {
 										value={state.customer_phone_number}
 										type="text"
 										placeholder="מספר נייד"
-										pattern="" // regex pattern for phone numbers
+										pattern="/^05\d([-]{0,1})\d{7}$/"
 									/>
 									<InputMustSpan>*</InputMustSpan>
 								</UserData>
