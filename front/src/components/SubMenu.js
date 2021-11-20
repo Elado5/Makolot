@@ -58,6 +58,7 @@ const CategorySection = styled.div`{
 const CategoryName = styled.div`{
   cursor: pointer;
   font-weight: bold;
+  font-size: 17px;
   :hover {
     text-decoration: underline;
 }
@@ -113,7 +114,11 @@ const DropdownLink = styled.a`{
 
 const SidebarLabel = styled.div`{
   margin-left: 16px;
-  font-size: 20px;
+  font-size: 18px;
+  :hover {
+    text-decoration: underline;
+    font-weight: 500;
+}
 }`
 
 export default SubMenu;
