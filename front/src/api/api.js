@@ -84,6 +84,7 @@ export const productsAPI = {
 export const shopsAPI = {
     get_all: `${baseAPI}/shops/all`,
     get_by_id: `${baseAPI}/shops/`,
+    get_by_name: `${baseAPI}/shops/byName`,
     post_add: `${baseAPI}/shops/add`,
     put_update: `${baseAPI}/shops/update/`,
     put_activate: `${baseAPI}/shops/activate/`,
@@ -102,4 +103,4 @@ export const ordersAPI = {
 //? Transaction route?
 //? invoice route?
 //? Credit Card route?
-//leaving that to the owner of the site to chose the relevant way of handling transactions/payment.
+//!leaving that to the owner of the site to chose the relevant way of handling transactions/payment.

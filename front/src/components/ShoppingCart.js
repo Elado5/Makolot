@@ -70,7 +70,7 @@ const ShoppingCard = (props) => {
                                     <button className="remove-item-basket" onClick={() => completelyRemoveItem(item)}>x</button>
                                     <div className="">
                                         <span className="currency-basket">₪</span>
-                                        {item.product_final_price.toFixed(2)}
+                                        {(item.product_final_price*item.qty).toFixed(2)}
                                     </div>
                                 </div>
 
