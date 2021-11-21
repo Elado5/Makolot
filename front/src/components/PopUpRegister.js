@@ -82,6 +82,7 @@ const PopUpRegister = () => {
 			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
 			if(res.customer_id){
 				alert('registered successfuly!');
+				window.location = '/';
 			}
 			else{
 				alert('registration was rejected!');
@@ -101,15 +102,6 @@ const PopUpRegister = () => {
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
-								<PopupRegAreaInput
-									id="customer_first_name"
-									onChange={handleChange}
-									value={state.customer_first_name}
-									type="text"
-									placeholder="שם פרטי"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-							</UserData>
 							<UserData>
 								<PopupRegAreaInput
 									id="customer_last_name"
@@ -120,6 +112,16 @@ const PopUpRegister = () => {
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
+								<PopupRegAreaInput
+									id="customer_first_name"
+									onChange={handleChange}
+									value={state.customer_first_name}
+									type="text"
+									placeholder="שם פרטי"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
+
 						</RegUserName>
 
 						<InputsReg>
