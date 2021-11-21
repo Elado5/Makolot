@@ -29,28 +29,6 @@ const PopUpRegister = () => {
 		}))
 	}
 
-	const submitFunc = (event) => {
-		event.preventDefault();
-		if(/^([\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,})$/.test(state.customer_first_name && state.customer_last_name) === false) {
-			alert('Names must be 2 characters long or more and with no numbers or special characters, please try again.')
-		}
-		else if (!(state.customer_password === state.passConfirm)) {
-			alert('The passwords must be identical, please try again.')
-		}
-		else if (/([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(state.customer_email) === false) {
-			alert('Please enter a valid email address and try again.')
-		}
-		else if (/^(05\d([-]{0,1})\d{7})$/.test(state.customer_phone_number) === false) {
-			alert('Please enter a valid phone number and try again.')
-		}
-		else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(state.customer_password) === false) {
-			alert('The password must contain one capital letter, 1 number and have a least 8 characters.')
-		}
-		else {
-			RegisterCustomer();
-		}
-	};
-
 
 	const RegisterCustomer = async () => {
 
@@ -66,8 +44,7 @@ const PopUpRegister = () => {
 		let res = await POST(customersAPI.post_register, customer);
 		console.log("user added: ", res); //see if it worked
 
-		if (state.customer_email.length && state.customer_password.length) {
-			const payload = {
+			const payload =  {
 				"customer_first_name": state.customer_first_name,
 				"customer_last_name": state.customer_last_name,
 				"customer_email": state.customer_email,
@@ -79,11 +56,39 @@ const PopUpRegister = () => {
 				"credit_card_id": state.credit_card_id, // what about credit card date & cvv?
 			}
 			console.log("payload" + payload)
-
-		} else {
-			alert('Please check your data and try again!')
-		}
+			return res;
 	}
+
+	const submitFunc = async (event) => {
+		event.preventDefault();
+		if(/^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_first_name) === false 
+		|| /^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_last_name) === false) {
+			alert('Names must be 2 characters long or more and with no numbers or special characters, please try again.')
+		}
+		else if (!(state.customer_password === state.passConfirm)) {
+			alert('The passwords must be identical, please try again.')
+		}
+		else if (/([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(state.customer_email) === false) {
+			alert('Please enter a valid email address and try again.')
+		}
+		else if (/^(05\d([-]{0,1})\d{7})$/.test(state.customer_phone_number) === false) {
+			alert('Please enter a valid phone number and try again.')
+		}
+		else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(state.customer_password) === false) {
+			alert('The password must contain one capital letter, 1 number and have a least 8 characters.')
+		}
+		else {
+			let res = await RegisterCustomer();
+			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
+			if(res.customer_id){
+				alert('registered successfuly!');
+			}
+			else{
+				alert('registration was rejected!');
+			}
+		}
+	};
+
 
 	return (
 		<ContainerPopup>
