@@ -171,15 +171,15 @@ create table Customers (
 	customer_email nvarchar(150) not null,
 	customer_phone_number varchar(10) not null,
 	customer_birthdate datetime not null,
-	customer_password nvarchar(50) not null,
-	customer_city nvarchar(50) not null,
-	credit_card_id int foreign key references CreditCards(credit_card_id)
+	customer_password nvarchar(50) null,
+	customer_city nvarchar(50) null,
+	credit_card_id int null foreign key references CreditCards(credit_card_id)
 )
 go
 
 
 -- returns the new customer's id
-create proc add_customer
+create proc add_customer 
 	@customer_first_name nvarchar(150),
 	@customer_last_name nvarchar(150),
 	@customer_email nvarchar(150),
@@ -188,10 +188,13 @@ create proc add_customer
 	@customer_password nvarchar(50),
 	@customer_city nvarchar(50),
 	@address_id int,
-	@credit_card_id int
+	@credit_card_id int,
+	@customer_id int output
 AS
 	insert into [dbo].Customers([customer_first_name], [customer_last_name], [customer_email], [customer_phone_number],[customer_birthdate],[customer_password],[customer_city], [address_id], [credit_card_id])
 	values (@customer_first_name, @customer_last_name, @customer_email, @customer_phone_number, @customer_birthdate, @customer_password, @customer_city, @address_id, @credit_card_id)
+
+	set @customer_id = @@IDENTITY
 go
 
 --how to i check?

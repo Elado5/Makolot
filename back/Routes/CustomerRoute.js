@@ -72,6 +72,7 @@ route.post(`/register`, async (req, res) => {
 			.input(`customer_city`, sql.NVarChar(50), body.customer_city)
 			.input(`address_id`, sql.Int, body.address_id)
 			.input(`credit_card_id`, sql.Int, body.credit_card_id)
+			.output(`customer_id`, sql.Int)
 			//what about credit card date & cvv?
 			.execute(`add_customer`);
 
@@ -82,7 +83,7 @@ route.post(`/register`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

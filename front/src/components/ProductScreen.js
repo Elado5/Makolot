@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 //import data from '../data.json';
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
@@ -10,12 +10,13 @@ const ProductScreen = (props) => {
     const [cartItems, setCartItems] = useState([]);
     const [product, setProduct] = useState([]);
     const [productsInCategory, setProductsInCategory] = useState([]);
-    const [isCanceled, setIsCanceled] = useState(false);
-
+    
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
         let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
-        console.log(res); //! no way to handle error value
+        if(res.length === 0) {
+            document.location.href = '/'; //* go to main page and refresh
+        }
         setProduct(res[0]);
         let productSubCategory = res[0].sub_category_id; //*get the product's category id
         let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //*get the item's category as suggestion
