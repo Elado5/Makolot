@@ -75,7 +75,7 @@ const PopUpRegister = () => {
 			alert('Please enter a valid phone number and try again.')
 		}
 		else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(state.customer_password) === false) {
-			alert('The password must contain one capital letter, 1 number and have a least 8 characters.')
+			alert('All passwords must contain one or more capital letters and numbers and have a least 8 characters.\nPlease try again.')
 		}
 		else {
 			let res = await RegisterCustomer();

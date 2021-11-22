@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
-import { Link, useHistory } from 'react-router-dom';
-//import data from '../data.json';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';

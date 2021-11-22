@@ -95,27 +95,25 @@ route.post(`/login`, async (req, res) => {
 	try {
 		let body = req.body;
 
-		//on error
 		sql.on(`error`, (error) => res.send(error));
 
-		//connect to the db
 		let db = await sql.connect(config.db);
 
-		//run the wanted query - this one shall be ?
 		let query = await db
 			.request()
 			.input(`customer_email`, sql.NVarChar(150), body.customer_email)
 			.input(`customer_password`, sql.NVarChar(50), body.customer_password)
 			.execute(`login_customer`);
 
-		//get the data from the query result
 		let data = await query;
 
-		//close connection to server
 		await db.close();
 
-		//send the data to the client via api
-		res.send(data.recordset);
+		if (data.recordset.length == 0) {
+			res.send({ message: "customer not found." });
+			return;
+		}
+		res.send(data.recordset[0]);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

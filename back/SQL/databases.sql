@@ -168,7 +168,7 @@ create table Customers (
 	customer_id int IDENTITY(1,1) not null primary key,
 	customer_first_name nvarchar(150) not null,
 	customer_last_name nvarchar(150) not null,
-	customer_email nvarchar(150) not null,
+	customer_email nvarchar(150) not null unique,
 	customer_phone_number varchar(10) not null,
 	customer_birthdate datetime not null,
 	customer_password nvarchar(50) null,
