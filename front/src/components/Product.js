@@ -1,9 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { GET } from '../api/fetch';
-import { productsAPI } from '../api/api';
-
 
 const Product = (props) => {
     const { product, addItem, removeItem, cartItems } = props;
@@ -25,7 +22,7 @@ const Product = (props) => {
                     )}
                 </AddItemIcon>
 
-                <Link to={`/product/${product.product_id}`}>
+                <Link to={{pathname: `/product/${product.product_id}`, state:{product, cartItems, addItem, removeItem}}}>
                     <ProductImage src={product.product_image} alt={product.product_name} />
                 </Link>
             </ImageContainer>
@@ -131,6 +128,7 @@ const BtnAddProduct = styled.button`{
 
 const ProductName = styled.div`{
     text-shadow: 0px 0px 2px darkgray;
+    backdrop-filter: blur(1px);
 }`
 
 const RightBlock = styled.div`{

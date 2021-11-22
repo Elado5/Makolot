@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 
 const ProductScreen = (props) => {
-    const [cartItems, setCartItems] = useState([]);
-    const [product, setProduct] = useState([]);
+
+    const location = useLocation();
+    const cartItems = location.cartItems;
+    const addItem = location.addItem;
+    const removeItem = location.removeItem;
+
+    //const [cartItems, setCartItems] = useState([]);
+    const [product, setProduct] = useState([{product_name: "", product_id: "", product_final_price: 0, product_suppliers: '', product_description: ''}]);
     const [productsInCategory, setProductsInCategory] = useState([]);
     
     //*loads the product by ID and gives recommendations from it's category
@@ -22,35 +28,35 @@ const ProductScreen = (props) => {
         setProductsInCategory(res2);
     }
 
-    const addItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
+    // const addItem = (product) => {
+    //     const existing = cartItems.find((item) => item.product_id === product.product_id);
 
-        if (existing) {
-            setCartItems(cartItems.map((item) =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
-        }
-        else {
-            setCartItems([...cartItems, { ...product, qty: 1 }]);
-        }
-    }
+    //     if (existing) {
+    //         setCartItems(cartItems.map((item) =>
+    //             item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
+    //     }
+    //     else {
+    //         setCartItems([...cartItems, { ...product, qty: 1 }]);
+    //     }
+    // }
 
-    const removeItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
+    // const removeItem = (product) => {
+    //     const existing = cartItems.find((item) => item.product_id === product.product_id);
 
-        if (existing.qty === 1) {
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-        }
-        else {
-            setCartItems(cartItems.map(item =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
-        }
-    }
+    //     if (existing.qty === 1) {
+    //         setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+    //     }
+    //     else {
+    //         setCartItems(cartItems.map(item =>
+    //             item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
+    //     }
+    // }
 
     //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
         LoadProductAndSuggestions(props.match.params.id)
         console.log("product and suggestions loaded!");
-        
+        console.log(cartItems)
         return () => {
         }
     }, [props.match.params.id])

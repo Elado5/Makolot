@@ -99,6 +99,7 @@ const ContainerPopup = styled.div`{
     justify-content: center;
     align-items: center;
     height: 100vh;
+    backdrop-filter: blur(2px);
 }`
 
 const PopupLog = styled.div`{
