@@ -2,16 +2,23 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ADDRESS_DATA } from '../api/addressesAPI';
+import { shopsAPI } from '../api/api';
+import {GET} from '../api/fetch';
 
 const Main = () => {
 
     //* States
     const [streets, SetStreets] = useState([]); //State of street suggestions array
     const [searchStreet, setSearchStreet] = useState(''); //state of search box value
+    const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
+
+    const LoadShopByName = async (city) => {
+        let res = await GET(shopsAPI.get_by_city, [city]);
+        console.log(res); //! why 'validation failed for parameter 'grocery_shop_id'. invalid number.' ?
+        setGroceryShops(res);
+    }
 
     //Loads streets from Israel's API
-    
-
     //Refresh the street suggestions every time the state of the search box is changed.
     useEffect(() => {
         const LoadStreets = async () => {
@@ -77,7 +84,7 @@ const Main = () => {
                         }
                     </datalist>
                     <SearchSomeBtn>
-                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" />
+                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => {LoadShopByName(searchStreet)}} />
                     </SearchSomeBtn>
 
                 </InputLocationArea>
@@ -159,6 +166,11 @@ const InputLocationArea = styled.div`{
 
 const SearchSome = styled.img`{
     height: 3em;
+    cursor: pointer;
+    :hover{
+        transition: ease 0.3s;
+        height: 3.1em;
+        }
 }`
 
 const InputSearchLocationMain = styled.input`{

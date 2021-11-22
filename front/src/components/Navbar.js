@@ -44,7 +44,7 @@ const Navbar = (props) => {
         <Nav>
             <ContainerLeft>
                 <Link to="/">
-                    <NavImg alt="logo" src="/images/logo.png" />
+                    <NavImg alt="logo" src="/images/logo.png" onClick={ () => {document.location.href = '/'}}/>
                 </Link>
 
                 <BtnBasket onClick={() => setOpen(!open)}>

@@ -196,19 +196,18 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                         <div className="product-remove-basket">
                                             <div className="">
                                                 <span className="currency-basket">₪</span>
-                                                {item.product_final_price.toFixed(2)}
+                                                {(item.product_final_price*item.qty).toFixed(2)}
                                             </div>
                                         </div>
 
                                         <div>{item.product_name}</div>
+                                        <div>:כמות<br/>{item.qty}</div>
 
                                         <div className="item-basket">
                                             <div className="image-container-basket">
                                                 <CountManage>
                                                     {item.qty}
                                                 </CountManage>
-
-                                               
                                                     <img className="product-image-basket"
                                                         src={item.product_image}
                                                         alt={item.product_name} />

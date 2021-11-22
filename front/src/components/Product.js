@@ -93,6 +93,7 @@ const Button = styled.button`{
     border: none;
     background-color: transparent;
     color: #27407f;
+    cursor: pointer;
 }`
 
 const QtyCart = styled.div`{

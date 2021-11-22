@@ -72,6 +72,7 @@ route.post(`/register`, async (req, res) => {
 			.input(`customer_city`, sql.NVarChar(50), body.customer_city)
 			.input(`address_id`, sql.Int, body.address_id)
 			.input(`credit_card_id`, sql.Int, body.credit_card_id)
+			.output(`customer_id`, sql.Int)
 			//what about credit card date & cvv?
 			.execute(`add_customer`);
 
@@ -82,7 +83,7 @@ route.post(`/register`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);
@@ -94,27 +95,25 @@ route.post(`/login`, async (req, res) => {
 	try {
 		let body = req.body;
 
-		//on error
 		sql.on(`error`, (error) => res.send(error));
 
-		//connect to the db
 		let db = await sql.connect(config.db);
 
-		//run the wanted query - this one shall be ?
 		let query = await db
 			.request()
 			.input(`customer_email`, sql.NVarChar(150), body.customer_email)
 			.input(`customer_password`, sql.NVarChar(50), body.customer_password)
 			.execute(`login_customer`);
 
-		//get the data from the query result
 		let data = await query;
 
-		//close connection to server
 		await db.close();
 
-		//send the data to the client via api
-		res.send(data.recordset);
+		if (data.recordset.length == 0) {
+			res.send({ message: "customer not found." });
+			return;
+		}
+		res.send(data.recordset[0]);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

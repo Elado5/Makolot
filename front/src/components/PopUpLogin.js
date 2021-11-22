@@ -9,18 +9,38 @@ const PopUpLogin = (props) => {
     const [pass, setPassword] = useState('');
     // const link = props.location.search ? props.location.search.split('=')[1] : '/';
 
-    const submitFunc = (event) => {
-        event.preventDefault();
-        console.log("log user:" + email, pass)
-    }
 
     const LoginCustomer = async (email, password) => {
         let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password});
         //תנאי התחברות?
-        if (res) {
-            //
+        console.log(res);
+        
+        if (res.customer_email && res.customer_password) {
+            alert("login succesful.")
+            
+            window.location = '/';
+        }
+        else{
+            alert("login failed - email or password do not exist.")
+        }
+        //TODO login stuff
+    }
+
+    const submitFunc = (event) => {
+        event.preventDefault();
+        console.log("log user:" + email, pass)
+        if (/([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(email) === false) {
+			alert('Please enter a valid email address and try again.')
+		}
+        else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(pass) === false) {
+			alert('Please enter a valid password and try again.')
+		}
+        else{
+        LoginCustomer(email, pass);
         }
     }
+
+
 
 
     // useEffect(() => {
@@ -47,7 +67,7 @@ const PopUpLogin = (props) => {
 
                                 <div>
                                     <PopupLogAreaInput onChange={event => setPassword(event.target.value)}
-                                        type="password" id="user_pass" placeholder="סיסמה" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" />
+                                        type="password" id="user_pass" placeholder="סיסמה"/>
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
                                 {/* {error && <div className="error-input">{error}</div>} */}
@@ -57,7 +77,7 @@ const PopUpLogin = (props) => {
                                 <Link to={"/forgot"}> ?שכחת את הסיסמה </Link>
                                 <Link to={"/register"}> ?משתמש חדש </Link>
 
-                                <BtnDefault type="submit">התחבר</BtnDefault>
+                                <BtnDefault type="submit" onClick={submitFunc}>התחבר</BtnDefault>
                             </InputLinksArea>
                         </PopupLogInputs>
                     </PopupLogArea>

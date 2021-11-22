@@ -11,7 +11,7 @@ const PopUpRegister = () => {
 		customer_last_name: "",
 		customer_email: "",
 		customer_phone_number: "",
-		customer_birthdate: "",
+		customer_birthdate: "2000-01-01",
 		customer_password: "",
 		passConfirm: "",
 		customer_city: "",
@@ -29,23 +29,22 @@ const PopUpRegister = () => {
 		}))
 	}
 
-	const submitFunc = (event) => {
-		event.preventDefault();
-		if (state.customer_password === state.passConfirm) {
-			RegisterCustomer();
-		} else {
-			alert('Please check your password and try again!');
+
+	const RegisterCustomer = async () => {
+
+		console.log("customer reg state: ", state)
+		let customer = {
+			customer_first_name: state.customer_first_name,
+			customer_last_name: state.customer_last_name,
+			customer_email: state.customer_email,
+			customer_phone_number: state.customer_phone_number,
+			customer_password: state.customer_password,
+			customer_birthdate: state.customer_birthdate
 		}
-	};
+		let res = await POST(customersAPI.post_register, customer);
+		console.log("user added: ", res); //see if it worked
 
-
-	const RegisterCustomer = () => {
-
-		// let res = await POST(customersAPI.post_register, [{ customer_email: customer_email, customer_password: customer_password}] );
-		// console.log(res); //see if it worked
-
-		if (state.customer_email.length && state.customer_password.length) {
-			const payload = {
+			const payload =  {
 				"customer_first_name": state.customer_first_name,
 				"customer_last_name": state.customer_last_name,
 				"customer_email": state.customer_email,
@@ -57,32 +56,40 @@ const PopUpRegister = () => {
 				"credit_card_id": state.credit_card_id, // what about credit card date & cvv?
 			}
 			console.log("payload" + payload)
-			
-			// // axios.post(customersAPI.post_register, payload) // axios??
-			// .then(function (response) {
-
-			// })
-			// .catch(function (error) {
-			// 	console.log(error);
-			// });
-		} else {
-			alert('Please check your data and try again!')
-		}
+			return res;
 	}
 
-	//לא מיושם עדיין
-	const is_israeli_id_number = (id) => {
-		id = String(id).trim();
-		if (id.length > 9 || isNaN(id)) return false;
-		id = id.length < 9 ? ("00000000" + id).slice(-9) : id;
-		return (
-			Array.from(id, Number).reduce((counter, digit, i) => {
-				const step = digit * (i % 2 + 1);
-				return counter + (step > 9 ? step - 9 : step);
-			}) %
-			10 === 0
-		);
+	const submitFunc = async (event) => {
+		event.preventDefault();
+		if(/^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_first_name) === false 
+		|| /^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_last_name) === false) {
+			alert('Names must be 2 characters long or more and with no numbers or special characters, please try again.')
+		}
+		else if (!(state.customer_password === state.passConfirm)) {
+			alert('The passwords must be identical, please try again.')
+		}
+		else if (/([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(state.customer_email) === false) {
+			alert('Please enter a valid email address and try again.')
+		}
+		else if (/^(05\d([-]{0,1})\d{7})$/.test(state.customer_phone_number) === false) {
+			alert('Please enter a valid phone number and try again.')
+		}
+		else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(state.customer_password) === false) {
+			alert('All passwords must contain one or more capital letters and numbers and have a least 8 characters.\nPlease try again.')
+		}
+		else {
+			let res = await RegisterCustomer();
+			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
+			if(res.customer_id){
+				alert('registered successfuly!');
+				window.location = '/';
+			}
+			else{
+				alert('registration was rejected!');
+			}
+		}
 	};
+
 
 	return (
 		<ContainerPopup>
@@ -95,15 +102,6 @@ const PopUpRegister = () => {
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
-								<PopupRegAreaInput
-									id="customer_first_name"
-									onChange={handleChange}
-									value={state.customer_first_name}
-									type="text"
-									placeholder="שם פרטי"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-							</UserData>
 							<UserData>
 								<PopupRegAreaInput
 									id="customer_last_name"
@@ -114,6 +112,16 @@ const PopUpRegister = () => {
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
+								<PopupRegAreaInput
+									id="customer_first_name"
+									onChange={handleChange}
+									value={state.customer_first_name}
+									type="text"
+									placeholder="שם פרטי"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
+
 						</RegUserName>
 
 						<InputsReg>
@@ -125,7 +133,6 @@ const PopUpRegister = () => {
 										value={state.customer_email}
 										type="text"
 										placeholder="דואר אלקטרוני"
-										pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
 									/>
 									<InputMustSpan>*</InputMustSpan>
 								</UserData>
@@ -136,11 +143,21 @@ const PopUpRegister = () => {
 										value={state.customer_phone_number}
 										type="text"
 										placeholder="מספר נייד"
-										pattern="" // regex pattern for phone numbers
 									/>
 									<InputMustSpan>*</InputMustSpan>
 								</UserData>
 							</RegUserName>
+							<UserData>
+									<PopupRegAreaInput
+										id="customer_birthday"
+										onChange={handleChange}
+										value={state.customer_birthdate}
+										type="date"
+										placeholder="תאריך לידה"
+										min="1900-01-01" max="2018-12-31"
+									/>
+									<InputMustSpan>*</InputMustSpan>
+								</UserData>
 							<UserData>
 								<PopupRegAreaInput
 									id="customer_password"
@@ -148,7 +165,6 @@ const PopUpRegister = () => {
 									value={state.customer_password}
 									type="password"
 									placeholder="סיסמה"
-									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
@@ -160,20 +176,8 @@ const PopUpRegister = () => {
 									value={state.passConfirm}
 									type="password"
 									placeholder="אימות סיסמה"
-									pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
 								/>
 								<InputMustSpan>*</InputMustSpan>
-							</UserData>
-							<UserData>
-								{/* <PopupRegAreaInput
-									id="passID"
-									onChange={handleChange}
-									value={state.passID}
-									type="text"
-									placeholder="תעודת זהות"
-									required={(e) => is_israeli_id_number(e.target.value)}
-								/>
-								<InputMustSpan>*</InputMustSpan> */}
 							</UserData>
 						</InputsReg>
 
