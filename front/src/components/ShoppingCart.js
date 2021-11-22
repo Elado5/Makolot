@@ -122,7 +122,7 @@ const ShoppingCardContainer = styled.div`{
     z-index: 2;
     position: fixed;
     margin-top: 3em;
-    width: 27em;
+    width: 26em;
     height: 43em;
     border-radius: 0em 0em 2em 2em;
     display: flex;

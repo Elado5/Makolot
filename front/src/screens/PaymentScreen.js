@@ -16,11 +16,9 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
         console.log(event.value);
     }
 
-    console.log(cartItems);
-
     return (
         <ContainerPopup>
-            {/* <Navbar ></Navbar> */}
+            {/* <Navbar cartItems={cartItems}></Navbar> */}
             <ContainerPayment>
 
                 <h3>פרטים למשלוח</h3>
@@ -206,9 +204,9 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
                                         <div className="item-basket">
                                             <div className="image-container-basket">
-                                                <div className="count-manage">
+                                                <CountManage>
                                                     {item.qty}
-                                                </div>
+                                                </CountManage>
 
                                                
                                                     <img className="product-image-basket"
@@ -486,6 +484,17 @@ const UserInput = styled.input`{
     outline: none;
     text-align: right;
     padding-top: 1em;
+}`
+
+
+const CountManage = styled.div`{
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    position: absolute;
+    margin-bottom: 60px;
+    margin-right: 10px;
+    z-index: 8;
 }`
 
 export default PaymentScreen;
