@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 
 const Product = (props) => {
-    const { product, addItem, removeItem, cartItems, cartItemsFunc } = props;
+    const { product, addItem, removeItem, cartItems } = props;
 
 
     return (
@@ -14,7 +14,7 @@ const Product = (props) => {
                     <Button onClick={() => addItem(product)}> + </Button>
                     {cartItems.map((item, key) =>
                         <span key={key}>
-                            {product.product_id === item.product_id && item.qty > 0 &&
+                            {product.product_id === item.product_id &&
                                 <QtyCart>
                                     <span>{item.qty}</span>
                                     <Button onClick={() => removeItem(product)}> - </Button>

@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 
-const ProductScreen = (props) => {
+const ProductScreen = ({cartItems, addItem, removeItem}) => {
 
     const location = useLocation();
+    //console.log(`props.match.params.id`, props.match.params.id)
     const id = location.state?.id
-    const {cartItems, setCartItems} = props
-    //const location = useLocation();
 
    // const  cartItemsFunc = location.data.cartItemsFunc;
     //const addItem = location.data.addItem;
@@ -32,43 +31,6 @@ const ProductScreen = (props) => {
         setProductsInCategory(res2);
     }
 
-    const addItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
-
-        if (existing) {
-            setCartItems(cartItems.map((item) =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
-        }
-        else {
-            setCartItems([...cartItems, { ...product, qty: 1 }]);
-        }
-         // set items in local storage
-         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
-
-    const removeItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
-
-        console.log(`existing`, existing)
-
-        if (!existing){
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-        }
-        else if (existing.qty === 1) {
-            console.log(`cartItems`, cartItems)
-            existing.qty = 0;
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-            console.log(`cartItems`, cartItems)
-            //another iteration to get rid of it
-        }
-        else {
-            setCartItems(cartItems.map(item =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
-            
-        }
-         // set items in local storage
-         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }
 
     //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
@@ -85,22 +47,22 @@ const ProductScreen = (props) => {
             <ProductContainerPopup>
 
                 <Link className="close-popup-link" to="/">
-                    <ClosePopup onClick={() => document.location.href = '/'}>X</ClosePopup>
+                    <ClosePopup>X</ClosePopup>
                 </Link>
 
                 <ProductData>
                     <ProductLeftDescription>
-                        <div>{product.product_name}</div>
-                        <div>{product.product_final_price}</div>
-                        <span>{product.product_suppliers}</span>
-                        <div>{product.product_description}</div>
+                        <ProductBigDetail>{product.product_name}</ProductBigDetail>
+                        {product.product_final_price && <ProductSmallDetail>{product.product_final_price.toFixed(2)}</ProductSmallDetail>}
+                        <ProductSmallDetail>{product.product_suppliers}</ProductSmallDetail>
+                        <ProductSmallDetail>{product.product_description}</ProductSmallDetail>
                         <BtnAddProduct onClick={() => addItem(product)}>הוספה לסל</BtnAddProduct>
                     </ProductLeftDescription>
 
                     <ProductContainerRight>
                         <AddItemIcon>
                             <Button onClick={() => addItem(product)}>+</Button>
-                            <Button onClick={() => removeItem(product)}>-</Button>
+                            {<Button onClick={() => removeItem(product)}>-</Button>}
                         </AddItemIcon>
                         <ProductItemImage src={product.product_image} alt={product.product_name} />
                     </ProductContainerRight>
@@ -172,6 +134,19 @@ const ProductLeftDescription = styled.div`{
     align-items: flex-end;
     justify-content: space-around;
     height: 100%;
+    backdrop-filter: blur(1px);
+    
+}`
+
+const ProductBigDetail = styled.div`{
+    font-size: 1.8em;
+    color: #19277f;
+    text-shadow: 0px 0px 2px darkgray;
+}`
+
+const ProductSmallDetail = styled.div`{
+    font-size: 1.2em;
+    color: #27407f;
 }`
 
 const BtnAddProduct = styled.button`{
@@ -201,8 +176,19 @@ const AddItemIcon = styled.div`{
 
 const Button = styled.button`{
     border: none;
+    font-size: 3rem;
     background-color: transparent;
     color: #27407f;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease;
+        font-size: 3.2rem;
+        text-shadow: 0px 0px 4px blue;
+    }
+    &:active{
+        transition: 0.5s ease;
+        text-shadow: 0px 0px 7px blue;
+    }
 }`
 
 const ProductItemImage = styled.img`{
@@ -230,11 +216,12 @@ const CarouselWrapper = styled.div`{
 }`
 
 const Carousel = styled.div`{
-    top: 56%;
-    transform: translateY(-50%);
+    top: 26%;
+    transform: translateX(-0.5%);
     width: 100%;
     height: auto;
     height: 335px;
+    display: flex;
 }`
 
 export default ProductScreen;

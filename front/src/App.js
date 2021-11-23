@@ -13,10 +13,46 @@ import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
 import AdminHomeScreen from './screens/AdminHomeScreen';
 
-function App() {
+function App () {
 
-  const [cartFromLocalStorage, setCartFromLocalStorage] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
-  
+  //*State
+  //Take cart items from local storage
+  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+
+  const addItem = (product) => {
+    const existing = cartItems.find((item) => item.product_id === product.product_id);
+
+    if (existing) {
+        setCartItems(cartItems.map((item) =>
+            item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
+    }
+    else {
+        setCartItems([...cartItems, { ...product, qty: 1 }]);
+    }
+}
+
+const removeItem = (product) => {
+    const existing = cartItems.find((item) => item.product_id === product.product_id);
+
+    if(!existing) { //relevant for ProductScreen page
+      return;
+    }
+    if (existing.qty === 1) {
+        setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+    }
+    else {
+        setCartItems(cartItems.map(item =>
+            item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
+    }
+}
+
+const completelyRemoveItem = (product) => {
+    const existing = cartItems.find((item) => item.product_id === product.product_id);
+
+    if (existing) {
+        setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+    }
+}
 
   return (
     <BrowserRouter>
@@ -28,13 +64,13 @@ function App() {
       <Route path="/forgot" component={ForgotPass}></Route>
       <Route path="/register" component={PopUpRegister}></Route>
       <Route path="/login" component={PopUpLogin}></Route>
-      <Route path="/product/:id">
-        <ProductScreen cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage}/>
+      <Route path="/product/:id" render={() =>
+        (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem}/>)}>
       </Route>
       <Route path="/payment">
-        <PaymentScreen cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage} />
+        <PaymentScreen cartItems={cartItems} setCartItems={setCartItems} />
       </Route>
-      <HomeScreen path="/" exact cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage}></HomeScreen>
+      <HomeScreen path="/" exact cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}></HomeScreen>
     </BrowserRouter>
   );
 }

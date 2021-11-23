@@ -13,43 +13,14 @@ import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 // get items from local storage
-const HomeScreen = ({cartItems, setCartItems}) => {
+const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRemoveItem}) => {
     //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
     const [products, setProducts] = useState([]);
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
-    // const [searchBox, setSearchBox] = useState('');
-
-    // const [categories, setCategories] = useState([]);
-    // const [subCategories, setSubCategories] = useState([]);
-    // //const [products, setProducts] = useState([]);
-    // const [productsInCategory, setProductsInCategory] = useState([]);
-    // const [productsInSubCategory, setProductsInSubCategory] = useState([]);
-    // const [productDiscount, setProductDiscount] = useState([]);
-
-
-    // const [addresses, setAddresses] = useState([]);
-    // const [customers, setCustomers] = useState([]);
-    // const [creditCards, setCreditCards] = useState([]);
-    // const [shops, setShops] = useState([]);
-    // const [managers, setManagers] = useState([]);
-    // const [invoices, setInvoices] = useState([]);
-    // const [orders, setOrders] = useState([]);
-    // const [transactions, setTransactions] = useState([]);
-
     //* Funcs
-
-    // const loadCategories = async () => {
-    //     let res = await GET(categoriesAPI.get_all);
-    //     setCategories(res);
-    // }
-
-    // const loadSubCategories = async () => {
-    //     let res = await GET(sub_categoriesAPI.get_all);
-    //     setSubCategories(res);
-    // }
 
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
@@ -60,67 +31,6 @@ const HomeScreen = ({cartItems, setCartItems}) => {
         let res = await GET(productsAPI.get_all_discounted)
         setDiscountedProducts(res);
     }
-
-    // const LoadProductsByName = async (name) => {
-    //     let res = await GET(products.get_by_name, [name])
-    //     setProducts(res);
-    // }
-
-    // const loadProductsInCategory = async (id) => {
-    //     let res = await GET(categoriesAPI.get_by_id, [id]);
-    //     setProductsInCategory(res);
-    // }
-
-    // const loadProductsInSubCategory = async (id) => {
-    //     let res = await GET(sub_categoriesAPI.get_by_id, [id]);
-    //     setProductsInSubCategory(res);
-    // }
-
-    // const loadProductDiscount = async () => {
-    //     let res = await fetch('api/Products/byCategory/1');
-    //     setProductDiscount(res);
-    // }
-
-    // const loadAddresses = async () => {
-    //     //do we connect outer source here?
-    //     let res = await GET(addressesAPI.get_all)
-    //     setAddresses(res);
-    // }
-
-    // const loadCustomers = async () => {
-    //     let res = await GET(customersAPI.get_all);
-    //     setCustomers(res);
-    // }
-
-    // const loadCreditCards = async () => {
-    //     let res = await fetch('api/CreditCards/all');
-    //     setCreditCards(res);
-    // }
-
-    // const loadShops = async () => {
-    //     let res = await GET(shopsAPI.get_all)
-    //     setShops(res);
-    // }
-
-    // const loadManagers = async () => {
-    //     let res = await fetch('api/Managers/all');
-    //     setManagers(res);
-    // }
-
-    // const loadInvoices = async () => {
-    //     let res = await fetch('api/Invoices/all');
-    //     setInvoices(res);
-    // }
-
-    // const loadOrders = async () => {
-    //     let res = await GET(ordersAPI.get_all)
-    //     setOrders(res);
-    // }
-
-    // const loadTransactions = async () => {
-    //     let res = await fetch('api/transactions/all');
-    //     setTransactions(res);
-    // }
 
     //* UseEffects
 
@@ -165,42 +75,6 @@ const HomeScreen = ({cartItems, setCartItems}) => {
         // loadProductDiscount();
         // loadSubCategories();
     }, [])
-
-
-    const addItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
-
-        if (existing) {
-            setCartItems(cartItems.map((item) =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
-        }
-        else {
-            setCartItems([...cartItems, { ...product, qty: 1 }]);
-        }
-    }
-
-    const removeItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
-
-        if(!existing) {
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-        }
-        if (existing.qty === 1) {
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-        }
-        else {
-            setCartItems(cartItems.map(item =>
-                item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
-        }
-    }
-
-    const completelyRemoveItem = (product) => {
-        const existing = cartItems.find((item) => item.product_id === product.product_id);
-
-        if (existing) {
-            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-        }
-    }
 
     return (
         <div>

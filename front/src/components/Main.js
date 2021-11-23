@@ -49,7 +49,7 @@ const Main = () => {
                     <MainElements>
                         <div className="circular">
                             <div className="inner"></div>
-                            <div className="number"> 60 דק׳ <span className="span-text"> והזמנה אצלך</span> </div>
+                            <div className="number"> 60 <br/><span className="span-text"> דקות וההזמנה אצלך</span> </div>
 
                             <div className="circle-background">
                                 <div className="circle">
