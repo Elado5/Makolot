@@ -13,6 +13,7 @@ const Main = () => {
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
 
     const LoadShopByName = async (city) => {
+        console.log("city search for shop ---> ", city)
         let res = await GET(shopsAPI.get_by_city, [city]);
         console.log(res); //! why 'validation failed for parameter 'grocery_shop_id'. invalid number.' ?
         setGroceryShops(res);

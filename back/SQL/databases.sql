@@ -714,6 +714,13 @@ as
 go
 
 
+create proc get_grocery_shop_by_city
+	@grocery_shop_city nvarchar(150)
+as
+	select * from grocery_shops where [grocery_shop_city] LIKE '%' + @grocery_shop_city + '%'
+go
+
+
 create proc add_grocery_shop
 	@grocery_shop_name nvarchar(150),
 	@grocery_shop_city nvarchar(150),

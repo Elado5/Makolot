@@ -73,7 +73,7 @@ route.get(`/byCity/:city`, async (req, res) => {
 
 		let db = await sql.connect(config.db);
 
-		let query = await db.request().input(`grocery_shop_name`, sql.Int, params.city).execute(`get_grocery_shop_by_city_name`);
+		let query = await db.request().input(`grocery_shop_city`, sql.NVarChar(150), params.city).execute(`get_grocery_shop_by_city`);
 
 		let data = await query;
 

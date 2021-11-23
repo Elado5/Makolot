@@ -84,8 +84,8 @@ export const productsAPI = {
 export const shopsAPI = {
     get_all: `${baseAPI}/shops/all`,
     get_by_id: `${baseAPI}/shops/`,
-    get_by_name: `${baseAPI}/shops/byName`,
-    get_by_city: `${baseAPI}/shops/byCity`,
+    get_by_name: `${baseAPI}/shops/byName/`,
+    get_by_city: `${baseAPI}/shops/byCity/`,
     post_add: `${baseAPI}/shops/add`,
     put_update: `${baseAPI}/shops/update/`,
     put_activate: `${baseAPI}/shops/activate/`,

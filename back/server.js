@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 const server = http.createServer(app);
-server.setMaxListeners(100);
+server.setMaxListeners(0);
 
 server.listen(port, () => {
 	console.log(`Server running on port ${port} -> http://localhost:${port}`);
