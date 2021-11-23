@@ -14,7 +14,7 @@ const Product = (props) => {
                     <Button onClick={() => addItem(product)}> + </Button>
                     {cartItems.map((item, key) =>
                         <span key={key}>
-                            {product.product_id === item.product_id &&
+                            {product.product_id === item.product_id && item.qty > 0 &&
                                 <QtyCart>
                                     <span>{item.qty}</span>
                                     <Button onClick={() => removeItem(product)}> - </Button>
@@ -26,13 +26,7 @@ const Product = (props) => {
 
                 <Link to={{
                     pathname: `/product/${product.product_id}`, 
-                    state:{
-                        cartItems,
-                    },
-                    data:{
-                        cartItemsFunc,
-                        addItem, removeItem,
-                    }
+                    state: {id: product.product_id}
                 }}>
                     <ProductImage src={product.product_image} alt={product.product_name} />
                 </Link>
@@ -42,9 +36,12 @@ const Product = (props) => {
                 <BtnAddProduct onClick={() => addItem(product)}> הוספה לסל </BtnAddProduct>
 
                 <RightBlock>
-                    <Link to={`/product/${product.product_id}`}>
+                    <Link to={{
+                    pathname: `/product/${product.product_id}`, 
+                    state: {id: product.product_id}
+                }}>
                         <ProductName>{product.product_name}</ProductName>
-                    </Link>
+                </Link>
 
                     {product.product_price !== product.product_final_price && 
                     <DiscountedPrice> 

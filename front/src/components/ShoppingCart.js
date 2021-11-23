@@ -63,14 +63,14 @@ const ShoppingCard = (props) => {
                     <div>  רשימת הקניות</div>
                     <hr></hr>
                     <div> {cartItems.length === 0 && <div>.הסל ריק, אנא הכנס מוצרים</div>}</div>
-                    {cartItems.map((item, key) =>
+                    {cartItems.map((item, key) => item.qty > 0 &&
                         <div key={key}>
                             <div className="product-item-basket">
                                 <div className="product-remove-basket">
                                     <button className="remove-item-basket" onClick={() => completelyRemoveItem(item)}>x</button>
                                     <div className="">
                                         <span className="currency-basket">₪</span>
-                                        {(item.product_final_price*item.qty).toFixed(2)}
+                                        {(item.product_final_price * item.qty).toFixed(2)}
                                     </div>
                                 </div>
 
@@ -83,11 +83,16 @@ const ShoppingCard = (props) => {
                                             <button onClick={() => removeItem(item)}>-</button>
                                         </div>
 
-                                        <Link to={`/product/${item.product_id}`}>
+                                        <Link to={{
+                                            pathname: `/product/${item.product_id}`,
+                                            state: { id: item.product_id }
+                                        }}>
                                             <img className="product-image-basket"
                                                 src={item.product_image}
-                                                alt={item.product_name} />
-                                        </Link>
+                                                alt={item.product_name} />                                        
+                                                </Link>
+
+
                                     </div>
                                 </div>
                             </div>

@@ -7,12 +7,15 @@ import { productsAPI } from '../api/api';
 
 const ProductScreen = (props) => {
 
+    const location = useLocation();
+    const id = location.state?.id
+    const {cartItems, setCartItems} = props
     //const location = useLocation();
 
    // const  cartItemsFunc = location.data.cartItemsFunc;
     //const addItem = location.data.addItem;
     //const removeItem = location.data.removeItem;
-    const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+    //const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
 
     const [product, setProduct] = useState([]); //{ product_name: "", product_id: "", product_final_price: 0, product_suppliers: '', product_description: '' }
     const [productsInCategory, setProductsInCategory] = useState([]);
@@ -20,7 +23,7 @@ const ProductScreen = (props) => {
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
         let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
-        if (res.length === 0) {
+        if (!res || res.length === 0) {
             document.location.href = '/'; //* go to main page and refresh
         }
         setProduct(res[0]);
@@ -53,6 +56,7 @@ const ProductScreen = (props) => {
         }
         else if (existing.qty === 1) {
             console.log(`cartItems`, cartItems)
+            existing.qty = 0;
             setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
             console.log(`cartItems`, cartItems)
             //another iteration to get rid of it
@@ -68,13 +72,13 @@ const ProductScreen = (props) => {
 
     //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
-        LoadProductAndSuggestions(props.match.params.id)
+        LoadProductAndSuggestions(id)
         //console.log(`location`, location)
         console.log(`cartItems`, cartItems)
         console.log("product and suggestions loaded!");
         return () => {
         }
-    }, [props.match.params.id])
+    }, [id])
 
     return (
         <ContainerPopup>
@@ -131,7 +135,6 @@ const ContainerPopup = styled.div`{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    backdrop-filter: blur(5px);
 }`
 
 const ProductContainerPopup = styled.div`{

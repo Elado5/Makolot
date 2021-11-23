@@ -16,7 +16,7 @@ import AdminHomeScreen from './screens/AdminHomeScreen';
 function App() {
 
   const [cartFromLocalStorage, setCartFromLocalStorage] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
-
+  
 
   return (
     <BrowserRouter>
@@ -28,7 +28,9 @@ function App() {
       <Route path="/forgot" component={ForgotPass}></Route>
       <Route path="/register" component={PopUpRegister}></Route>
       <Route path="/login" component={PopUpLogin}></Route>
-      <Route path="/product/:id" component={ProductScreen}></Route>
+      <Route path="/product/:id">
+        <ProductScreen cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage}/>
+      </Route>
       <Route path="/payment">
         <PaymentScreen cartItems={cartFromLocalStorage} setCartItems={setCartFromLocalStorage} />
       </Route>
