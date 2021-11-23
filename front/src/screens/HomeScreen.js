@@ -182,6 +182,9 @@ const HomeScreen = ({cartItems, setCartItems}) => {
     const removeItem = (product) => {
         const existing = cartItems.find((item) => item.product_id === product.product_id);
 
+        if(!existing) {
+            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+        }
         if (existing.qty === 1) {
             setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
         }
@@ -209,7 +212,7 @@ const HomeScreen = ({cartItems, setCartItems}) => {
                     <CarouselWrapper>
                         <Carousel data-flickity >
                             {discountedProducts.map((product, key) => (
-                                <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} ></Product>
+                                <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                             ))}
                         </Carousel>
                     </CarouselWrapper>
@@ -222,7 +225,7 @@ const HomeScreen = ({cartItems, setCartItems}) => {
                     <ProductsManageAreas>
                         <MainProducts>
                             {products.map((product, key) => (
-                                <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} />
+                                <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems}/>
                             ))}
                         </MainProducts>
 
@@ -232,7 +235,7 @@ const HomeScreen = ({cartItems, setCartItems}) => {
                                 <CarouselWrapper>
                                     <Carousel data-flickity>
                                         {products.map((product, key) => (
-                                            <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} />
+                                            <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
                                     </Carousel>
                                 </CarouselWrapper>

@@ -7,19 +7,20 @@ import { productsAPI } from '../api/api';
 
 const ProductScreen = (props) => {
 
-    const location = useLocation();
-    const cartItems = location.cartItems;
-    const addItem = location.addItem;
-    const removeItem = location.removeItem;
+    //const location = useLocation();
 
-    //const [cartItems, setCartItems] = useState([]);
-    const [product, setProduct] = useState([{product_name: "", product_id: "", product_final_price: 0, product_suppliers: '', product_description: ''}]);
+   // const  cartItemsFunc = location.data.cartItemsFunc;
+    //const addItem = location.data.addItem;
+    //const removeItem = location.data.removeItem;
+    const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+
+    const [product, setProduct] = useState([]); //{ product_name: "", product_id: "", product_final_price: 0, product_suppliers: '', product_description: '' }
     const [productsInCategory, setProductsInCategory] = useState([]);
-    
+
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
         let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
-        if(res.length === 0) {
+        if (res.length === 0) {
             document.location.href = '/'; //* go to main page and refresh
         }
         setProduct(res[0]);
@@ -28,80 +29,94 @@ const ProductScreen = (props) => {
         setProductsInCategory(res2);
     }
 
-    // const addItem = (product) => {
-    //     const existing = cartItems.find((item) => item.product_id === product.product_id);
+    const addItem = (product) => {
+        const existing = cartItems.find((item) => item.product_id === product.product_id);
 
-    //     if (existing) {
-    //         setCartItems(cartItems.map((item) =>
-    //             item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
-    //     }
-    //     else {
-    //         setCartItems([...cartItems, { ...product, qty: 1 }]);
-    //     }
-    // }
+        if (existing) {
+            setCartItems(cartItems.map((item) =>
+                item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
+        }
+        else {
+            setCartItems([...cartItems, { ...product, qty: 1 }]);
+        }
+         // set items in local storage
+         localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }
 
-    // const removeItem = (product) => {
-    //     const existing = cartItems.find((item) => item.product_id === product.product_id);
+    const removeItem = (product) => {
+        const existing = cartItems.find((item) => item.product_id === product.product_id);
 
-    //     if (existing.qty === 1) {
-    //         setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
-    //     }
-    //     else {
-    //         setCartItems(cartItems.map(item =>
-    //             item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
-    //     }
-    // }
+        console.log(`existing`, existing)
+
+        if (!existing){
+            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+        }
+        else if (existing.qty === 1) {
+            console.log(`cartItems`, cartItems)
+            setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+            console.log(`cartItems`, cartItems)
+            //another iteration to get rid of it
+        }
+        else {
+            setCartItems(cartItems.map(item =>
+                item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
+            
+        }
+         // set items in local storage
+         localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }
 
     //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
     useEffect(() => {
         LoadProductAndSuggestions(props.match.params.id)
+        //console.log(`location`, location)
+        console.log(`cartItems`, cartItems)
         console.log("product and suggestions loaded!");
-        console.log(cartItems)
         return () => {
         }
     }, [props.match.params.id])
 
-return (
-    <ContainerPopup>
-        <ProductContainerPopup>
+    return (
+        <ContainerPopup>
+            <ProductContainerPopup>
 
-            <Link className="close-popup-link" to="/">
-                <ClosePopup>X</ClosePopup>
-            </Link>
+                <Link className="close-popup-link" to="/">
+                    <ClosePopup onClick={() => document.location.href = '/'}>X</ClosePopup>
+                </Link>
 
-            <ProductData>
-                <ProductLeftDescription>
-                    <div>{product.product_name}</div>
-                    <div>{product.product_final_price}</div>
-                    <span>{product.product_suppliers}</span>
-                    <div>{product.product_description}</div>
-                    <BtnAddProduct>הוספה לסל</BtnAddProduct>
-                </ProductLeftDescription>
+                <ProductData>
+                    <ProductLeftDescription>
+                        <div>{product.product_name}</div>
+                        <div>{product.product_final_price}</div>
+                        <span>{product.product_suppliers}</span>
+                        <div>{product.product_description}</div>
+                        <BtnAddProduct onClick={() => addItem(product)}>הוספה לסל</BtnAddProduct>
+                    </ProductLeftDescription>
 
-                <ProductContainerRight>
-                    <AddItemIcon>
-                        <Button onClick={() => addItem(product)}>+</Button>
-                        <Button onClick={() => removeItem(product)}>-</Button>
-                    </AddItemIcon>
-                    <ProductItemImage src={product.product_image} alt={product.product_name} />
-                </ProductContainerRight>
-            </ProductData>
+                    <ProductContainerRight>
+                        <AddItemIcon>
+                            <Button onClick={() => addItem(product)}>+</Button>
+                            <Button onClick={() => removeItem(product)}>-</Button>
+                        </AddItemIcon>
+                        <ProductItemImage src={product.product_image} alt={product.product_name} />
+                    </ProductContainerRight>
+                </ProductData>
 
-            <HrLine />
-            <TitleSlider>מוצרים דומים</TitleSlider>
-            <div className="product-slider">
-                <CarouselWrapper>
-                    <Carousel data-flickity>
-                        {productsInCategory.map((product, key) => (
-                            <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} />
-                        ))}
-                    </Carousel>
-                </CarouselWrapper>
-            </div>
+                <HrLine />
+                <TitleSlider>מוצרים דומים</TitleSlider>
+                <div className="product-slider">
+                    <CarouselWrapper>
+                        <Carousel data-flickity>
+                            {productsInCategory.map((product, key) => (
+                                <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} />
+                            ))}
+                        </Carousel>
+                    </CarouselWrapper>
+                </div>
 
-        </ProductContainerPopup>
-    </ContainerPopup >
-)
+            </ProductContainerPopup>
+        </ContainerPopup >
+    )
 }
 
 const ContainerPopup = styled.div`{
@@ -116,6 +131,7 @@ const ContainerPopup = styled.div`{
     justify-content: center;
     align-items: center;
     height: 100vh;
+    backdrop-filter: blur(5px);
 }`
 
 const ProductContainerPopup = styled.div`{

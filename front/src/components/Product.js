@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+
 const Product = (props) => {
-    const { product, addItem, removeItem, cartItems } = props;
+    const { product, addItem, removeItem, cartItems, cartItemsFunc } = props;
+
 
     return (
         <Card key={product.product_id}>
@@ -22,7 +24,16 @@ const Product = (props) => {
                     )}
                 </AddItemIcon>
 
-                <Link to={{pathname: `/product/${product.product_id}`, state:{product, cartItems, addItem, removeItem}}}>
+                <Link to={{
+                    pathname: `/product/${product.product_id}`, 
+                    state:{
+                        cartItems,
+                    },
+                    data:{
+                        cartItemsFunc,
+                        addItem, removeItem,
+                    }
+                }}>
                     <ProductImage src={product.product_image} alt={product.product_name} />
                 </Link>
             </ImageContainer>
