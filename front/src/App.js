@@ -19,40 +19,47 @@ function App () {
   //Take cart items from local storage
   const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
 
+  //*cart item funcs
+  //#region
   const addItem = (product) => {
     const existing = cartItems.find((item) => item.product_id === product.product_id);
 
     if (existing) {
-        setCartItems(cartItems.map((item) =>
-            item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
+      setCartItems(cartItems.map((item) =>
+        item.product_id === product.product_id ? { ...existing, qty: existing.qty + 1 } : item));
+    }
+    else if (product.product_final_price) { //prevents adding unloaded product to cart
+      setCartItems([...cartItems, { ...product, qty: 1 }]);
     }
     else {
-        setCartItems([...cartItems, { ...product, qty: 1 }]);
+      return;
     }
-}
+  }
 
-const removeItem = (product) => {
+  const removeItem = (product) => {
     const existing = cartItems.find((item) => item.product_id === product.product_id);
 
-    if(!existing) { //relevant for ProductScreen page
+    if (!existing) { //relevant for ProductScreen page
       return;
     }
     if (existing.qty === 1) {
-        setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+      setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
     }
     else {
-        setCartItems(cartItems.map(item =>
-            item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
+      setCartItems(cartItems.map(item =>
+        item.product_id === product.product_id ? { ...existing, qty: existing.qty - 1 } : item));
     }
-}
+  }
 
-const completelyRemoveItem = (product) => {
+  const completelyRemoveItem = (product) => {
     const existing = cartItems.find((item) => item.product_id === product.product_id);
 
     if (existing) {
-        setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
+      setCartItems(cartItems.filter((item) => item.product_id !== product.product_id));
     }
-}
+  }
+
+  //#endregion 
 
   return (
     <BrowserRouter>
@@ -65,7 +72,7 @@ const completelyRemoveItem = (product) => {
       <Route path="/register" component={PopUpRegister}></Route>
       <Route path="/login" component={PopUpLogin}></Route>
       <Route path="/product/:id" render={() =>
-        (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem}/>)}>
+        (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} />)}>
       </Route>
       <Route path="/payment">
         <PaymentScreen cartItems={cartItems} setCartItems={setCartItems} />

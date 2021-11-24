@@ -136,7 +136,6 @@ const BtnAddProduct = styled.button`{
 
 const ProductName = styled.div`{
     text-shadow: 0px 0px 2px darkgray;
-    backdrop-filter: blur(1px);
 }`
 
 const RightBlock = styled.div`{

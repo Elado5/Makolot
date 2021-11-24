@@ -134,7 +134,6 @@ const ProductLeftDescription = styled.div`{
     align-items: flex-end;
     justify-content: space-around;
     height: 100%;
-    backdrop-filter: blur(1px);
     
 }`
 
