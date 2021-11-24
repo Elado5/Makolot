@@ -33,7 +33,7 @@ const Category = ({setProductsState}) => {
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
                     <button onClick={showSidebar}>X</button>
-                    {categories.map((category, key) => {
+                    {categories.map && categories.map((category, key) => {
                         return <SidebarCategory key={key}>
                             <SubMenu item={category} setProductsState={setProductsState} />
                         </SidebarCategory>

@@ -12,6 +12,7 @@ import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
 import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
 import AdminHomeScreen from './screens/AdminHomeScreen';
+import PopUpShops from './components/PopUpShops';
 
 function App () {
 
@@ -71,6 +72,7 @@ function App () {
       <Route path="/forgot" component={ForgotPass}></Route>
       <Route path="/register" component={PopUpRegister}></Route>
       <Route path="/login" component={PopUpLogin}></Route>
+      <Route path="/shopsSearch" component={PopUpShops}></Route>
       <Route path="/product/:id" render={() =>
         (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} />)}>
       </Route>

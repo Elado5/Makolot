@@ -1,40 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import Product from './Product';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import { GET } from '../api/fetch';
-import { productsAPI } from '../api/api';
+import { Link, Redirect, useLocation } from 'react-router-dom';
+import Shop from './Shop';
 
-const ProductScreen = ({cartItems, addItem, removeItem}) => {
+const PopUpShops = () => {
 
     const location = useLocation();
-    //console.log(`props.match.params.id`, props.match.params.id)
-    const id = location.state?.id
 
-    const [product, setProduct] = useState([]); //{ product_name: "", product_id: "", product_final_price: 0, product_suppliers: '', product_description: '' }
-    const [productsInCategory, setProductsInCategory] = useState([]);
+    const shop = location?.state?.shops[0]
+    const shops = location?.state?.shops
 
-    //*loads the product by ID and gives recommendations from it's category
-    const LoadProductAndSuggestions = async (id) => {
-        let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
-        if (!res || res.length === 0) {
-            document.location.href = '/'; //* go to main page and refresh
-        }
-        setProduct(res[0]);
-        let productSubCategory = res[0].sub_category_id; //*get the product's category id
-        let res2 = await GET(productsAPI.get_by_sub_category, [productSubCategory]) //*get the item's category as suggestion
-        setProductsInCategory(res2);
-    }
+    if(!shop){
+            //document.location.href = '/'; //* go to main page and refresh
+            return (<Redirect to="/"></Redirect>);
+            }
 
-
-    //*Makes sure the products and product suggestions are loaded only once the id in the address changes.
-    useEffect(() => {
-        LoadProductAndSuggestions(id)
-        console.log(`cartItems`, cartItems)
-        console.log("product and suggestions loaded!");
-        return () => {
-        }
-    }, [id])
+    console.log(`shops`, shops)
 
     return (
         <ContainerPopup>
@@ -46,34 +27,25 @@ const ProductScreen = ({cartItems, addItem, removeItem}) => {
 
                 <ProductData>
                     <ProductLeftDescription>
-                        <ProductBigDetail>{product.product_name}</ProductBigDetail>
-                        {product.product_final_price && <ProductSmallDetail>{product.product_final_price.toFixed(2)}</ProductSmallDetail>}
-                        <ProductSmallDetail>{product.product_suppliers}</ProductSmallDetail>
-                        <ProductSmallDetail>{product.product_description}</ProductSmallDetail>
-                        <BtnAddProduct onClick={() => addItem(product)}>הוספה לסל</BtnAddProduct>
+                        <ProductBigDetail>{shop.grocery_shop_name}</ProductBigDetail>
+                        <ProductSmallDetail>{shop.grocery_shop_city}</ProductSmallDetail>
+                        <ProductSmallDetail>{shop.grocery_shop_opening_times}</ProductSmallDetail>
+                        <ProductSmallDetail>{shop.grocery_shop_phone_number}</ProductSmallDetail>
                     </ProductLeftDescription>
 
-                    <ProductContainerRight>
-                        <AddItemIcon>
-                            <Button onClick={() => addItem(product)}>+</Button>
-                            {<Button onClick={() => removeItem(product)}>-</Button>}
-                        </AddItemIcon>
-                        <ProductItemImage src={product.product_image} alt={product.product_name} />
-                    </ProductContainerRight>
                 </ProductData>
 
                 <HrLine />
-                <TitleSlider>מוצרים דומים</TitleSlider>
+                <TitleSlider>עוד חנויות שנמצאו</TitleSlider>
                 <div className="product-slider">
                     <CarouselWrapper>
                         <Carousel data-flickity>
-                            {productsInCategory.map((product, key) => (
-                                <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} />
+                            {shops.map((shop, key) => (
+                                <Shop shop={shop} key={key} />
                             ))}
                         </Carousel>
                     </CarouselWrapper>
                 </div>
-
             </ProductContainerPopup>
         </ContainerPopup >
     )
@@ -216,5 +188,4 @@ const Carousel = styled.div`{
     height: 335px;
     display: flex;
 }`
-
-export default ProductScreen;
+export default PopUpShops;

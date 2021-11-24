@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ADDRESS_DATA } from '../api/addressesAPI';
 import { shopsAPI } from '../api/api';
-import {GET} from '../api/fetch';
+import { GET } from '../api/fetch';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
 
@@ -13,9 +14,10 @@ const Main = () => {
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
 
     const LoadShopByName = async (city) => {
+        setGroceryShops([]);
         console.log("city search for shop ---> ", city)
         let res = await GET(shopsAPI.get_by_city, [city]);
-        console.log(res); //! why 'validation failed for parameter 'grocery_shop_id'. invalid number.' ?
+        console.log(res);
         setGroceryShops(res);
     }
 
@@ -23,11 +25,11 @@ const Main = () => {
     //Refresh the street suggestions every time the state of the search box is changed.
     useEffect(() => {
         const LoadStreets = async () => {
-            let res; 
-            if(searchStreet === ''){
-               res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
-            }else   
-                res =  await ADDRESS_DATA(10, searchStreet);
+            let res;
+            if (searchStreet === '') {
+                res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
+            } else
+                res = await ADDRESS_DATA(10, searchStreet);
             SetStreets(res)
         }
 
@@ -49,7 +51,7 @@ const Main = () => {
                     <MainElements>
                         <div className="circular">
                             <div className="inner"></div>
-                            <div className="number"> 60 <br/><span className="span-text"> דקות וההזמנה אצלך</span> </div>
+                            <div className="number"> 60 <br /><span className="span-text"> דקות וההזמנה אצלך</span> </div>
 
                             <div className="circle-background">
                                 <div className="circle">
@@ -85,7 +87,12 @@ const Main = () => {
                         }
                     </datalist>
                     <SearchSomeBtn>
-                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => {LoadShopByName(searchStreet)}} />
+                        <Link to={{
+                            pathname: `/shopsSearch`,
+                            state: { shops: groceryShops }
+                        }}>
+                            <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
+                        </Link>
                     </SearchSomeBtn>
 
                 </InputLocationArea>
