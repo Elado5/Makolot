@@ -6,7 +6,7 @@ import { shopsAPI } from '../api/api';
 import { GET } from '../api/fetch';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 
-const Main = () => {
+const Main = (props) => {
 
     const history = useHistory();
 
@@ -14,91 +14,100 @@ const Main = () => {
     const [streets, SetStreets] = useState([]); //State of street suggestions array
     const [searchStreet, setSearchStreet] = useState(''); //state of search box value
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
+    const [moveToShops, setMoveToShops] = useState(false); //
 
     const LoadShopByName = async (city) => {
-        console.log("city search for shop ---> ", city)
-        let res = await GET(shopsAPI.get_by_city, [city]);
-        console.log(res);
-        setGroceryShops(res);
-
-        history.push({
-            pathname: `/shopsSearch`,
-            state: { shops: groceryShops }
-        })
+        let res = [];
+        try {
+            console.log("city search for shop ---> ", city)
+            res = await GET(shopsAPI.get_by_city, [city]);
+            console.log(res);
+        }
+        catch (err) {
+            console.log(err);
+        }
+        finally {
+            history.push({
+                pathname: `/shopsSearch`,
+                state: { shops: res }
+            })
+        }
     }
 
-    //Loads streets from Israel's API
-    //Refresh the street suggestions every time the state of the search box is changed.
-    useEffect(() => {
-        const LoadStreets = async () => {
-            let res;
-            if (searchStreet === '') {
-                res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
-            } else
-                res = await ADDRESS_DATA(10, searchStreet);
-            SetStreets(res)
-        }
 
-        console.log("loading streets");
-        LoadStreets();
-    }, [searchStreet]);
 
-    return (
-        <MainContainer>
-            <VideoContainer>
-                <VideoBox autoPlay muted loop>
-                    <source src="/images/video.mp4" type="video/mp4" />
-                </VideoBox>
-            </VideoContainer>
+//Loads streets from Israel's API
+//Refresh the street suggestions every time the state of the search box is changed.
+useEffect(() => {
+    const LoadStreets = async () => {
+        let res;
+        if (searchStreet === '') {
+            res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
+        } else
+            res = await ADDRESS_DATA(10, searchStreet);
+        SetStreets(res)
+    }
 
-            <RightData>
-                <RightDataMain>
-                    <MainElements>
-                        <div className="circular">
-                            <div className="inner"></div>
-                            <div className="number"> 60 <br /><span className="span-text"> דקות וההזמנה אצלך</span> </div>
+    console.log("loading streets");
+    LoadStreets();
+}, [searchStreet]);
 
-                            <div className="circle-background">
-                                <div className="circle">
-                                    <div className="bar left">
-                                        <div className="progress"></div>
-                                    </div>
-                                    <div className="bar right">
-                                        <div className="progress"></div>
-                                    </div>
+return (
+    <MainContainer>
+        <VideoContainer>
+            <VideoBox autoPlay muted loop>
+                <source src="/images/video.mp4" type="video/mp4" />
+            </VideoBox>
+        </VideoContainer>
+
+        <RightData>
+            <RightDataMain>
+                <MainElements>
+                    <div className="circular">
+                        <div className="inner"></div>
+                        <div className="number"> 60 <br /><span className="span-text"> דקות וההזמנה אצלך</span> </div>
+
+                        <div className="circle-background">
+                            <div className="circle">
+                                <div className="bar left">
+                                    <div className="progress"></div>
+                                </div>
+                                <div className="bar right">
+                                    <div className="progress"></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <TextAreaMain>
-                            <h1>!ההזמנה עוד רגע אצלך</h1>
-                            <h5>
-                                נעים להכיר, אנחנו עמותה חברית כלכלית שבאה להציע <br /> שינוי בעולם הקמעונות בישראל
-                            </h5>
-                            <h4>בחר/י את המרכולת שלך</h4>
-                        </TextAreaMain>
+                    <TextAreaMain>
+                        <h1>!ההזמנה עוד רגע אצלך</h1>
+                        <h5>
+                            נעים להכיר, אנחנו עמותה חברית כלכלית שבאה להציע <br /> שינוי בעולם הקמעונות בישראל
+                        </h5>
+                        <h4>בחר/י את המרכולת שלך</h4>
+                    </TextAreaMain>
 
-                    </MainElements>
-                </RightDataMain>
+                </MainElements>
+            </RightDataMain>
 
-                <InputLocationArea>
-                    <InputSearchLocationMain type="text" list="israelAddresses" value={searchStreet} onChange={e => setSearchStreet(e.target.value)} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
-                    <datalist id="israelAddresses" >
-                        {
-                            streets.map((item) => {
-                                let value = `${item.city_name}, ${item.street_name}`;
-                                return <option>{value}</option>
-                            })
-                        }
-                    </datalist>
-                    <SearchSomeBtn>
-                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
-                    </SearchSomeBtn>
+            <InputLocationArea>
+                <InputSearchLocationMain type="text" list="israelAddresses" value={searchStreet} onChange={e => setSearchStreet(e.target.value)} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
+                <datalist id="israelAddresses" >
+                    {
+                        streets.map((item) => {
+                            let value = `${item.city_name}, ${item.street_name}`;
+                            return <option>{value}</option>
+                        })
+                    }
+                </datalist>
+                <SearchSomeBtn>
+                    <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
+                </SearchSomeBtn>
 
-                </InputLocationArea>
-            </RightData>
-        </MainContainer >
-    )
+            </InputLocationArea>
+        </RightData>
+    </MainContainer >
+)
 }
 
 

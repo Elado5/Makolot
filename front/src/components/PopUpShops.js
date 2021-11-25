@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import Shop from './Shop';
 
 const PopUpShops = () => {
 
     const location = useLocation();
-
+    const history = useHistory();
     let shop = location?.state?.shops[0]
     let shops = location?.state?.shops
     console.log(shop)
     if (!shop) {
         //document.location.href = '/'; //* go to main page and refresh
-        return (<Redirect push to="/" />);
+        // return (<Redirect to="/" />);
+        history.push({
+            pathname: `/`,
+        })
     }
 
     console.log(`shops`, shops)
