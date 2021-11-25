@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import { ADDRESS_DATA } from '../api/addressesAPI';
 import { shopsAPI } from '../api/api';
 import { GET } from '../api/fetch';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 const Main = () => {
+
+    const history = useHistory();
 
     //* States
     const [streets, SetStreets] = useState([]); //State of street suggestions array
@@ -14,11 +16,15 @@ const Main = () => {
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
 
     const LoadShopByName = async (city) => {
-        setGroceryShops([]);
         console.log("city search for shop ---> ", city)
         let res = await GET(shopsAPI.get_by_city, [city]);
         console.log(res);
         setGroceryShops(res);
+
+        history.push({
+            pathname: `/shopsSearch`,
+            state: { shops: groceryShops }
+        })
     }
 
     //Loads streets from Israel's API
@@ -36,7 +42,6 @@ const Main = () => {
         console.log("loading streets");
         LoadStreets();
     }, [searchStreet]);
-
 
     return (
         <MainContainer>
@@ -87,12 +92,7 @@ const Main = () => {
                         }
                     </datalist>
                     <SearchSomeBtn>
-                        <Link to={{
-                            pathname: `/shopsSearch`,
-                            state: { shops: groceryShops }
-                        }}>
-                            <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
-                        </Link>
+                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
                     </SearchSomeBtn>
 
                 </InputLocationArea>

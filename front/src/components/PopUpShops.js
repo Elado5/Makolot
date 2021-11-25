@@ -7,12 +7,12 @@ const PopUpShops = () => {
 
     const location = useLocation();
 
-    const shop = location?.state?.shops[0]
-    const shops = location?.state?.shops
-
+    let shop = location?.state?.shops[0]
+    let shops = location?.state?.shops
+    console.log(shop)
     if (!shop) {
         //document.location.href = '/'; //* go to main page and refresh
-        return (<Redirect to="/"></Redirect>);
+        return (<Redirect push to="/" />);
     }
 
     console.log(`shops`, shops)

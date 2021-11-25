@@ -61,19 +61,6 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
         }, [discountedProductsLoaded])
 
     useEffect(() => {
-        // loadCategories();
-        // loadAddresses();
-        // loadCustomers();
-        // loadCreditCards();
-        // loadShops();
-        // loadManagers();
-        // loadInvoices();
-        // loadOrders();
-        // loadTransactions();
-        // loadProductsInCategory(1);
-        // loadProductsInSubCategory(1);
-        // loadProductDiscount();
-        // loadSubCategories();
     }, [])
 
     return (
@@ -85,7 +72,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                 <ArticleSlider>
                     <CarouselWrapper>
                         <Carousel data-flickity >
-                            {discountedProducts.map((product, key) => (
+                            {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                             ))}
                         </Carousel>
