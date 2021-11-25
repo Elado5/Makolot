@@ -11,15 +11,19 @@ const Product = (props) => {
         <Card key={shop.grocery_shop_id}>
             <CardBody>
                 <RightBlock>
-                        <ProductName>{shop.grocery_shop_name}</ProductName>
+                    <Title>{shop.grocery_shop_name}</Title>
                     
-                    <DiscountedPrice> 
+                    <SubText> 
                         {shop.grocery_shop_city}
-                    </DiscountedPrice>
+                    </SubText>
                     
-                    <Price>
+                    <SubText>
                         {shop.grocery_shop_opening_times}
-                    </Price>
+                    </SubText>
+
+                    <SubText>
+                    {shop.grocery_shop_phone_number}
+                    </SubText>
                 </RightBlock>
             </CardBody>
         </Card>
@@ -29,105 +33,48 @@ const Product = (props) => {
 const Card = styled.div`{
     margin: 1em;
     width: 17em;
-    height: 14.5em;
+    height: 15.5em;
     padding: 10px;
     border-radius: 1.5rem;
-    box-shadow: 0px 8px 12px 0px #c6cbdb;
-    background-color: white;
     direction: ltr;
-    position: relative;
+    position: relative;       
+    box-shadow: 0px 8px 15px 0px rgba(34, 71, 154, 0.5);
+    background: linear-gradient(0deg, rgba(15,75,322,0.2) 0%, rgba(9,9,121,0.1) 35%, rgba(0,125,255,0.2) 100%);
     &:hover {
-        transition: 0.8s ease;
-        box-shadow: 0px 8px 15px 0px rgba(25, 61, 224, 0.4);
+        box-shadow: 0px 8px 15px 0px rgba(44, 71, 154, 0.8);
+        transition: 0.53s ease;
     }
 }`
 
-const ImageContainer = styled.div`{
-    display: flex;
-    justify-content: center;
-}`
-
-const ProductImage = styled.img`{
-    height: 9em;
-}`
-
-const AddItemIcon = styled.div`{
-    display: flex;
-    flex-direction: row;
-    font-size: xx-large;
-    color: #27407f;
-    cursor: pointer;
-    position: absolute;
-    left: 13px;
-}`
-
-const Button = styled.button`{
-    border: none;
-    background-color: transparent;
-    color: #27407f;
-    cursor: pointer;
-}`
-
-const QtyCart = styled.div`{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}`
 
 const CardBody = styled.div`{
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    height: 65px;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    width: 100%;
 }`
 
-const BtnAddProduct = styled.button`{
-    background-color: #27407f;
-    color: aliceblue;
-    border: none;
-    border-radius: 25px;
-    height: 2.5em;
-    width: 10em;
-    font-family: system-ui;
-    cursor: pointer;
-    :hover{
-        transition: 0.5s ease;
-        box-shadow: 0px 0px 4px navy;
-    }
-    :active{
-        transition: 1s ease;
-        background-color: #14257f;
-        box-shadow: 0px 0px 7px navy;
-    }
-}`
 
-const ProductName = styled.div`{
-    text-shadow: 0px 0px 2px darkgray;
+const Title = styled.div`{
+    font-size: 2.5rem;
+    padding-bottom: 0.5rem;
+    text-shadow: 0px 0px 3px darkgray;
 }`
 
 const RightBlock = styled.div`{
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    width: 6em;
+    align-items: center;
+    text-align: center;
+    width: 50%;
+    height: 50%;
 }`
 
-const DiscountedPrice = styled.div`{
-    text-decoration: line-through darkblue;
-    color: #39668f;
-    font-size: 13px;
-    font-weight: light;
-}`
-
-const Price = styled.div`{
+const SubText = styled.div`{
     color: #27407f;
-    font-size: 23px;
+    font-size: 1.5rem;
     font-weight: bold;
-}`
-
-const Currency = styled.span`{
-    font-size: 15px;
 }`
 
 export default Product;

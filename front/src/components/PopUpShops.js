@@ -10,10 +10,10 @@ const PopUpShops = () => {
     const shop = location?.state?.shops[0]
     const shops = location?.state?.shops
 
-    if(!shop){
-            //document.location.href = '/'; //* go to main page and refresh
-            return (<Redirect to="/"></Redirect>);
-            }
+    if (!shop) {
+        //document.location.href = '/'; //* go to main page and refresh
+        return (<Redirect to="/"></Redirect>);
+    }
 
     console.log(`shops`, shops)
 
@@ -24,19 +24,8 @@ const PopUpShops = () => {
                 <Link className="close-popup-link" to="/">
                     <ClosePopup>X</ClosePopup>
                 </Link>
-
-                <ProductData>
-                    <ProductLeftDescription>
-                        <ProductBigDetail>{shop.grocery_shop_name}</ProductBigDetail>
-                        <ProductSmallDetail>{shop.grocery_shop_city}</ProductSmallDetail>
-                        <ProductSmallDetail>{shop.grocery_shop_opening_times}</ProductSmallDetail>
-                        <ProductSmallDetail>{shop.grocery_shop_phone_number}</ProductSmallDetail>
-                    </ProductLeftDescription>
-
-                </ProductData>
-
+                <TitleSlider> חנויות שנמצאו</TitleSlider>
                 <HrLine />
-                <TitleSlider>עוד חנויות שנמצאו</TitleSlider>
                 <div className="product-slider">
                     <CarouselWrapper>
                         <Carousel data-flickity>
@@ -67,14 +56,13 @@ const ContainerPopup = styled.div`{
 
 const ProductContainerPopup = styled.div`{
     background-color: #ffffff;
-    height: 52em;
-    width: 55%;
+    height: 48em;
+    width: 75%;
     display: flex;
     border-radius: 40px;
-    display: flex;
     align-self: center;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
     position: relative;
 }`
 
@@ -83,81 +71,9 @@ const ClosePopup = styled.button`{
     border-radius: 50%;
     height: 2em;
     width: 2em;
-}`
-
-const ProductData = styled.div`{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}`
-
-const ProductLeftDescription = styled.div`{
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    text-align: right;
-    align-items: flex-end;
-    justify-content: space-around;
-    height: 100%;
-    
-}`
-
-const ProductBigDetail = styled.div`{
-    font-size: 1.8em;
-    color: #19277f;
-    text-shadow: 0px 0px 2px darkgray;
-}`
-
-const ProductSmallDetail = styled.div`{
-    font-size: 1.2em;
-    color: #27407f;
-}`
-
-const BtnAddProduct = styled.button`{
-    background-color: #27407f;
-    color: aliceblue;
-    border: none;
-    border-radius: 25px;
-    height: 2.5em;
-    width: 10em;
-    font-family: system-ui;
     cursor: pointer;
-}`
-
-const ProductContainerRight = styled.div`{
-
-}`
-
-const AddItemIcon = styled.div`{
-    display: flex;
-    flex-direction: row;
-    font-size: xx-large;
-    color: #27407f;
-    cursor: pointer;
-    position: absolute;
-    left: 13px;
-}`
-
-const Button = styled.button`{
-    border: none;
-    font-size: 3rem;
-    background-color: transparent;
-    color: #27407f;
-    cursor: pointer;
-    &:hover{
-        transition: 0.5s ease;
-        font-size: 3.2rem;
-        text-shadow: 0px 0px 4px blue;
-    }
-    &:active{
-        transition: 0.5s ease;
-        text-shadow: 0px 0px 7px blue;
-    }
-}`
-
-const ProductItemImage = styled.img`{
-    height: 20em;
+    margin-left: 3%;
+    margin-bottom: -1%;
 }`
 
 const HrLine = styled.hr`{
@@ -166,26 +82,23 @@ const HrLine = styled.hr`{
 
 const TitleSlider = styled.div`{
     display: flex;
-    justify-content: flex-end;
-    font-size: 35px;
+    justify-content: center;
+    font-size: 5.3rem;
     color: #27407f;
+    text-shadow: 0px 0px 3px darkgray;
     font-weight: 500;
-    margin-right: 30px;
 }`
 
 const CarouselWrapper = styled.div`{
-    height: 30vh;
-  background-color: #ffffff;
-  box-shadow: 0px;
-  border-radius: 19px;
+    height: 40vh;
+    background-color: #ffffff;
+    box-shadow: 0px;
+    border-radius: 19px;
 }`
 
 const Carousel = styled.div`{
-    top: 26%;
     transform: translateX(-0.5%);
-    width: 100%;
-    height: auto;
-    height: 335px;
+    transform: translateY(15%);
     display: flex;
 }`
 export default PopUpShops;
