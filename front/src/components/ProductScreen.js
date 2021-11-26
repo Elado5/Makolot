@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 
-const ProductScreen = ({cartItems, addItem, removeItem}) => {
+const ProductScreen = ({ cartItems, addItem, removeItem }) => {
 
     const location = useLocation();
     //console.log(`props.match.params.id`, props.match.params.id)
@@ -46,8 +46,14 @@ const ProductScreen = ({cartItems, addItem, removeItem}) => {
 
                 <ProductData>
                     <ProductLeftDescription>
-                        <ProductBigDetail>{product.product_name}</ProductBigDetail>
-                        {product.product_final_price && <ProductSmallDetail>{product.product_final_price.toFixed(2)}</ProductSmallDetail>}
+                        <ProductBigDetail>{product.product_name}
+                            <HrLine2 />
+                        </ProductBigDetail>
+                        {product.product_final_price &&
+                            <ProductSmallDetail>
+                                <Currency> ₪ </Currency>
+                                {product.product_final_price.toFixed(2)}
+                            </ProductSmallDetail>}
                         <ProductSmallDetail>{product.product_suppliers}</ProductSmallDetail>
                         <ProductSmallDetail>{product.product_description}</ProductSmallDetail>
                         <BtnAddProduct onClick={() => addItem(product)}>הוספה לסל</BtnAddProduct>
@@ -138,7 +144,8 @@ const ProductBigDetail = styled.div`{
 }`
 
 const ProductSmallDetail = styled.div`{
-    font-size: 1.2em;
+    border-bottom: 2px #27407f15 solid;
+    font-size: 1.3em;
     color: #27407f;
 }`
 
@@ -191,7 +198,9 @@ const ProductItemImage = styled.img`{
 const HrLine = styled.hr`{
     width: 85%;
 }`
-
+const HrLine2 = styled.hr`{
+    width: 95%;
+}`
 const TitleSlider = styled.div`{
     display: flex;
     justify-content: flex-end;
@@ -215,6 +224,10 @@ const Carousel = styled.div`{
     height: auto;
     height: 335px;
     display: flex;
+}`
+
+const Currency = styled.span`{
+    font-size: 1rem;
 }`
 
 export default ProductScreen;

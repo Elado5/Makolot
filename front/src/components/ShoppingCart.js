@@ -6,30 +6,35 @@ const ShoppingCard = (props) => {
     const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen } = props;
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
 
+    //* get currently logged in user if it exists
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
     const logOutFunc = () => {
-
+        sessionStorage.removeItem(`currentLoggedIn`);
+        alert('logged out succesfully!')
+        window.location = "/";
     }
 
     return (
         <ShoppingCardContainer>
             <RegLogArea>
-                <Link to={"/register"}>הרשמה</Link>
+                {!loggedUser && <Link to={"/register"}>הרשמה</Link>}
                 <LoginArea>
                     <div>
                         {/* {userData ? */}
-                        <div>
+                        {loggedUser && <div>
                             <div className="user-name">
-                                <span> שלום </span>
-                                <Link to="#"> Name </Link>
+                                <div> שלום </div>
+                                <Link to="#"> {loggedUser.customer_first_name} {loggedUser.customer_last_name} </Link>
                             </div>
                             <Link onClick={logOutFunc} to="#logout"> התנתק </Link>
                         </div>
-                        <div>
-                            <span>שלום אורח</span>
+                        }
+                        {!loggedUser && <div>
+                            <div>שלום אורח</div>
                             <Link to={"/login"}>התחבר</Link>
                         </div>
-                        {/* } */}
+                        }
                     </div>
                     <i className="user-icon fa fa-user-o" aria-hidden="true" />
                 </LoginArea>
@@ -89,8 +94,8 @@ const ShoppingCard = (props) => {
                                         }}>
                                             <img className="product-image-basket"
                                                 src={item.product_image}
-                                                alt={item.product_name} />                                        
-                                                </Link>
+                                                alt={item.product_name} />
+                                        </Link>
 
 
                                     </div>
@@ -104,14 +109,19 @@ const ShoppingCard = (props) => {
             </ShoppingItems>
 
             <div className="pay-area">
-
-                <Link to={{
-                    pathname: "/payment",
-                    propsSearch: cartItems
-                }}>
-                    <button className="btn-pay">לתשלום</button>
-                </ Link>
-
+                {loggedUser &&
+                    <Link to={{
+                        pathname: "/payment",
+                        propsSearch: cartItems
+                    }}>
+                        <button className="btn-pay">לתשלום</button>
+                    </ Link>
+                }
+                {!loggedUser &&
+                    <button className="btn-pay"
+                        onClick={() => alert("Please login to make a purchase.\n.אנא התחברו על מנת לבצע הזמנה")}>לתשלום
+                    </button>
+                }
                 <hr />
                 <button onClick={() => setOpen(!open)} className="btn-close-basket">^</button>
             </div>

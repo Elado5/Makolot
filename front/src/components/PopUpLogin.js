@@ -1,26 +1,34 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import {customersAPI} from '../api/api';
-import {GET, POST} from '../api/fetch';
+import { customersAPI } from '../api/api';
+import { GET, POST } from '../api/fetch';
 
 const PopUpLogin = (props) => {
+
+    //* get currently logged in user if it exists
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
+
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
     // const link = props.location.search ? props.location.search.split('=')[1] : '/';
 
+    if (loggedUser) {
+        //* if a user is already logged in - redirect to main page 
+        return (<Redirect to='/' />);
+    }
 
     const LoginCustomer = async (email, password) => {
-        let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password});
+        let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password });
         //תנאי התחברות?
         console.log(res);
-        
+
         if (res.customer_email && res.customer_password) {
             alert("login succesful.")
-            
+            sessionStorage.setItem(`currentLoggedIn`, JSON.stringify(res));
             window.location = '/';
         }
-        else{
+        else {
             alert("login failed - email or password do not exist.")
         }
         //TODO login stuff
@@ -30,13 +38,13 @@ const PopUpLogin = (props) => {
         event.preventDefault();
         console.log("log user:" + email, pass)
         if (/([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4})$/.test(email) === false) {
-			alert('Please enter a valid email address and try again.')
-		}
+            alert('Please enter a valid email address and try again.')
+        }
         else if (/^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,})$/.test(pass) === false) {
-			alert('Please enter a valid password and try again.')
-		}
-        else{
-        LoginCustomer(email, pass);
+            alert('Please enter a valid password and try again.')
+        }
+        else {
+            LoginCustomer(email, pass);
         }
     }
 
@@ -61,13 +69,13 @@ const PopUpLogin = (props) => {
                             <InputsReg>
                                 <div>
                                     <PopupLogAreaInput onChange={event => setEmail(event.target.value)}
-                                        type="text" id="user_email" placeholder="דואר אלקטרוני" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                                        type="text" id="user_email" placeholder="דואר אלקטרוני" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
 
                                 <div>
                                     <PopupLogAreaInput onChange={event => setPassword(event.target.value)}
-                                        type="password" id="user_pass" placeholder="סיסמה"/>
+                                        type="password" id="user_pass" placeholder="סיסמה" />
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
                                 {/* {error && <div className="error-input">{error}</div>} */}

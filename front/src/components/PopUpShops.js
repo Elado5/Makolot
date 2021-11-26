@@ -32,7 +32,7 @@ const PopUpShops = () => {
                 <div className="product-slider">
                     <CarouselWrapper>
                         <Carousel data-flickity>
-                            {shops.map((shop, key) => (
+                            {shops && shops.map((shop, key) => (
                                 <Shop shop={shop} key={key} />
                             ))}
                         </Carousel>

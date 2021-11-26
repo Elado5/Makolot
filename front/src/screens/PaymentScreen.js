@@ -7,13 +7,21 @@ import { Link, Redirect } from 'react-router-dom';
 
 const PaymentScreen = ({ cartItems, setCartItems }) => {
 
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
+    
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
     const delieveryPrice = 0;
-    const [fullName, setFullName] = useState('');
-    const [phone, setPhone] = useState('');
+    const [fullName, setFullName] = useState(`${loggedUser.customer_first_name} ${loggedUser.customer_last_name}`);
+    const [phone, setPhone] = useState(loggedUser.customer_phone_number);
 
     const removeItem = (event) => {
         console.log(event.value);
+    }
+
+    if(cartItems.length === 0){
+        return(
+            <Redirect to={"/"}/>
+        )
     }
 
     return (
@@ -32,14 +40,14 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             <InputUserTitle>
                                 <RedSpan> * </RedSpan> טלפון
                             </InputUserTitle>
-                            <UserInput type="text" onChange={event => setPhone(event.target.value)} placeholder={data.customer_data.map(x => x.customer_phone)} />
+                            <UserInput type="text" onChange={event => setPhone(event.target.value)} placeholder={phone} />
                         </InputUserData>
 
                         <InputUserData>
                             <InputUserTitle>
                                 <RedSpan> * </RedSpan> שם מלא
                             </InputUserTitle>
-                            <UserInput type="text" onChange={event => setFullName(event.target.value)} placeholder={data.customer_data.map(x => x.customer_name)} />
+                            <UserInput type="text" onChange={event => setFullName(event.target.value)} placeholder={fullName} />
                         </InputUserData>
 
 
