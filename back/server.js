@@ -12,6 +12,7 @@ app.use(cors());
 //What's before the require is the url addition
 app.use("/api/Reseed", require("./Routes/Reseed"));
 app.use("/api/Addresses", require("./Routes/AddressesRoute"));
+app.use("/api/Admins", require("./Routes/AdminsRoute"));
 app.use("/api/Customers", require("./Routes/CustomerRoute"));
 app.use("/api/CAC", require("./Routes/CACRoute"));
 app.use("/api/CreditCards", require("./Routes/CreditCardsRoute"));
