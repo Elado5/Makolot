@@ -1044,3 +1044,35 @@ as
 	delete from [dbo].[order_details]
 	where [order_id] = @order_id
 go
+
+create table Admins (
+
+    admin_id int IDENTITY(1,1) not null primary key,
+    admin_email NVARCHAR(150) not null,
+    admin_password NVARCHAR(150) not null
+)
+go
+
+create proc add_admin
+    @admin_email NVARCHAR(150),
+    @admin_password NVARCHAR(150),
+    @admin_id int output
+as
+    insert into [dbo].Admins([admin_email], [admin_password])
+    values (@admin_email, @admin_password)
+    set @admin_id = @@IDENTITY
+go
+
+create proc login_admin
+    @admin_email NVARCHAR(150),
+    @admin_password NVARCHAR(150)
+as
+	select * from admins where admin_email = @admin_email and admin_password = @admin_password
+go
+
+create proc delete_admin
+	@admin_id int
+as
+	delete from admins
+	where [admin_id] = @admin_id
+go

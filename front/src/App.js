@@ -13,13 +13,13 @@ import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
 import AdminHomeScreen from './screens/AdminHomeScreen';
 import PopUpShops from './components/PopUpShops';
+import AdminLogin from './screens/AdminLoginScreen';
 
 function App () {
 
   //*State
   //Take cart items from local storage
   const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
-
   //*cart item funcs
   //#region
   const addItem = (product) => {
@@ -65,6 +65,9 @@ function App () {
   return (
     <BrowserRouter>
       <Route path="/admin" component={AdminHomeScreen}></Route>
+      <Route exact path="/AdminLogin">
+        <AdminLogin />
+      </Route>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>
