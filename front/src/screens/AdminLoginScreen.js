@@ -19,7 +19,7 @@ const AdminLogin = () => {
 
     const LoginAdmin = async (email, password) => {
         let res = await POST(adminsAPI.post_login, { admin_email: email, admin_password: password });
-        //תנאי התחברות?
+        
         console.log(res);
 
         if (res.admin_email && res.admin_password) {
@@ -30,7 +30,6 @@ const AdminLogin = () => {
         else {
             alert("login failed - email or password do not exist.")
         }
-        //TODO login stuff
     }
 
     const submitFunc = (event) => {
@@ -46,15 +45,6 @@ const AdminLogin = () => {
             LoginAdmin(email, pass);
         }
     }
-
-
-
-
-    // useEffect(() => {
-    //     if (userData) {
-    //         props.history.push(link);
-    //     }
-    // }, [userData, props.history, link]);
 
     return (
         <form onSubmit={submitFunc}>
