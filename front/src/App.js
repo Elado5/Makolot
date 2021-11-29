@@ -65,7 +65,7 @@ function App () {
 
   return (
     <BrowserRouter>
-      <Route path="/admin" component={AdminHomeScreen}></Route>
+      <Route path="/adminPage" component={AdminHomeScreen}></Route>
       <Route exact path="/AdminLogin">
         <AdminLogin/>
       </Route>

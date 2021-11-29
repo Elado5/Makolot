@@ -40,7 +40,7 @@ const ShoppingCard = (props) => {
                         }
                         {loggedAdmin && <div>
                             <div>שלום אדמין</div>
-                            <Link to="#"> מעבר לדף מנהל </Link>
+                            <Link to="/adminPage"> מעבר לדף מנהל </Link>
                             <Link onClick={adminLogOutFunc} to="/"> התנתק </Link>
                         </div>
                         }
