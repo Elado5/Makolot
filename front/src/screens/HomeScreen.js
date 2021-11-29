@@ -13,7 +13,7 @@ import { productsAPI} from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 // get items from local storage
-const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRemoveItem}) => {
+const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRemoveItem, loggedUser, loggedAdmin}) => {
     //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
     const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
@@ -65,7 +65,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
 
     return (
         <div>
-            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem= {completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}></Navbar>
+            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem= {completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}> loggedUser={loggedUser} loggedAdmin={loggedAdmin}</Navbar>
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>

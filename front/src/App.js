@@ -20,6 +20,7 @@ function App () {
   //*State
   //Take cart items from local storage
   const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+
   //*cart item funcs
   //#region
   const addItem = (product) => {
@@ -66,7 +67,7 @@ function App () {
     <BrowserRouter>
       <Route path="/admin" component={AdminHomeScreen}></Route>
       <Route exact path="/AdminLogin">
-        <AdminLogin />
+        <AdminLogin/>
       </Route>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
@@ -82,7 +83,10 @@ function App () {
       <Route path="/payment">
         <PaymentScreen cartItems={cartItems} setCartItems={setCartItems} />
       </Route>
-      <HomeScreen path="/" exact cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}></HomeScreen>
+      <HomeScreen path="/" exact
+        cartItems={cartItems} setCartItems={setCartItems} addItem={addItem}
+        removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}>
+      </HomeScreen>
     </BrowserRouter>
   );
 }

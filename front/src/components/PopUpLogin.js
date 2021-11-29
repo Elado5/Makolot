@@ -6,6 +6,8 @@ import { GET, POST } from '../api/fetch';
 
 const PopUpLogin = (props) => {
 
+        //* get currently logged in user if it exists
+        const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
     //* get currently logged in user if it exists
     const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
@@ -13,15 +15,13 @@ const PopUpLogin = (props) => {
     const [pass, setPassword] = useState('');
     // const link = props.location.search ? props.location.search.split('=')[1] : '/';
 
-    if (loggedUser) {
+    if (loggedUser || loggedAdmin) {
         //* if a user is already logged in - redirect to main page 
         return (<Redirect to='/' />);
     }
 
     const LoginCustomer = async (email, password) => {
         let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password });
-        //תנאי התחברות?
-        console.log(res);
 
         if (res.customer_email && res.customer_password) {
             alert("login succesful.")
@@ -47,15 +47,6 @@ const PopUpLogin = (props) => {
             LoginCustomer(email, pass);
         }
     }
-
-
-
-
-    // useEffect(() => {
-    //     if (userData) {
-    //         props.history.push(link);
-    //     }
-    // }, [userData, props.history, link]);
 
     return (
         <form onSubmit={submitFunc}>

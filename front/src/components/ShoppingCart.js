@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ShoppingCard = (props) => {
-    const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen } = props;
+    const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen} = props;
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
 
-    //* get currently logged in user if it exists
+
+    //* get currently logged in admin if it exists
+    const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
+    //*get currently logged in user if it exists
     const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
     const logOutFunc = () => {
@@ -14,14 +17,19 @@ const ShoppingCard = (props) => {
         alert('logged out succesfully!')
         window.location = "/";
     }
+    const adminLogOutFunc = () => {
+        sessionStorage.removeItem(`adminLoggedIn`);
+        alert('logged out admin succesfully!')
+        window.location = "/";
+    }
 
     return (
         <ShoppingCardContainer>
             <RegLogArea>
-                {!loggedUser && <Link to={"/register"}>הרשמה</Link>}
-                <LoginArea>
+                {!loggedUser && !loggedAdmin && <Link to={"/register"}>הרשמה</Link>}
+                {(loggedUser || loggedAdmin) && <div id="filler for styling"></div>}
+                <LoginArea loggedUser={loggedUser} loggedAdmin={loggedAdmin}>
                     <div>
-                        {/* {userData ? */}
                         {loggedUser && <div>
                             <div className="user-name">
                                 <div> שלום </div>
@@ -30,7 +38,13 @@ const ShoppingCard = (props) => {
                             <Link onClick={logOutFunc} to="#logout"> התנתק </Link>
                         </div>
                         }
-                        {!loggedUser && <div>
+                        {loggedAdmin && <div>
+                            <div>שלום אדמין</div>
+                            <Link to="#"> מעבר לדף מנהל </Link>
+                            <Link onClick={adminLogOutFunc} to="/"> התנתק </Link>
+                        </div>
+                        }
+                        {!loggedUser && !loggedAdmin && <div>
                             <div>שלום אורח</div>
                             <Link to={"/login"}>התחבר</Link>
                         </div>
@@ -44,7 +58,6 @@ const ShoppingCard = (props) => {
             <ShoppingItems>
                 <ShipTime>
                     <div>
-                        circlecirclecircle
                     </div>
                 </ShipTime>
 
@@ -159,7 +172,7 @@ const LoginArea = styled.div`{
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${loggedUser => loggedUser ? "space-between" : "right"};
   color: #27407f;
   font-weight: 500;
   width: 123px;

@@ -8,11 +8,13 @@ const AdminLogin = () => {
 
     //* get currently logged in user if it exists
     const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
+    //*get currently logged in user if it exists
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
 
-    if (loggedAdmin) {
+    if (loggedAdmin || loggedUser) {
         //* if a user is already logged in - redirect to main page 
         return (<Redirect to='/' />);
     }
@@ -82,6 +84,7 @@ const AdminLogin = () => {
     )
 }
 
+
 const ContainerPopup = styled.div`{
     position: fixed;
     z-index: 3;
@@ -89,7 +92,7 @@ const ContainerPopup = styled.div`{
     left: 0;
     bottom: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
