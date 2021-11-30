@@ -45,7 +45,6 @@ const AdminHomeScreen = () => {
     const DeleteItem = async (id) => {
         try{
         let res = await DELETE(productsAPI.delete_product, [id]);
-        alert("product deleted.")
         loadProducts(res);
         }
         catch(err){
@@ -98,15 +97,15 @@ const AdminHomeScreen = () => {
                         {products && products.map((product, key) => {
                             return (
                                 <ProductLine>
-                                    <span>{product.product_id}</span>
-                                    <img src={product.product_image}/>
+                                    <span>{key}</span>
+                                    <img src={product.product_image} alt={product.product_name}/>
                                     <span>{product.product_name}</span>
                                     {product.isActive && <Active>ACTIVE</Active>}
                                     {!product.isActive && <Inactive>INACTIVE</Inactive>}
                                     <span>update</span>
-                                    {product.isActive && <Activation onClick={() => {DeactivateItem(product.product_id)}}>deactivate</Activation>}
-                                    {!product.isActive && <Activation onClick={() => {ActivateItem(product.product_id)}}>activate</Activation>}
-                                    <Delete>delete</Delete>
+                                    {product.isActive && <Hover onClick={() => {DeactivateItem(product.product_id)}}>deactivate</Hover>}
+                                    {!product.isActive && <Hover onClick={() => {ActivateItem(product.product_id)}}>activate</Hover>}
+                                    <Delete onClick={() => {DeleteItem(product.product_id)}}>delete</Delete>
                                 </ProductLine>
                             )
                         })}
@@ -165,16 +164,20 @@ const ProductLine = styled.div`{
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid black;
-    height: 3em;
+    height: 5em;
     width: 75vh;
     background-color: rgba(255, 255, 255, 0.95);
     img{
         width: 2.5rem;
         height: 20px:
+        justify-content: left;
+    }
+    span{
+        width: 15rem;
     }
 
 }`
@@ -186,7 +189,7 @@ const Inactive = styled.span`{
     color: red;
 }`
 
-const Activation = styled.span`{
+const Hover = styled.span`{
     cursor: pointer;
     :hover{
         text-decoration: underline;
@@ -195,5 +198,9 @@ const Activation = styled.span`{
 
 const Delete = styled.span`{
     color: darkred;
+    cursor: pointer;
+    :hover{
+        text-decoration: underline;
+    }
 }`
 export default AdminHomeScreen;
