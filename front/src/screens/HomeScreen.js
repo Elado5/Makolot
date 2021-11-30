@@ -85,7 +85,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                 <ProductsManage>
                     <ProductsManageAreas>
                         <MainProducts>
-                            {products.map((product, key) => (
+                            {products && products.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems}/>
                             ))}
                         </MainProducts>
@@ -95,7 +95,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                             <ArticleSlider>
                                 <CarouselWrapper>
                                     <Carousel data-flickity>
-                                        {products.map((product, key) => (
+                                        {products && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
                                     </Carousel>

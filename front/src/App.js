@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './components/ProductScreen';
 import PopUpRegister from './components/PopUpRegister';
@@ -13,7 +13,8 @@ import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
 import AdminHomeScreen from './screens/AdminHomeScreen';
 import PopUpShops from './components/PopUpShops';
-import AdminLogin from './screens/AdminLoginScreen';
+import AdminLogin from './components/admin/PopUpAdminLogin';
+import AdminProducts from './components/admin/AdminProducts';
 
 function App () {
 
@@ -65,10 +66,20 @@ function App () {
 
   return (
     <BrowserRouter>
-      <Route path="/adminPage" component={AdminHomeScreen}></Route>
-      <Route exact path="/AdminLogin">
-        <AdminLogin/>
+      <Switch>
+        <Route path="/adminPage" component={AdminHomeScreen}></Route>
+        <Route exact path="/AdminLogin">
+          <AdminLogin />
+        </Route>
+        <Route path="/payment">
+        <PaymentScreen cartItems={cartItems} setCartItems={setCartItems} />
       </Route>
+        <HomeScreen path="/"
+            cartItems={cartItems} setCartItems={setCartItems} addItem={addItem}
+            removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}>
+          </HomeScreen>
+      </Switch>
+      <Route path="/adminPage/products" component={AdminProducts}></Route>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>
@@ -80,13 +91,8 @@ function App () {
       <Route path="/product/:id" render={() =>
         (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} />)}>
       </Route>
-      <Route path="/payment">
-        <PaymentScreen cartItems={cartItems} setCartItems={setCartItems} />
-      </Route>
-      <HomeScreen path="/" exact
-        cartItems={cartItems} setCartItems={setCartItems} addItem={addItem}
-        removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}>
-      </HomeScreen>
+
+
     </BrowserRouter>
   );
 }

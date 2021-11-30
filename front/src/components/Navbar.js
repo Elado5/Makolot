@@ -44,7 +44,7 @@ const Navbar = (props) => {
         <Nav>
             <ContainerLeft>
                 <Link to="/">
-                    <NavImg alt="logo" src="/images/logo.png" onClick={ () => {document.location.href = '/'}}/>
+                    <NavImg alt="logo" src="/images/logo.png" onClick={() => { document.location.href = '/' }} />
                 </Link>
 
                 <BtnBasket onClick={() => setOpen(!open)}>
@@ -58,7 +58,7 @@ const Navbar = (props) => {
 
                 {open &&
                     <DropdownShoppingCart>
-                        <ShoppingCart cartItems={cartItems} addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} open={open} setOpen={setOpen} loggedUser={loggedUser} loggedAdmin={loggedAdmin}/>
+                        <ShoppingCart cartItems={cartItems} addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} open={open} setOpen={setOpen} loggedUser={loggedUser} loggedAdmin={loggedAdmin} />
                     </DropdownShoppingCart>
                 }
 
