@@ -14,7 +14,7 @@ const AdminHomeScreen = () => {
     const [verified, setVerified] = useState(false);
     const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
 
-    
+
     const [products, setProducts] = useState([]);
     const [productsLoaded, setProductsLoaded] = useState(false);
     const loadProducts = async () => {
@@ -23,7 +23,7 @@ const AdminHomeScreen = () => {
     }
 
     const ActivateItem = async (id) => {
-        try{
+        try {
             let res = await PUT(productsAPI.put_activate, [id]);
             loadProducts(res);
         }
@@ -33,7 +33,7 @@ const AdminHomeScreen = () => {
     }
 
     const DeactivateItem = async (id) => {
-        try{
+        try {
             let res = await PUT(productsAPI.put_deactivate, [id]);
             loadProducts(res);
         }
@@ -43,11 +43,11 @@ const AdminHomeScreen = () => {
     }
 
     const DeleteItem = async (id) => {
-        try{
-        let res = await DELETE(productsAPI.delete_product, [id]);
-        loadProducts(res);
+        try {
+            let res = await DELETE(productsAPI.delete_product, [id]);
+            loadProducts(res);
         }
-        catch(err){
+        catch (err) {
             console.error(`err`, err)
         }
     }
@@ -98,14 +98,14 @@ const AdminHomeScreen = () => {
                             return (
                                 <ProductLine>
                                     <span>{key}</span>
-                                    <img src={product.product_image} alt={product.product_name}/>
-                                    <span>{product.product_name}</span>
+                                    <span><img src={product.product_image} alt={product.product_name} /></span>
+                                    <ProductName>{product.product_name}</ProductName>
                                     {product.isActive && <Active>ACTIVE</Active>}
                                     {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                                    <span>update</span>
-                                    {product.isActive && <Hover onClick={() => {DeactivateItem(product.product_id)}}>deactivate</Hover>}
-                                    {!product.isActive && <Hover onClick={() => {ActivateItem(product.product_id)}}>activate</Hover>}
-                                    <Delete onClick={() => {DeleteItem(product.product_id)}}>delete</Delete>
+                                    <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                                    {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
+                                    {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
+                                    <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
                                 </ProductLine>
                             )
                         })}
@@ -151,7 +151,7 @@ const PContainer = styled.div`{
     position: fixed;
     justify-content: center;
     align-items: center;
-    z-index: 5;
+    z-index: 3;
     left: 17%;
     top: 12%;
     width: 75vh;
@@ -182,10 +182,17 @@ const ProductLine = styled.div`{
 
 }`
 
+const ProductName = styled.span`{
+    text-align: center;
+    padding-right: 1rem;
+}`
+
 const Active = styled.span`{
+    text-align: center;
     color: green;
 }`
 const Inactive = styled.span`{
+    text-align: center;
     color: red;
 }`
 
@@ -199,6 +206,7 @@ const Hover = styled.span`{
 const Delete = styled.span`{
     color: darkred;
     cursor: pointer;
+    text-align: center;
     :hover{
         text-decoration: underline;
     }
