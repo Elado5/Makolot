@@ -21,7 +21,8 @@ const AdminProductScreen = (props) => {
 
 	const UpdateProduct = async () => {
 		console.log("product update state to send: ", state);
-		let res = await PUT(productsAPI.put_update, state);
+
+		let res = await PUT(productsAPI.put_update, [props.match.params.id], [state]);
 		console.log("product update res: ", res); //see if it worked
 
         if(res && res.product_id){
@@ -36,8 +37,9 @@ const AdminProductScreen = (props) => {
         useEffect(() => {
             const getProductDetails = async () => {
                 let res = await GET(productsAPI.get_by_id, [props.match.params.id]);
-                if(res.product_id);
+                if(res && res.product_id){
                 setState(res[0]);
+                }
                 console.log(`state`, state)
             }
 
