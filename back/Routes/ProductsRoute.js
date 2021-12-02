@@ -7,7 +7,7 @@ let route = express.Router();
 
 const fileStorageEngine = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, "./ProductImages");
+		cb(null, "../front/public/product-img");
 	},
 	filename: (req, file, cb) => {
 		cb(null, Date.now() + "--" + file.originalname);
@@ -317,6 +317,7 @@ route.put(`/update/:id`, async (req, res) => {
 			.input(`product_description`, sql.NVarChar(150), body.product_description)
 			.input(`product_image`, sql.Text, body.product_image)
 			.input(`product_suppliers`, sql.NVarChar(150), body.product_suppliers)
+			.output(`product_id_output`, sql.Int)
 			.execute(`update_product`);
 
 		//get the data from the query result
@@ -326,7 +327,7 @@ route.put(`/update/:id`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

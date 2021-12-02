@@ -36,6 +36,8 @@ export const PUT = async (url, params = undefined, body = undefined) => {
 		if (params) {
 			url += params.join("/"); //takes all parameters and puts a / between them
 		}
+		console.log("put url", url);
+		console.log("body", body);
 		let res = await fetch(url, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
