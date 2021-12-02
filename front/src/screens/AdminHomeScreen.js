@@ -44,8 +44,14 @@ const AdminHomeScreen = () => {
 
     const DeleteItem = async (id) => {
         try {
-            let res = await DELETE(productsAPI.delete_product, [id]);
-            loadProducts(res);
+            let choice = window.confirm('Are you sure you want to delete this item?');
+            if (choice) {
+                let res = await DELETE(productsAPI.delete_product, [id]);
+                loadProducts(res);
+            }
+            else {
+                alert('The product was not deleted.')
+            }
         }
         catch (err) {
             console.error(`err`, err)
@@ -141,7 +147,6 @@ const ManagementSection = styled.div`{
     height: 80vh;
     width: 80vh;
     border: 1px solid black;
-    backdrop-filter: blur(10px);
 }`
 
 
@@ -156,6 +161,7 @@ const PContainer = styled.div`{
     top: 12%;
     width: 75vh;
     box-shadow: 0px 0px 13px black;
+    backdrop-filter: blur(10px);
 }`
 
 const ProductLine = styled.div`{
@@ -167,17 +173,18 @@ const ProductLine = styled.div`{
     justify-content: space-around;
     padding-right: 2rem;
     padding-left: 2rem;
-    border: 1px solid black;
-    height: 5em;
+    border: 1px solid rgba(50, 80, 100, 0.95);
+    height: 6em;
+    font-size: 1.05rem;
     width: 75vh;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.85);
     img{
-        width: 2.5rem;
+        width: 3rem;
         height: 20px:
         justify-content: left;
     }
     span{
-        width: 15rem;
+        width: 10rem;
     }
 
 }`
@@ -185,6 +192,7 @@ const ProductLine = styled.div`{
 const ProductName = styled.span`{
     text-align: center;
     padding-right: 1rem;
+    color: rgba(10, 30, 50, 1);
 }`
 
 const Active = styled.span`{
