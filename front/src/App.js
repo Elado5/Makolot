@@ -16,6 +16,8 @@ import PopUpShops from './components/PopUpShops';
 import AdminLogin from './components/admin/PopUpAdminLogin';
 import AdminProducts from './components/admin/AdminProducts';
 import AdminProductScreen from './components/admin/AdminProductScreen';
+import AdminProductImageScreen from './components/admin/AdminProductImageScreen';
+
 
 function App () {
 
@@ -80,9 +82,9 @@ function App () {
             removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}>
           </HomeScreen>
       </Switch>
-      <Route path="/adminPage/products" component={AdminProducts}></Route>
-      <Route path="/adminPage/product/:id" component={AdminProductScreen}>
-      </Route>
+      <Route path="/adminPage/products" component={AdminProducts}/>
+      <Route path="/adminPage/product/:id" component={AdminProductScreen}/>
+      <Route path="/adminPage/product/:id/image" component={AdminProductImageScreen}/>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>

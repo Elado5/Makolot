@@ -109,6 +109,7 @@ const AdminHomeScreen = () => {
                                     {product.isActive && <Active>ACTIVE</Active>}
                                     {!product.isActive && <Inactive>INACTIVE</Inactive>}
                                     <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                                    <ProductName><Link to={`/adminPage/product/${product.product_id}/image`}>Update Image</Link></ProductName>
                                     {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
                                     {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
                                     <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>

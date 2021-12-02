@@ -659,6 +659,17 @@ as
 		where [product_id] = @product_id	
 go
 
+create proc update_product_image
+	@product_id int,
+	@product_id_output int output,
+	@product_image Text
+as
+	update [dbo].[Products]
+		set [product_image] = @product_image,
+			@product_id_output = @product_id
+	where [product_id] = @product_id
+go
+
 create proc deactivate_product
 @product_id int
 as

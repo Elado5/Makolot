@@ -18,7 +18,7 @@ const upload = multer({ storage: fileStorageEngine });
 
 route.post("/singleUp", upload.single("image"), (req, res) => {
 	console.log(req.file.filename);
-	res.send(req.file.filename + " upload success");
+	res.send("/product-img/" + req.file.filename);
 });
 
 route.post(`/multipleUp`, upload.array("images", 3), (req, res) => {
@@ -319,6 +319,39 @@ route.put(`/update/:id`, async (req, res) => {
 			.input(`product_suppliers`, sql.NVarChar(150), body.product_suppliers)
 			.output(`product_id_output`, sql.Int)
 			.execute(`update_product`);
+
+		//get the data from the query result
+		let data = await query;
+
+		//close connection to server
+		await db.close();
+
+		//send the data to the client via api
+		res.send(data.output);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
+route.put(`/update/Image/:id`, async (req, res) => {
+	try {
+		let body = req.body;
+		let params = req.params;
+
+		//on error
+		sql.on(`error`, (error) => res.send(error));
+
+		//connect to the db
+		let db = await sql.connect(config.db);
+
+		//run the wanted query - this one shall be ?
+		let query = await db
+			.request()
+			.input(`product_id`, sql.Int, params.id)
+			.input(`product_image`, sql.Text, body.product_image)
+			.output(`product_id_output`, sql.Int)
+			.execute(`update_product_image`);
 
 		//get the data from the query result
 		let data = await query;

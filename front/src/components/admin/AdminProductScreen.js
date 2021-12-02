@@ -30,21 +30,7 @@ const AdminProductScreen = (props) => {
 
 
 	const UpdateProduct = async () => {
-
-		const payload = {
-			"product_name": state.product_name,
-			"category_id": state.category_id,
-			"sub_category_id": state.sub_category_id,
-			"product_price": state.product_price,
-			"product_final_price": state.product_final_price,
-			"product_description": state.product_description,
-			"product_details": state.product_details,
-			"product_suppliers": state.product_suppliers,
-			"product_image": state.product_image
-		}
-
 		console.log("product update state to send: ", state);
-		console.log(JSON.stringify(payload))
 		console.log(JSON.stringify(state))
 		let res = await PUT(productsAPI.put_update, [state.product_id], state);
 		console.log("product update res: ", res); //see if it worked
