@@ -642,7 +642,8 @@ create proc update_product
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
 	@product_image Text,
-	@product_suppliers nvarchar(150)
+	@product_suppliers nvarchar(150),
+	@product_id_output int output
 as
 	update [dbo].[Products]
 		set [category_id] = @category_id,
@@ -653,8 +654,9 @@ as
 			[product_details] = @product_details,
 			[product_description] = @product_description,
 			[product_image] = @product_image,
-			[product_suppliers] = @product_suppliers
-		where [product_id] = @product_id
+			[product_suppliers] = @product_suppliers,
+			@product_id_output = [product_id]
+		where [product_id] = @product_id	
 go
 
 create proc deactivate_product
