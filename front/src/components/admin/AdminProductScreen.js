@@ -155,6 +155,12 @@ const AdminProductScreen = (props) => {
 									placeholder="תמונת מוצר"
 								/>
 								<InputMustSpan>*</InputMustSpan>
+								<PopupRegAreaInput
+									type="file"
+									name="myImage"
+									accept="image/png, image/webp, image/jpeg" 
+								/>
+
 							</UserData>
 						</InputsReg>
 
