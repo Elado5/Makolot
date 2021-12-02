@@ -654,8 +654,7 @@ as
 			[product_details] = @product_details,
 			[product_description] = @product_description,
 			[product_image] = @product_image,
-			[product_suppliers] = @product_suppliers,
-			@product_id_output = [product_id]
+			[product_suppliers] = @product_suppliers
 		where [product_id] = @product_id	
 go
 

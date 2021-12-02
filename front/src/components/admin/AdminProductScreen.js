@@ -6,7 +6,17 @@ import { PUT, GET } from '../../api/fetch';
 
 
 const AdminProductScreen = (props) => {
-	const [state, setState] = useState([])
+	const [state, setState] = useState({
+		"product_name": "",
+		"category_id": "",
+		"sub_category_id": "",
+		"product_price": "",
+		"product_final_price": "",
+		"product_description": "",
+		"product_details": "",
+		"product_suppliers": "",
+		"product_image": ""
+	})
 
 	const handleChange = (event) => {
 		const { id, value } = event.target
@@ -15,7 +25,7 @@ const AdminProductScreen = (props) => {
 			[id]: value
 		}))
 
-        console.log(`state`, state)
+		console.log(`state`, state)
 	}
 
 
@@ -36,27 +46,27 @@ const AdminProductScreen = (props) => {
 		console.log("product update state to send: ", state);
 		console.log(JSON.stringify(payload))
 		console.log(JSON.stringify(state))
-		let res = await PUT(productsAPI.put_update, [state.product_id], state );
+		let res = await PUT(productsAPI.put_update, [state.product_id], state);
 		console.log("product update res: ", res); //see if it worked
 
-        if(res){
-            alert('updated succesfuly!');
-        }
-        else{
-            alert('update was rejected!');
-        }
+		if (res) {
+			alert('updated succesfuly!');
+		}
+		else {
+			alert('update was rejected!');
+		}
 	}
 
-        useEffect(() => {
-            const getProductDetails = async () => {
-                let res = await GET(productsAPI.get_by_id, [props.match.params.id]);
-                if(res.product_id);
-                setState(res[0]);
-                console.log(`state`, state)
-            }
+	useEffect(() => {
+		const getProductDetails = async () => {
+			let res = await GET(productsAPI.get_by_id, [props.match.params.id]);
+			if (res.product_id);
+			setState(res[0]);
+			console.log(`state`, state)
+		}
 
-            getProductDetails();
-        }, [props.match.params.id])
+		getProductDetails();
+	}, [props.match.params.id])
 
 
 	return (
@@ -70,16 +80,16 @@ const AdminProductScreen = (props) => {
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
-							<UserData>
-								<PopupRegAreaInput
-									id="product_description"
-									onChange={handleChange}
-									value={state.product_description}
-									type="text"
-									placeholder="הסבר מוצר"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-							</UserData>
+								<UserData>
+									<PopupRegAreaInput
+										id="product_description"
+										onChange={handleChange}
+										value={state.product_description}
+										type="text"
+										placeholder="הסבר מוצר"
+									/>
+									<InputMustSpan>*</InputMustSpan>
+								</UserData>
 								<PopupRegAreaInput
 									id="product_name"
 									onChange={handleChange}
@@ -116,15 +126,15 @@ const AdminProductScreen = (props) => {
 								</UserData>
 							</RegUserName>
 							<UserData>
-									<PopupRegAreaInput
-										id="product_description"
-										onChange={handleChange}
-										value={state.product_description}
-										type="text"
-										placeholder="הסבר על המוצר"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
+								<PopupRegAreaInput
+									id="product_description"
+									onChange={handleChange}
+									value={state.product_details}
+									type="text"
+									placeholder="פרטי המוצר"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
 							<UserData>
 								<PopupRegAreaInput
 									id="product_suppliers"
