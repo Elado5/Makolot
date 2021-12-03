@@ -17,6 +17,14 @@ const AdminHomeScreen = () => {
 
     const [products, setProducts] = useState([]);
     const [productsLoaded, setProductsLoaded] = useState(false);
+
+    const loadProductsByName = async (name) => {
+        let res = await GET(productsAPI.get_by_name, [name]);
+        console.log(res);
+        if (res.length > 0)
+            setProducts(res);
+    }
+
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
         setProducts(res);
@@ -97,7 +105,7 @@ const AdminHomeScreen = () => {
         <>
             {verified &&
                 <Container>
-                    <AdminNavbar />
+                    <AdminNavbar products={products} load_products={loadProductsByName} />
                     <AdminSideBar />
                     <PContainer>
                         {products && products.map((product, key) => {
