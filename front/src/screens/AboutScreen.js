@@ -93,12 +93,14 @@ const AboutScreen = () => {
 
 const Container = styled.div`
 	 {
+        margin-top: 6em;
+        padding-bottom: 8em;
 		display: flex;
 		flex-direction: column;
         align-items: center;
 		direction: rtl;
-		background-color: #fafafa;
-		z-index: 3;
+		background-color: rgba(255, 255, 255, 1);
+		z-index: 1;
 		height: 100vh;
 		position: fixed;
 		top: 0;
