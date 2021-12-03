@@ -63,7 +63,7 @@ const Navbar = (props) => {
                 }
 
                 <HrNav />
-                <span className="">אודות העמותה</span>
+                <Link to={`/about`}>אודות העמותה</Link>
                 <HrNav />
                 <span className="">055-6663999</span>
             </ContainerLeft>
