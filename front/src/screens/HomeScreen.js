@@ -72,7 +72,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                 <TitleSlider>המבצעים שלנו</TitleSlider>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        <Carousel itemsToShow={5} >
+                        <Carousel itemsToShow={5} itemsToScroll={5}>
                             {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                             ))}
@@ -126,8 +126,8 @@ const MainProducts = styled.div`{
 
 const SalesSlider = styled.div`{
     background-color: #fafafa;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    width:100%;
+    padding-top: 6rem;
     z-index: 1;
 }`
 
@@ -175,12 +175,11 @@ const ArticleSlider = styled.div`{
 
 const CarouselWrapper = styled.div`{
     position: relative;
-    width: 100%;
+    width: 95%;
     height: 42vh;
     left: 50%;
     transform: translate(-50%, 0%);
     background-color: #fafafa;
-    overflow: hidden;
 }`
 /*
 const Carousel = styled.div`{

@@ -115,9 +115,17 @@ const ProductContainerPopup = styled.div`{
 
 const ClosePopup = styled.button`{
     border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-left: 1.5rem;
     border-radius: 50%;
-    height: 2em;
-    width: 2em;
+    height: 2.5em;
+    width: 2.5em;
+    box-shadow: 0px 0px 6px lightgrey;
+    &:hover {
+        transition: 0.3s ease;
+        box-shadow: 0px 0px 6px grey;
+    }
 }`
 
 const ProductData = styled.div`{
