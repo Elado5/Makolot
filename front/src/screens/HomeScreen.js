@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Main from '../components/Main';
 import Category from '../components/Category';
 import SortingPanel from '../components/SortingPanel';
+import Carousel from "react-elastic-carousel";
 import styled from 'styled-components';
 import {GET} from '../api/fetch';
 // import { POST, PUT, DELETE} from '../api/fetch';
@@ -71,7 +72,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                 <TitleSlider>המבצעים שלנו</TitleSlider>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        <Carousel data-flickity >
+                        <Carousel itemsToShow={5} >
                             {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                             ))}
@@ -94,7 +95,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                             <TitleSlider>מוצרים מובילים</TitleSlider>
                             <ArticleSlider>
                                 <CarouselWrapper>
-                                    <Carousel data-flickity>
+                                <Carousel itemsToShow={3} >
                                         {products.length > 0 && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
@@ -180,9 +181,8 @@ const CarouselWrapper = styled.div`{
     transform: translate(-50%, 0%);
     background-color: #fafafa;
     overflow: hidden;
-    z-index: 0;
 }`
-
+/*
 const Carousel = styled.div`{
     display: flex;
     position: absolute;
@@ -191,9 +191,8 @@ const Carousel = styled.div`{
     width: 100%;
     height: auto;
     height: 335px;
-    ג
 }`
-
+*/
 const ProductsManageAreas = styled.div`{
     display:flex;
     flex-direction: column;
