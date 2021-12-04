@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { customersAPI } from '../../api/api';
+import { retailersAPI } from '../../api/api';
 import { GET, DELETE } from '../../api/fetch';
 
-const AdminCustomers = () => {
+const AdminRetailers = () => {
 
-    const [customers, setCustomers] = useState([]);
-    const [customersLoaded, setCustomersLoaded] = useState(false);
+    const [retailers, setretailers] = useState([]);
+    const [retailersLoaded, setRetailers] = useState(false);
 
-    const loadCustomers = async () => {
-        let res = await GET(customersAPI.get_all);
-        setCustomers(res);
+    const loadRetailers = async () => {
+        let res = await GET(retailersAPI.get_all);
+        setretailers(res);
     }
 
     const DeleteItem = async (id) => {
         try {
             let choice = window.confirm('Are you sure you want to delete this item?');
             if (choice) {
-                let res = await DELETE(customersAPI.delete_customer, [id]);
-                loadCustomers(res);
+                let res = await DELETE(retailersAPI.delete_customer, [id]);
+                loadRetailers(res);
             }
             else {
                 alert('The Customer was not deleted.')
@@ -30,16 +30,16 @@ const AdminCustomers = () => {
         }
     }
 
-    //*Making sure the 'customers' state is loaded ONCE.
+    //*Making sure the 'retailer' state is loaded ONCE.
     useEffect(() => {
-        if (!customersLoaded) {
-            loadCustomers();
-            setCustomersLoaded(true);
+        if (!retailersLoaded) {
+            loadRetailers();
+            setRetailers(true);
         }
         else {
-            console.log(`Customers Loaded:`, customersLoaded)
+            console.log(`retailer Loaded:`, retailersLoaded)
         }
-    }, [customersLoaded])
+    }, [retailersLoaded])
 
 
     return (
@@ -48,15 +48,15 @@ const AdminCustomers = () => {
                 <Link to="/adminPage">
                     <ClosePopup>x</ClosePopup>
                 </Link>
-                <Title>ניהול משתמשים</Title>
-                {customers.length > 0 && customers.map((Customer, key) => {
+                <Title>ניהול קמעונאים</Title>
+                {retailers.length > 0 && retailers.map((retailer, key) => {
                     return (
                         <>
                             <CustomerLine>
                                 <span>{key}</span>
-                                <CustomerName>{Customer.customer_first_name} {Customer.customer_last_name}</CustomerName>
-                                <CustomerName><Link to={`/adminPage/Customer/${Customer.Customer_id}`}>Update</Link></CustomerName>
-                                <Delete onClick={() => { DeleteItem(Customer.Customer_id) }}>Delete</Delete>
+                                <RetailerName>{retailer.retailer_first_name} {retailer.retailer_last_name}</RetailerName>
+                                <RetailerName><Link to={`/adminPage/retailer/${retailer.retailer_id}`}>Update</Link></RetailerName>
+                                <Delete onClick={() => { DeleteItem(retailer.retailer_id) }}>Delete</Delete>
                             </CustomerLine>
                         </>
                     )
@@ -108,7 +108,7 @@ const CustomerLine = styled.div`{
 
 }`
 
-const CustomerName = styled.span`{
+const RetailerName = styled.span`{
     text-align: center;
     padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
@@ -151,4 +151,4 @@ const Delete = styled.span`{
     }
 }`
 
-export default AdminCustomers;
+export default AdminRetailers;

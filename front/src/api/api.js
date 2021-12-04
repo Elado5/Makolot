@@ -10,6 +10,15 @@ export const customersAPI = {
     delete_customer: `${baseAPI}/customers/delete`
 }
 
+export const retailersAPI = {
+    get_all: `${baseAPI}/managers/all`,
+    get_by_id: `${baseAPI}/managers/`,
+    post_register: `${baseAPI}/managers/register`,
+    post_login: `${baseAPI}/managers/login`,
+    put_update: `${baseAPI}/managers/update/`,
+    delete_retailer: `${baseAPI}/managers/delete/`
+}
+
 export const adminsAPI = {
     post_register: `${baseAPI}/admins/register`,
     post_login: `${baseAPI}/admins/login`,
