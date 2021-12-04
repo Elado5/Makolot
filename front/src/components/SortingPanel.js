@@ -90,12 +90,17 @@ const ContainerSorting = styled.div`{
 }`
 
 const SortingBtn = styled.button`{
+    cursor: pointer;
     width: 15em;
     height: 4em;
     border: none;
     border-radius: 20px;
     background-color: white;
-    box-shadow: 0px 4px 7px 0px #c6cbdb;
+    box-shadow: 0px 4px 7px #c6cbdb;
+    &:hover {
+        transition: 0.5s ease;
+        box-shadow: 0px 4px 8px rgba(25, 61, 224, 0.4);
+    }
 }`
 
 const SortlingList = styled.div`{
