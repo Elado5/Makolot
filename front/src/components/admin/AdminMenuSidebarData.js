@@ -7,7 +7,7 @@ export const AdminMenuSidebarData = [
     path: '/',
   }, {
     title: 'ניהול משתמשים',
-    path: '/',
+    path: '/adminPage/customers',
   }, {
     title: 'ניהול קטלוג',
     path: '/',

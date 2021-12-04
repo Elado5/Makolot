@@ -175,7 +175,6 @@ const Title = styled.div`
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		-webkit-text-stroke: 1px lightgrey;
-
 	}
 `;
 
