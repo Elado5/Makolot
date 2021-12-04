@@ -7,11 +7,27 @@ const SortingPanel = ({ products, setProducts }) => {
 
     //*states
     const [searchBox, setSearchBox] = useState('');
+    const [showSortBar, setShowSortBar] = useState(false);
 
     //*Load products by name form API
     const LoadProductsByName = async (name) => {
         let res = await GET(productsAPI.get_by_name, [name])
         setProducts(res);
+    }
+
+    const sortProductsName = async () => {
+        setProducts(await products.sort((a, b) => a.product_name.localeCompare(b.product_name)));
+        console.log(products);
+    }
+
+    const sortProductsPriceLow = async () => {
+        setProducts(await products.sort((a, b) => a.product_final_price - b.product_final_price));
+        console.log(products);
+    }
+
+    const sortProductsPriceHigh = async () => {
+        setProducts(await products.sort((a, b) => b.product_final_price - a.product_final_price));
+        console.log(products);
     }
 
     //*When stuff are written in the box, call the load function
@@ -32,11 +48,17 @@ const SortingPanel = ({ products, setProducts }) => {
     return (
         <SortingPanelBox>
             <ContainerSorting>
-                <SortingBtn>
+                <SortingBtn onClick={() => { setShowSortBar(!showSortBar) }}>
                     <SortingBtnImg alt="sorting" src="/images/icons8-expand-arrow-100.png" />
                     מיין לפי
                 </SortingBtn>
-
+                {showSortBar &&
+                    <SortlingList>
+                        <SortOption onClick={sortProductsName}>שם</SortOption>
+                        <SortOption onClick={sortProductsPriceLow}>זול ליקר</SortOption>
+                        <SortOption onClick={sortProductsPriceHigh}>יקר לזול</SortOption>
+                    </SortlingList>
+                }
                 <SortingTagBtn>
                     <SortingBtnImg alt="sorting by tag" src="/images/icons8-slider-100.png" />
                 </SortingTagBtn>
@@ -74,7 +96,39 @@ const SortingBtn = styled.button`{
     border-radius: 20px;
     background-color: white;
     box-shadow: 0px 4px 7px 0px #c6cbdb;
-    color: #27407f;
+}`
+
+const SortlingList = styled.div`{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 15em;
+    height: 10em;
+    position: absolute;
+    margin-top: 4.2em;
+    border-radius: 20px;
+    background-color: #fafafa;
+    box-shadow: 0px 4px 7px 0px #c6cbdb;
+    z-index: 1;
+}`
+
+const SortOption = styled.div`{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 2px 0px #c6cbdb;
+    font-size: 1.1rem;
+    height: 33%;
+    width: 98%;
+    &:hover {
+        transition: 0.3s ease;
+        text-decoration: bold underline;
+        text-shadow: 0px 0px 5px #c6cbdb;
+        background-color: rgba(233, 233, 255, 0.9);
+    }
 }`
 
 const SortingTagBtn = styled.button`{

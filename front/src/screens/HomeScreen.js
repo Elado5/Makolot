@@ -8,18 +8,20 @@ import Category from '../components/Category';
 import SortingPanel from '../components/SortingPanel';
 import Carousel from "react-elastic-carousel";
 import styled from 'styled-components';
-import {GET} from '../api/fetch';
+import { GET } from '../api/fetch';
 // import { POST, PUT, DELETE} from '../api/fetch';
-import { productsAPI} from '../api/api';
+import { productsAPI } from '../api/api';
 // import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
 
 // get items from local storage
-const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRemoveItem, loggedUser, loggedAdmin}) => {
+const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRemoveItem, loggedUser, loggedAdmin }) => {
     //*States
-    const [allProductsLoaded, setAllProductsLoaded] = useState(false); 
-    const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false); 
+    const [allProductsLoaded, setAllProductsLoaded] = useState(false);
+    const [discountedProductsLoaded, setDiscountedProductsLoaded] = useState(false);
     const [products, setProducts] = useState([]);
     const [discountedProducts, setDiscountedProducts] = useState([]);
+
+    let windowSize = window.matchMedia("(max-width: 700px)");
 
     //* Funcs
 
@@ -38,10 +40,10 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
     //*Making sure the 'products' state is loaded ONCE.
     useEffect(() => {
         if (!allProductsLoaded) {
-                loadProducts();
-                setAllProductsLoaded(true);
+            loadProducts();
+            setAllProductsLoaded(true);
         }
-        else{
+        else {
             console.log("Homescreen products loaded!");
         }
 
@@ -49,34 +51,43 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [allProductsLoaded, cartItems])
 
-        //*Making sure the 'discountedProducts' state is loaded ONCE.
-        useEffect(() => {
-            if (!discountedProductsLoaded) {
-                    loadDiscountedProducts();
-                    setDiscountedProductsLoaded(true);
-                
-            }
-            else{
-                console.log("Discounted Homescreen products loaded!");
-            }
-        }, [discountedProductsLoaded])
+    //*Making sure the 'discountedProducts' state is loaded ONCE.
+    useEffect(() => {
+        if (!discountedProductsLoaded) {
+            loadDiscountedProducts();
+            setDiscountedProductsLoaded(true);
+
+        }
+        else {
+            console.log("Discounted Homescreen products loaded!");
+        }
+    }, [discountedProductsLoaded])
 
     useEffect(() => {
     }, [])
 
     return (
         <div>
-            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem= {completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}> loggedUser={loggedUser} loggedAdmin={loggedAdmin}</Navbar>
+            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}> loggedUser={loggedUser} loggedAdmin={loggedAdmin}</Navbar>
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        <Carousel itemsToShow={5} itemsToScroll={5}>
+                        { !windowSize.matches &&
+                            <Carousel itemsToShow={5} itemsToScroll={5}>
+                                {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
+                                    <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
+                                ))}
+                            </Carousel>
+                        }
+                        { windowSize.matches &&
+                            <Carousel itemsToShow={1} itemsToScroll={1}>
                             {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                             ))}
                         </Carousel>
+                        }
                     </CarouselWrapper>
                 </ArticleSlider>
             </SalesSlider>
@@ -87,7 +98,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                     <ProductsManageAreas>
                         <MainProducts>
                             {products.length > 0 && products.map((product, key) => (
-                                <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems}/>
+                                <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                             ))}
                         </MainProducts>
 
@@ -95,7 +106,7 @@ const HomeScreen = ({cartItems, setCartItems, addItem, removeItem, completelyRem
                             <TitleSlider>מוצרים מובילים</TitleSlider>
                             <ArticleSlider>
                                 <CarouselWrapper>
-                                <Carousel itemsToShow={3} >
+                                    <Carousel itemsToShow={3} >
                                         {products.length > 0 && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
