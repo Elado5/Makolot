@@ -44,6 +44,7 @@ const Card = styled.div`{
         box-shadow: 0px 8px 15px 0px rgba(44, 71, 154, 0.8);
         transition: 0.53s ease;
     }
+    text-overflow: ellipsis;
 }`
 
 
@@ -51,7 +52,7 @@ const CardBody = styled.div`{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40%;
+    height: 30%;
     width: 100%;
 }`
 

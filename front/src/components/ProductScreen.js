@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
+import { BeatLoader } from 'react-spinners';
 
 const ProductScreen = ({ cartItems, addItem, removeItem }) => {
 
@@ -44,12 +45,12 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
                 <Link className="close-popup-link" to="/">
                     <ClosePopup>X</ClosePopup>
                 </Link>
-
                 <ProductData>
                     <ProductLeftDescription>
                         <ProductBigDetail>{product.product_name}
                             <HrLine2 />
                         </ProductBigDetail>
+                        
                         {product.product_final_price &&
                             <ProductSmallDetail>
                                 <Currency> ₪ </Currency>
@@ -65,12 +66,22 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
                             <Button onClick={() => addItem(product)}>+</Button>
                             {<Button onClick={() => removeItem(product)}>-</Button>}
                         </AddItemIcon>
+                        {product.length === 0 &&
+                    <Loader>
+                        <BeatLoader color='navy' loading />
+                    </Loader>
+                }
                         <ProductItemImage src={product.product_image} alt={product.product_name} />
                     </ProductContainerRight>
                 </ProductData>
 
                 <HrLine />
                 <TitleSlider>מוצרים דומים</TitleSlider>
+                {productsInCategory.length === 0 &&
+                    <Loader>
+                        <BeatLoader color='navy' loading />
+                    </Loader>
+                }
                 <div className="product-slider">
                     <CarouselWrapper>
                         <Carousel itemsToShow={3} itemsToScroll={2}>
@@ -226,14 +237,12 @@ const CarouselWrapper = styled.div`{
   border-radius: 19px;
 }`
 
-// const Carousel = styled.div`{
-//     top: 26%;
-//     transform: translateX(-0.5%);
-//     width: 100%;
-//     height: auto;
-//     height: 335px;
-//     display: flex;
-// }`
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+}`
 
 const Currency = styled.span`{
     font-size: 1rem;

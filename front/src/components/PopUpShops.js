@@ -1,21 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import Shop from './Shop';
+import { BeatLoader } from 'react-spinners';
+import Carousel from "react-elastic-carousel";
+
 
 const PopUpShops = () => {
 
     const location = useLocation();
-    const history = useHistory();
     let shop = location?.state?.shops[0]
     let shops = location?.state?.shops
     console.log(shop)
-    if (!shop) {
-        //document.location.href = '/'; //* go to main page and refresh
-        // return (<Redirect to="/" />);
-        history.push({
-            pathname: `/`,
-        })
+    if (shops.length === 0) {
+
+        return (<Redirect to="/" />)
     }
 
     console.log(`shops`, shops)
@@ -31,11 +30,14 @@ const PopUpShops = () => {
                 <HrLine />
                 <div className="product-slider">
                     <CarouselWrapper>
-                        <Carousel data-flickity>
-                            {shops && shops.map((shop, key) => (
+                        <Carousel itemsToShow="3" itemsToScroll="1">
+                            {shops.length > 0 && shops.map((shop, key) => (
                                 <Shop shop={shop} key={key} />
                             ))}
                         </Carousel>
+                        <Loader>
+                            {shops.length === 0 && <BeatLoader color='navy' loading />}
+                        </Loader>
                     </CarouselWrapper>
                 </div>
             </ProductContainerPopup>
@@ -99,9 +101,13 @@ const CarouselWrapper = styled.div`{
     border-radius: 19px;
 }`
 
-const Carousel = styled.div`{
-    transform: translateX(-0.5%);
-    transform: translateY(15%);
+const Loader = styled.div`{
     display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
 }`
+
 export default PopUpShops;

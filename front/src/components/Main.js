@@ -5,6 +5,7 @@ import { ADDRESS_DATA } from '../api/addressesAPI';
 import { shopsAPI } from '../api/api';
 import { GET } from '../api/fetch';
 import { Link, Redirect, useHistory } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 
 const Main = (props) => {
 
@@ -14,11 +15,12 @@ const Main = (props) => {
     const [streets, SetStreets] = useState([]); //State of street suggestions array
     const [searchStreet, setSearchStreet] = useState(''); //state of search box value
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
-    const [moveToShops, setMoveToShops] = useState(false); //
+    const [loading, setLoading] = useState(false); //
 
     const LoadShopByName = async (city) => {
         let res = [];
         try {
+            setLoading(true);
             console.log("city search for shop ---> ", city)
             res = await GET(shopsAPI.get_by_city, [city]);
             console.log(res);
@@ -27,6 +29,7 @@ const Main = (props) => {
             console.log(err);
         }
         finally {
+            setLoading(false);
             history.push({
                 pathname: `/shopsSearch`,
                 state: { shops: res }
@@ -36,78 +39,80 @@ const Main = (props) => {
 
 
 
-//Loads streets from Israel's API
-//Refresh the street suggestions every time the state of the search box is changed.
-useEffect(() => {
-    const LoadStreets = async () => {
-        let res;
-        if (searchStreet === '') {
-            res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
-        } else
-            res = await ADDRESS_DATA(10, searchStreet);
-        SetStreets(res)
-    }
+    //Loads streets from Israel's API
+    //Refresh the street suggestions every time the state of the search box is changed.
+    useEffect(() => {
+        const LoadStreets = async () => {
+            let res;
+            if (searchStreet === '') {
+                res = await ADDRESS_DATA(0); //can be changed later to something nicer than no suggestions
+            } else
+                res = await ADDRESS_DATA(10, searchStreet);
+            SetStreets(res)
+        }
 
-    console.log("loading streets");
-    LoadStreets();
-}, [searchStreet]);
+        console.log("loading streets");
+        LoadStreets();
+    }, [searchStreet]);
 
-return (
-    <MainContainer>
-        <VideoContainer>
-            <VideoBox autoPlay muted loop>
-                <source src="/images/video.mp4" type="video/mp4" />
-            </VideoBox>
-        </VideoContainer>
+    return (
+        <MainContainer>
+            <VideoContainer>
+                <VideoBox autoPlay muted loop>
+                    <source src="/images/video.mp4" type="video/mp4" />
+                </VideoBox>
+            </VideoContainer>
 
-        <RightData>
-            <RightDataMain>
-                <MainElements>
-                    <div className="circular">
-                        <div className="inner"></div>
-                        <div className="number"> 60 <br /><span className="span-text"> דקות וההזמנה אצלך</span> </div>
+            <RightData>
+                <RightDataMain>
+                    <MainElements>
+                        <div className="circular">
+                            <div className="inner"></div>
+                            <div className="number"> 60 <br /><span className="span-text"> דקות וההזמנה אצלך</span> </div>
 
-                        <div className="circle-background">
-                            <div className="circle">
-                                <div className="bar left">
-                                    <div className="progress"></div>
-                                </div>
-                                <div className="bar right">
-                                    <div className="progress"></div>
+                            <div className="circle-background">
+                                <div className="circle">
+                                    <div className="bar left">
+                                        <div className="progress"></div>
+                                    </div>
+                                    <div className="bar right">
+                                        <div className="progress"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <TextAreaMain>
-                        <h1>!ההזמנה עוד רגע אצלך</h1>
-                        <h5>
-                            נעים להכיר, אנחנו עמותה חברית כלכלית שבאה להציע <br /> שינוי בעולם הקמעונות בישראל
-                        </h5>
-                        <h4>מצא/י את המכולת שלך לפי עיר</h4>
-                    </TextAreaMain>
+                        <TextAreaMain>
+                            <h1>!ההזמנה עוד רגע אצלך</h1>
+                            <h5>
+                                נעים להכיר, אנחנו עמותה חברית כלכלית שבאה להציע <br /> שינוי בעולם הקמעונות בישראל
+                            </h5>
+                            <h4>מצא/י את המכולת שלך לפי עיר</h4>
+                        </TextAreaMain>
 
-                </MainElements>
-            </RightDataMain>
+                    </MainElements>
+                </RightDataMain>
 
-            <InputLocationArea>
-                <InputSearchLocationMain type="text" list="israelAddresses" value={searchStreet} onChange={e => setSearchStreet(e.target.value)} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
-                <datalist id="israelAddresses" >
-                    {
-                        streets.map((item) => {
-                            let value = `${item.city_name}, ${item.street_name}`;
-                            return <option>{value}</option>
-                        })
-                    }
-                </datalist>
-                <SearchSomeBtn>
-                    <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
-                </SearchSomeBtn>
-
-            </InputLocationArea>
-        </RightData>
-    </MainContainer >
-)
+                <InputLocationArea>
+                    <InputSearchLocationMain type="text" list="israelAddresses" value={searchStreet} onChange={e => setSearchStreet(e.target.value)} placeholder="העיר שלך: ראשון לציון, יבנה, חולון, חיפה " />
+                    <datalist id="israelAddresses" >
+                        {
+                            streets.map((item) => {
+                                let value = `${item.city_name}, ${item.street_name}`;
+                                return <option>{value}</option>
+                            })
+                        }
+                    </datalist>
+                    <SearchSomeBtn>
+                        <SearchSome alt="search-location" src="/images/icons8-search-500.png" onClick={() => { LoadShopByName(searchStreet) }} />
+                    </SearchSomeBtn>
+                </InputLocationArea>
+                <Loader>
+                      <BeatLoader color='navy' loading={loading} />
+                    </Loader>
+            </RightData>
+        </MainContainer >
+    )
 }
 
 
@@ -206,6 +211,15 @@ const InputSearchLocationMain = styled.input`{
         font-size: 22px;
         margin-right: 10px;
     }
+}`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
 }`
 
 export default Main;
