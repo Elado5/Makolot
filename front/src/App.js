@@ -19,6 +19,11 @@ import AdminProductScreen from './components/admin/AdminProductScreen';
 import AdminCustomers from './components/admin/AdminCustomers';
 import AdminRetailers from './components/admin/AdminRetailers';
 import AdminShops from './components/admin/AdminShops';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
+
+library.add(fab, faPhone);
 
 function App () {
 

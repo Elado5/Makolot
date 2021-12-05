@@ -99,7 +99,23 @@ const AdminHomeScreen = () => {
         veryifyAdminInfo();
     })
 
-
+    /*
+    {products && products.map((product, key) => {
+        return (
+            <ProductLine>
+                <span>{key}</span>
+                <span><img src={product.product_image} alt={product.product_name} /></span>
+                <ProductName>{product.product_name}</ProductName>
+                {product.isActive && <Active>ACTIVE</Active>}
+                {!product.isActive && <Inactive>INACTIVE</Inactive>}
+                <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
+                {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
+                <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
+            </ProductLine>
+        )
+    })}
+    */
 
     return (
         <>
@@ -108,21 +124,6 @@ const AdminHomeScreen = () => {
                     <AdminNavbar products={products} load_products={loadProductsByName} />
                     <AdminSideBar />
                     <PContainer>
-                        {products && products.map((product, key) => {
-                            return (
-                                <ProductLine>
-                                    <span>{key}</span>
-                                    <span><img src={product.product_image} alt={product.product_name} /></span>
-                                    <ProductName>{product.product_name}</ProductName>
-                                    {product.isActive && <Active>ACTIVE</Active>}
-                                    {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                                    <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
-                                    {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                                    {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                                    <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
-                                </ProductLine>
-                            )
-                        })}
                     </PContainer>
                     )
                 </Container>
