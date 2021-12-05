@@ -116,7 +116,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                         </SalesSlider>
                     </ProductsManageAreas>
 
-                    <Category setProductsState={setProducts} />
+                    <Category setProductsState={setProducts} loadProducts={loadProducts} />
 
                 </ProductsManage>
             </ProductsArea>

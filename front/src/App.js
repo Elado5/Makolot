@@ -17,6 +17,8 @@ import AdminLogin from './components/admin/PopUpAdminLogin';
 import AdminProducts from './components/admin/AdminProducts';
 import AdminProductScreen from './components/admin/AdminProductScreen';
 import AdminCustomers from './components/admin/AdminCustomers';
+import AdminRetailers from './components/admin/AdminRetailers';
+import AdminShops from './components/admin/AdminShops';
 
 function App () {
 
@@ -84,7 +86,9 @@ function App () {
       <Route path="/adminPage/products" component={AdminProducts}></Route>
       <Route path="/adminPage/product/:id" component={AdminProductScreen}>
       </Route>
-      <Route path="/adminPage/customers/" component={AdminCustomers}/>
+      <Route path="/adminPage/customers" component={AdminCustomers}/>
+      <Route path="/adminPage/retailers" component={AdminRetailers}/>
+      <Route path="/adminPage/shops" component={AdminShops}/>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>

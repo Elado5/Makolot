@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const Product = (props) => {
                         <span key={key}>
                             {product.product_id === item.product_id &&
                                 <QtyCart>
-                                    <span>{item.qty}</span>
+                                    <Quantity>{item.qty}</Quantity>
                                     <Button onClick={() => removeItem(product)}> - </Button>
                                 </QtyCart>
                             }
@@ -25,8 +25,8 @@ const Product = (props) => {
                 </AddItemIcon>
 
                 <Link to={{
-                    pathname: `/product/${product.product_id}`, 
-                    state: {id: product.product_id}
+                    pathname: `/product/${product.product_id}`,
+                    state: { id: product.product_id }
                 }}>
                     <ProductImage src={product.product_image} alt={product.product_name} />
                 </Link>
@@ -37,17 +37,17 @@ const Product = (props) => {
 
                 <RightBlock>
                     <Link to={{
-                    pathname: `/product/${product.product_id}`, 
-                    state: {id: product.product_id}
-                }}>
+                        pathname: `/product/${product.product_id}`,
+                        state: { id: product.product_id }
+                    }}>
                         <ProductName>{product.product_name}</ProductName>
-                </Link>
+                    </Link>
 
-                    {product.product_price !== product.product_final_price && 
-                    <DiscountedPrice> 
-                        <Currency> ₪ </Currency>
-                        {product.product_price.toFixed(2)}
-                    </DiscountedPrice>
+                    {product.product_price !== product.product_final_price &&
+                        <DiscountedPrice>
+                            <Currency> ₪ </Currency>
+                            {product.product_price.toFixed(2)}
+                        </DiscountedPrice>
                     }
                     <Price>
                         <Currency> ₪ </Currency>
@@ -161,6 +161,11 @@ const Price = styled.div`{
 
 const Currency = styled.span`{
     font-size: 15px;
+}`
+
+const Quantity = styled.span`{
+    text-shadow: 0px 0px 2px darkgray;
+    font-weight: 500;
 }`
 
 export default Product;

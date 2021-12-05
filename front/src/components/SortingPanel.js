@@ -16,17 +16,23 @@ const SortingPanel = ({ products, setProducts }) => {
     }
 
     const sortProductsName = async () => {
-        setProducts(await products.sort((a, b) => a.product_name.localeCompare(b.product_name)));
+        let arr = [...products]; // a new array must be created for react to rerender the state
+        arr.sort((a, b) => a.product_name.localeCompare(b.product_name));
+        setProducts(arr);
         console.log(products);
     }
 
     const sortProductsPriceLow = async () => {
-        setProducts(await products.sort((a, b) => a.product_final_price - b.product_final_price));
+        let arr = [...products];
+        arr.sort(((a, b) => a.product_final_price - b.product_final_price));
+        setProducts(arr);
         console.log(products);
     }
 
     const sortProductsPriceHigh = async () => {
-        setProducts(await products.sort((a, b) => b.product_final_price - a.product_final_price));
+        let arr = [...products];
+        arr.sort(((a, b) => b.product_final_price - a.product_final_price));
+        setProducts(arr);
         console.log(products);
     }
 

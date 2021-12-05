@@ -6,7 +6,7 @@ import { categoriesAPI } from '../api/api';
 import { GET } from '../api/fetch';
 
 
-const Category = ({ setProductsState }) => {
+const Category = ({ setProductsState, loadProducts }) => {
     const [sidebar, setSidebar] = useState(true);
     const showSidebar = () => setSidebar(!sidebar);
     const [categories, setCategories] = useState([]);
@@ -33,7 +33,10 @@ const Category = ({ setProductsState }) => {
             {!sidebar && <Button onClick={showSidebar}>הצג קטגוריות</Button>}
             {sidebar && <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
-                <Button2 onClick={showSidebar}>הסתר קטגוריות</Button2>
+                    <Button2 onClick={showSidebar}>הסתר קטגוריות</Button2>
+                    <ReloadProducts onClick={loadProducts}>
+                        כל המוצרים
+                    </ReloadProducts>
                     {categories.map && categories.map((category, key) => {
                         return <SidebarCategory key={key}>
                             <SubMenu item={category} setProductsState={setProductsState} />
@@ -108,5 +111,21 @@ const SidebarWrap = styled.div`{
 const SidebarCategory = styled.div`{
     width: 100%;
     text-align: right;
+}`
+
+const ReloadProducts = styled.div`{
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    width: 100%;
+    color: #27407f;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    :hover {
+        transition: 0.5s ease;
+        background-color: rgba(0, 145, 355, 0.15);
+    }
 }`
 export default Category;
