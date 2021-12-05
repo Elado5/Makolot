@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { productsAPI } from '../../api/api';
 import { GET, POST, PUT, DELETE } from '../../api/fetch';
-import { BeatLoader } from 'react-spinners';
+import { BarLoader, BeatLoader } from 'react-spinners';
 
 
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
     const [productsLoaded, setProductsLoaded] = useState(false);
+    const [activationLoad, setActivationLoad] = useState(false);
 
     const loadProductsByName = async (name) => {
         let res = await GET(productsAPI.get_by_name, [name]);
@@ -24,22 +25,26 @@ const AdminProducts = () => {
 
     const ActivateItem = async (id) => {
         try {
+            setActivationLoad(true);
             let res = await PUT(productsAPI.put_activate, [id]);
             loadProducts(res);
         }
         catch (err) {
             console.error(`err`, err)
         }
+        setActivationLoad(false);
     }
 
     const DeactivateItem = async (id) => {
         try {
+            setActivationLoad(true);
             let res = await PUT(productsAPI.put_deactivate, [id]);
             loadProducts(res);
         }
         catch (err) {
             console.error(`err`, err)
         }
+        setActivationLoad(false);
     }
 
     const DeleteItem = async (id) => {
@@ -74,22 +79,29 @@ const AdminProducts = () => {
         <PContainer>
             <Link to="/adminPage"><ClosePopup>x</ClosePopup></Link>
             <Title>ניהול מוצרים</Title>
+            {activationLoad &&
+                <Loader>
+                    <BarLoader color='navy' loading />
+                </Loader>
+            }
             <Loader>
                 {products.length === 0 && <BeatLoader color='navy' loading />}
             </Loader>
             {products.length > 0 && products.map((product, key) => {
                 return (
-                    <ProductLine>
-                        <span>{key}</span>
-                        <span><img src={product.product_image} alt={product.product_name} /></span>
-                        <ProductName>{product.product_name}</ProductName>
-                        {product.isActive && <Active>ACTIVE</Active>}
-                        {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                        <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
-                        {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                        {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                        <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
-                    </ProductLine>
+                    <>
+                        <ProductLine>
+                            <span>{key}</span>
+                            <span><img src={product.product_image} alt={product.product_name} /></span>
+                            <ProductName>{product.product_name}</ProductName>
+                            {product.isActive && <Active>ACTIVE</Active>}
+                            {!product.isActive && <Inactive>INACTIVE</Inactive>}
+                            <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                            {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
+                            {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
+                            <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
+                        </ProductLine>
+                    </>
                 )
             })}
         </PContainer>

@@ -5,7 +5,7 @@ import { productsAPI } from '../../api/api';
 import { PUT, GET } from '../../api/fetch';
 
 
-const AdminProductScreen = (props) => {
+const AdminProductUpdate = (props) => {
 	const [state, setState] = useState({
 		"product_name": "",
 		"category_id": "",
@@ -259,23 +259,6 @@ const BtnDefault = styled.button`
 	}
 `;
 
-const CheckboxInput = styled.div`
-	 {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		text-align: end;
-		width: 100%;
-		margin: 10px;
-	}
-`;
-
-const Checkbox = styled.input`
-	 {
-		margin: 10px;
-	}
-`;
-
 const UserData = styled.div`
 	 {
 		display: flex;
@@ -299,4 +282,4 @@ const RegUserName = styled.div`
 	}
 `;
 
-export default AdminProductScreen;
+export default AdminProductUpdate;
