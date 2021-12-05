@@ -31,10 +31,10 @@ const Category = ({ setProductsState, loadProducts }) => {
 
     return (
         <div>
-            {!sidebar && <Button onClick={showSidebar}>הצג קטגוריות</Button>}
+            {!sidebar && <ShowCategories onClick={showSidebar}>הצג קטגוריות</ShowCategories>}
             {sidebar && <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
-                    <Button2 onClick={showSidebar}>הסתר קטגוריות</Button2>
+                    <HideCategories onClick={showSidebar}>הסתר קטגוריות</HideCategories>
                     <ReloadProducts onClick={loadProducts}>
                         כל המוצרים
                     </ReloadProducts>
@@ -53,7 +53,7 @@ const Category = ({ setProductsState, loadProducts }) => {
     )
 }
 
-const Button = styled.button`{
+const ShowCategories = styled.button`{
     border: none;
     cursor: pointer;
     display: flex;
@@ -71,7 +71,7 @@ const Button = styled.button`{
         box-shadow: 0px 0px 3px black;
     }
 }`;
-const Button2 = styled.button`{
+const HideCategories = styled.button`{
     border: none;
     cursor: pointer;
     display: flex;
