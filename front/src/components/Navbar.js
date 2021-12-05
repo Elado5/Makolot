@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Navbar = (props) => {
     const { addItem, removeItem, completelyRemoveItem, cartItems, setProducts, loggedUser, loggedAdmin } = props;
@@ -63,9 +64,23 @@ const Navbar = (props) => {
                 }
 
                 <HrNav />
-                <span className="">אודות העמותה</span>
+                <Link to={`/about`}>אודות העמותה</Link>
                 <HrNav />
                 <span className="">055-6663999</span>
+                <HrNav />
+                <Icons>
+                    <Icon>
+                        <a href="https://api.whatsapp.com/send?phone=9720505263528&amp;text=&amp;source=&amp;data="><FontAwesomeIcon icon={["fab", "whatsapp"]}></FontAwesomeIcon></a>
+                    </Icon>
+                    <Icon>
+                        <a href="https://www.facebook.com/www.makolot.co.il/"><FontAwesomeIcon icon={["fab", "facebook"]} /></a>
+                    </Icon>
+                    <Icon>
+                        <a href="tel:050563528"><FontAwesomeIcon icon="phone" /></a>
+                    </Icon>
+                </Icons>
+
+
             </ContainerLeft>
 
             <ContainerRight>
@@ -191,5 +206,16 @@ const InputSearch = styled.input`{
         color: #27407f;
         font-size: 1.5em;
     }
+}`
+
+const Icon = styled.span`{
+    font-size: 1.5rem;
+}`
+
+const Icons = styled.div`{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
 }`
 export default Navbar;

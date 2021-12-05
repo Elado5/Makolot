@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Product from './Product';
+import Carousel from "react-elastic-carousel";
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
@@ -72,7 +73,7 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
                 <TitleSlider>מוצרים דומים</TitleSlider>
                 <div className="product-slider">
                     <CarouselWrapper>
-                        <Carousel data-flickity>
+                        <Carousel itemsToShow={3} itemsToScroll={2}>
                             {productsInCategory.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} />
                             ))}
@@ -114,9 +115,17 @@ const ProductContainerPopup = styled.div`{
 
 const ClosePopup = styled.button`{
     border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-left: 1.5rem;
     border-radius: 50%;
-    height: 2em;
-    width: 2em;
+    height: 2.5em;
+    width: 2.5em;
+    box-shadow: 0px 0px 6px lightgrey;
+    &:hover {
+        transition: 0.3s ease;
+        box-shadow: 0px 0px 6px grey;
+    }
 }`
 
 const ProductData = styled.div`{
@@ -217,14 +226,14 @@ const CarouselWrapper = styled.div`{
   border-radius: 19px;
 }`
 
-const Carousel = styled.div`{
-    top: 26%;
-    transform: translateX(-0.5%);
-    width: 100%;
-    height: auto;
-    height: 335px;
-    display: flex;
-}`
+// const Carousel = styled.div`{
+//     top: 26%;
+//     transform: translateX(-0.5%);
+//     width: 100%;
+//     height: auto;
+//     height: 335px;
+//     display: flex;
+// }`
 
 const Currency = styled.span`{
     font-size: 1rem;

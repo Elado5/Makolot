@@ -17,7 +17,14 @@ import AdminLogin from './components/admin/PopUpAdminLogin';
 import AdminProducts from './components/admin/AdminProducts';
 import AdminProductScreen from './components/admin/AdminProductScreen';
 import AdminProductImageScreen from './components/admin/AdminProductImageScreen';
+import AdminCustomers from './components/admin/AdminCustomers';
+import AdminRetailers from './components/admin/AdminRetailers';
+import AdminShops from './components/admin/AdminShops';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
 
+library.add(fab, faPhone);
 
 function App () {
 
@@ -82,9 +89,13 @@ function App () {
             removeItem={removeItem} completelyRemoveItem={completelyRemoveItem}>
           </HomeScreen>
       </Switch>
-      <Route path="/adminPage/products" component={AdminProducts}/>
-      <Route path="/adminPage/product/:id" component={AdminProductScreen}/>
+      <Route path="/adminPage/products" component={AdminProducts}></Route>
+      <Route path="/adminPage/product/:id" component={AdminProductScreen}>
+      </Route>
       <Route path="/adminPage/product/:id/image" component={AdminProductImageScreen}/>
+      <Route path="/adminPage/customers" component={AdminCustomers}/>
+      <Route path="/adminPage/retailers" component={AdminRetailers}/>
+      <Route path="/adminPage/shops" component={AdminShops}/>
       <Route path="/userdata" component={UserDataScreen}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>

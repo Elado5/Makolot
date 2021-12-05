@@ -17,6 +17,14 @@ const AdminHomeScreen = () => {
 
     const [products, setProducts] = useState([]);
     const [productsLoaded, setProductsLoaded] = useState(false);
+
+    const loadProductsByName = async (name) => {
+        let res = await GET(productsAPI.get_by_name, [name]);
+        console.log(res);
+        if (res.length > 0)
+            setProducts(res);
+    }
+
     const loadProducts = async () => {
         let res = await GET(productsAPI.get_all);
         setProducts(res);
@@ -91,31 +99,31 @@ const AdminHomeScreen = () => {
         veryifyAdminInfo();
     })
 
-
+    /*
+    {products && products.map((product, key) => {
+        return (
+            <ProductLine>
+                <span>{key}</span>
+                <span><img src={product.product_image} alt={product.product_name} /></span>
+                <ProductName>{product.product_name}</ProductName>
+                {product.isActive && <Active>ACTIVE</Active>}
+                {!product.isActive && <Inactive>INACTIVE</Inactive>}
+                <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
+                {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
+                <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
+            </ProductLine>
+        )
+    })}
+    */
 
     return (
         <>
             {verified &&
                 <Container>
-                    <AdminNavbar />
+                    <AdminNavbar products={products} load_products={loadProductsByName} />
                     <AdminSideBar />
                     <PContainer>
-                        {products && products.map((product, key) => {
-                            return (
-                                <ProductLine>
-                                    <span>{key}</span>
-                                    <span><img src={product.product_image} alt={product.product_name} /></span>
-                                    <ProductName>{product.product_name}</ProductName>
-                                    {product.isActive && <Active>ACTIVE</Active>}
-                                    {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                                    <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
-                                    <ProductName><Link to={`/adminPage/product/${product.product_id}/image`}>Update Image</Link></ProductName>
-                                    {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                                    {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                                    <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
-                                </ProductLine>
-                            )
-                        })}
                     </PContainer>
                     )
                 </Container>

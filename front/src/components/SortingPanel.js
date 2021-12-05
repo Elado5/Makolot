@@ -7,24 +7,48 @@ const SortingPanel = ({ products, setProducts }) => {
 
     //*states
     const [searchBox, setSearchBox] = useState('');
+    const [showSortBar, setShowSortBar] = useState(false);
 
     //*Load products by name form API
     const LoadProductsByName = async (name) => {
+        if (name.length > 0){
         let res = await GET(productsAPI.get_by_name, [name])
         setProducts(res);
+        }
     }
 
-    //*When stuff are written in the box, call the load function
+    const sortProductID = async () => {
+        let arr = [...products];
+        arr.sort(((a, b) => a.product_id - b.product_id));
+        setProducts(arr);
+        console.log(products);
+    }
+
+    const sortProductsName = async () => {
+        let arr = [...products]; // a new array must be created for react to rerender the state
+        arr.sort((a, b) => a.product_name.localeCompare(b.product_name));
+        setProducts(arr);
+        console.log(products);
+    }
+
+    const sortProductsPriceLow = async () => {
+        let arr = [...products];
+        arr.sort(((a, b) => a.product_final_price - b.product_final_price));
+        setProducts(arr);
+        console.log(products);
+    }
+
+    const sortProductsPriceHigh = async () => {
+        let arr = [...products];
+        arr.sort(((a, b) => b.product_final_price - a.product_final_price));
+        setProducts(arr);
+        console.log(products);
+    }
+
     useEffect(() => {
         if (searchBox) {
             if (searchBox === " ") {
                 setSearchBox("");
-            }
-            else if (searchBox !== "") {
-                LoadProductsByName(searchBox);
-            }
-            else {
-                //LoadAllProducts(); //doesn't trigger when deleting the text - why?
             }
         }
     }, [searchBox])
@@ -32,11 +56,18 @@ const SortingPanel = ({ products, setProducts }) => {
     return (
         <SortingPanelBox>
             <ContainerSorting>
-                <SortingBtn>
+                <SortingBtn onClick={() => { setShowSortBar(!showSortBar) }}>
                     <SortingBtnImg alt="sorting" src="/images/icons8-expand-arrow-100.png" />
                     מיין לפי
                 </SortingBtn>
-
+                {showSortBar &&
+                    <SortlingList>
+                        <SortOption onClick={sortProductID}>סדר מקורי</SortOption>
+                        <SortOption onClick={sortProductsName}>שם</SortOption>
+                        <SortOption onClick={sortProductsPriceLow}>זול ליקר</SortOption>
+                        <SortOption onClick={sortProductsPriceHigh}>יקר לזול</SortOption>
+                    </SortlingList>
+                }
                 <SortingTagBtn>
                     <SortingBtnImg alt="sorting by tag" src="/images/icons8-slider-100.png" />
                 </SortingTagBtn>
@@ -45,7 +76,7 @@ const SortingPanel = ({ products, setProducts }) => {
 
             <ContainerRight>
                 <SearchSomeBtn>
-                    <SearchSome alt="search" src="/images/icons8-search-500.png" />
+                    <SearchSome alt="search" src="/images/icons8-search-500.png" onClick={() => {LoadProductsByName(searchBox)}} />
                 </SearchSomeBtn>
                 <InputSearch type="text" placeholder="חיפוש מוצר" value={searchBox} onChange={(e) => setSearchBox(e.target.value)} />
             </ContainerRight>
@@ -68,13 +99,50 @@ const ContainerSorting = styled.div`{
 }`
 
 const SortingBtn = styled.button`{
+    cursor: pointer;
     width: 15em;
     height: 4em;
     border: none;
     border-radius: 20px;
     background-color: white;
+    box-shadow: 0px 4px 7px #c6cbdb;
+    &:hover {
+        transition: 0.5s ease;
+        box-shadow: 0px 4px 8px rgba(25, 61, 224, 0.4);
+    }
+}`
+
+const SortlingList = styled.div`{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 15em;
+    height: 10em;
+    position: absolute;
+    margin-top: 4.2em;
+    border-radius: 20px;
+    background-color: #fafafa;
     box-shadow: 0px 4px 7px 0px #c6cbdb;
-    color: #27407f;
+    z-index: 1;
+}`
+
+const SortOption = styled.div`{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 2px 0px #c6cbdb;
+    font-size: 1.1rem;
+    height: 33%;
+    width: 98%;
+    &:hover {
+        transition: 0.3s ease;
+        text-decoration: bold underline;
+        text-shadow: 0px 0px 5px #c6cbdb;
+        background-color: rgba(233, 233, 255, 0.9);
+    }
 }`
 
 const SortingTagBtn = styled.button`{
@@ -108,6 +176,7 @@ const SearchSomeBtn = styled.button`{
 
 const SearchSome = styled.img`{
     height: 3em;
+    cursor: pointer;
 }`
 
 const InputSearch = styled.input`{

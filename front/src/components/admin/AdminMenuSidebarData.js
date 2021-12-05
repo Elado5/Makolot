@@ -4,28 +4,19 @@ export const AdminMenuSidebarData = [
     path: '',
   }, {
     title: 'ניהול הזמנות',
-    path: '/',
+    path: '/adminPage/orders' || `/`,
   }, {
     title: 'ניהול משתמשים',
-    path: '/',
-  }, {
-    title: 'ניהול קטלוג',
-    path: '/',
+    path: '/adminPage/customers',
   }, {
     title: 'ניהול מוצרים', // we need this?
     path: '/adminPage/products',
   }, {
     title: 'ניהול קמעונאים',
-    path: '/',
+    path: '/adminPage/retailers',
   }, {
     title: 'ניהול מכולות',
-    path: '/',
-  }, {
-    title: 'טסט',
-    path: '/',
-  }, {
-    title: 'טסט',
-    path: '/',
+    path: '/adminPage/shops',
   }, {
     title: 'טסט',
     path: '/',

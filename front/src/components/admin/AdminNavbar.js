@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 
-const AdminNavbar = (props) => {
+const AdminNavbar = ({products, load_products}) => {
 	//*states
 	const [ searchBox, setSearchBox ] = useState("");
 
@@ -13,6 +13,9 @@ const AdminNavbar = (props) => {
 			if (searchBox === " ") {
 				setSearchBox("");
 			}
+			else if(searchBox.length > 0){
+				load_products(searchBox);
+			}
 		},
 		[ searchBox ]
 	);
@@ -20,13 +23,10 @@ const AdminNavbar = (props) => {
 	return (
 		<Nav>
 			<ContainerLeft>
-				<Link to="/">
+				<Link to="/adminPage">
 					<NavImg
 						alt="logo"
 						src="/images/logo.png"
-						onClick={() => {
-							document.location.href = "/";
-						}}
 					/>
 				</Link>
 

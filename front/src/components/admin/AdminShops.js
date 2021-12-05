@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { productsAPI } from '../../api/api';
+import { shopsAPI } from '../../api/api';
 import { GET, POST, PUT, DELETE } from '../../api/fetch';
 
 
-const AdminProducts = () => {
-    const [products, setProducts] = useState([]);
-    const [productsLoaded, setProductsLoaded] = useState(false);
+const AdminShops = () => {
+    const [shops, setShops] = useState([]);
+    const [shopsLoaded, setShopsLoaded] = useState(false);
 
-    const loadProductsByName = async (name) => {
-        let res = await GET(productsAPI.get_by_name, [name]);
+    const loadShopsByName = async (name) => {
+        let res = await GET(shopsAPI.get_by_name, [name]);
         console.log(res);
         if (res.length > 0)
-            setProducts(res);
+            setShops(res);
     }
 
-    const loadProducts = async () => {
-        let res = await GET(productsAPI.get_all);
-        setProducts(res);
+    const loadShops = async () => {
+        let res = await GET(shopsAPI.get_all);
+        setShops(res);
     }
 
     const ActivateItem = async (id) => {
         try {
-            let res = await PUT(productsAPI.put_activate, [id]);
-            loadProducts(res);
+            let res = await PUT(shopsAPI.put_activate, [id]);
+            loadShops(res);
         }
         catch (err) {
             console.error(`err`, err)
@@ -33,8 +33,8 @@ const AdminProducts = () => {
 
     const DeactivateItem = async (id) => {
         try {
-            let res = await PUT(productsAPI.put_deactivate, [id]);
-            loadProducts(res);
+            let res = await PUT(shopsAPI.put_deactivate, [id]);
+            loadShops(res);
         }
         catch (err) {
             console.error(`err`, err)
@@ -45,8 +45,8 @@ const AdminProducts = () => {
         try {
             let choice = window.confirm('Are you sure you want to delete this item?');
             if (choice) {
-                let res = await DELETE(productsAPI.delete_product, [id]);
-                loadProducts(res);
+                let res = await DELETE(shopsAPI.delete_product, [id]);
+                loadShops(res);
             }
             else {
                 alert('The product was not deleted.')
@@ -57,35 +57,34 @@ const AdminProducts = () => {
         }
     }
 
-    //*Making sure the 'products' state is loaded ONCE.
+    //*Making sure the 'Shops' state is loaded ONCE.
     useEffect(() => {
-        if (!productsLoaded) {
-            loadProducts();
-            setProductsLoaded(true);
+        if (!shopsLoaded) {
+            loadShops();
+            setShopsLoaded(true);
         }
         else {
-            console.log(`Products Loaded:`, productsLoaded)
+            console.log(`Shops Loaded:`, shopsLoaded)
         }
-    }, [productsLoaded])
+    }, [shopsLoaded])
 
 
     return (
         <PContainer>
             <Link to="/adminPage"><ClosePopup>x</ClosePopup></Link>
-            <Title>ניהול מוצרים</Title>
-            {products.length > 0 && products.map((product, key) => {
+            <Title>ניהול חנויות</Title>
+            {shops.length > 0 && shops.map((shop, key) => {
                 return (
-                    <ProductLine>
+                    <ShopLine>
                         <span>{key}</span>
-                        <span><img src={product.product_image} alt={product.product_name} /></span>
-                        <ProductName>{product.product_name}</ProductName>
-                        {product.isActive && <Active>ACTIVE</Active>}
-                        {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                        <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
-                        {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                        {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                        <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
-                    </ProductLine>
+                        <ShopName>{shop.grocery_shop_name}</ShopName>
+                        {shop.isActive && <Active>ACTIVE</Active>}
+                        {!shop.isActive && <Inactive>INACTIVE</Inactive>}
+                        <ShopName><Link to={`/adminPage/shop/${shop.grocery_shop_id}`}>Update</Link></ShopName>
+                        {shop.isActive && <Hover onClick={() => { DeactivateItem(shop.grocery_shop_id) }}>Deactivate</Hover>}
+                        {!shop.isActive && <Hover onClick={() => { ActivateItem(shop.grocery_shop_id) }}>Activate</Hover>}
+                        <Delete onClick={() => { DeleteItem(shop.grocery_shop_id) }}>Delete</Delete>
+                    </ShopLine>
                 )
             })}
         </PContainer>
@@ -136,7 +135,7 @@ const Title = styled.div`
 	}
 `;
 
-const ProductLine = styled.div`{
+const ShopLine = styled.div`{
     font-weight: 600;
     align-items: center;
     position: relative;
@@ -161,7 +160,7 @@ const ProductLine = styled.div`{
 
 }`
 
-const ProductName = styled.span`{
+const ShopName = styled.span`{
     text-align: center;
     padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
@@ -192,4 +191,4 @@ const Delete = styled.span`{
     }
 }`
 
-export default AdminProducts
+export default AdminShops
