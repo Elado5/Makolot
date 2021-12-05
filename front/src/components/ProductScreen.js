@@ -18,6 +18,7 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
 
     //*loads the product by ID and gives recommendations from it's category
     const LoadProductAndSuggestions = async (id) => {
+        setProduct([]);
         let res = await GET(productsAPI.get_by_id, [id]) //*get product by id 
         if (!res || res.length === 0) {
             document.location.href = '/'; //* go to main page and refresh
