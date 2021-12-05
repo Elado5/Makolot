@@ -51,7 +51,7 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
                         <ProductBigDetail>{product.product_name}
                             <HrLine2 />
                         </ProductBigDetail>
-                        
+
                         {product.product_final_price &&
                             <ProductSmallDetail>
                                 <Currency> ₪ </Currency>
@@ -68,10 +68,10 @@ const ProductScreen = ({ cartItems, addItem, removeItem }) => {
                             {<Button onClick={() => removeItem(product)}>-</Button>}
                         </AddItemIcon>
                         {product.length === 0 &&
-                    <Loader>
-                        <BeatLoader color='navy' loading />
-                    </Loader>
-                }
+                            <Loader>
+                                <BeatLoader color='navy' loading />
+                            </Loader>
+                        }
                         <ProductItemImage src={product.product_image} alt={product.product_name} />
                     </ProductContainerRight>
                 </ProductData>

@@ -15,7 +15,7 @@ const Main = (props) => {
     const [streets, SetStreets] = useState([]); //State of street suggestions array
     const [searchStreet, setSearchStreet] = useState(''); //state of search box value
     const [groceryShops, setGroceryShops] = useState([]); //state of shops by name
-    const [loading, setLoading] = useState(false); //
+    const [loading, setLoading] = useState(false); 
 
     const LoadShopByName = async (city) => {
         let res = [];

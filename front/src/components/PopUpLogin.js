@@ -3,17 +3,19 @@ import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { customersAPI } from '../api/api';
 import { GET, POST } from '../api/fetch';
+import { BeatLoader } from 'react-spinners';
+
 
 const PopUpLogin = (props) => {
 
-        //* get currently logged in user if it exists
-        const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
+    //* get currently logged in user if it exists
+    const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
     //* get currently logged in user if it exists
     const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
-    // const link = props.location.search ? props.location.search.split('=')[1] : '/';
+    const [loading, setLoading] = useState(false);
 
     if (loggedUser || loggedAdmin) {
         //* if a user is already logged in - redirect to main page 
@@ -21,14 +23,17 @@ const PopUpLogin = (props) => {
     }
 
     const LoginCustomer = async (email, password) => {
+        setLoading(true);
         let res = await POST(customersAPI.post_login, { customer_email: email, customer_password: password });
 
         if (res.customer_email && res.customer_password) {
+            setLoading(false);
             alert("login succesful.")
             sessionStorage.setItem(`currentLoggedIn`, JSON.stringify(res));
             window.location = '/';
         }
         else {
+            setLoading(false);
             alert("login failed - email or password do not exist.")
         }
         //TODO login stuff
@@ -55,7 +60,6 @@ const PopUpLogin = (props) => {
                     <Link className="close-button" to="/">X</Link>
                     <PopupLogArea>
                         <PopupLogAreaSpan >התחברות</PopupLogAreaSpan>
-
                         <PopupLogInputs>
                             <InputsReg>
                                 <div>
@@ -70,6 +74,11 @@ const PopUpLogin = (props) => {
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
                                 {/* {error && <div className="error-input">{error}</div>} */}
+                                {loading &&
+                                    <Loader>
+                                        <BeatLoader color='navy' loading />
+                                    </Loader>
+                                }
                             </InputsReg>
 
                             <InputLinksArea>
@@ -172,5 +181,13 @@ const BtnDefault = styled.button`{
     font-family: system-ui;
     cursor: pointer;
 }`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+}`
+
 
 export default PopUpLogin;

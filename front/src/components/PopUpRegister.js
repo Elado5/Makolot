@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { customersAPI } from '../api/api';
 import { POST, PUT, DELETE } from '../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 
 const PopUpRegister = () => {
@@ -20,6 +21,8 @@ const PopUpRegister = () => {
 		checkboxFirst: "",
 		checkboxSec: ""
 	})
+
+    const [loading, setLoading] = useState(false);
 
 	const handleChange = (event) => {
 		const { id, value } = event.target
@@ -44,25 +47,25 @@ const PopUpRegister = () => {
 		let res = await POST(customersAPI.post_register, customer);
 		console.log("user added: ", res); //see if it worked
 
-			const payload =  {
-				"customer_first_name": state.customer_first_name,
-				"customer_last_name": state.customer_last_name,
-				"customer_email": state.customer_email,
-				"customer_phone_number": state.customer_phone_number,
-				"customer_birthdate": state.customer_birthdate,
-				"customer_password": state.customer_password,
-				"customer_city": state.customer_city,
-				"address_id": state.address_id,
-				"credit_card_id": state.credit_card_id, // what about credit card date & cvv?
-			}
-			console.log("payload" + payload)
-			return res;
+		const payload = {
+			"customer_first_name": state.customer_first_name,
+			"customer_last_name": state.customer_last_name,
+			"customer_email": state.customer_email,
+			"customer_phone_number": state.customer_phone_number,
+			"customer_birthdate": state.customer_birthdate,
+			"customer_password": state.customer_password,
+			"customer_city": state.customer_city,
+			"address_id": state.address_id,
+			"credit_card_id": state.credit_card_id, // what about credit card date & cvv?
+		}
+		console.log("payload" + payload)
+		return res;
 	}
 
 	const submitFunc = async (event) => {
 		event.preventDefault();
-		if(/^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_first_name) === false 
-		|| /^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_last_name) === false) {
+		if (/^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_first_name) === false
+			|| /^([\w'\-,.\u0590-\u05fe][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{1,})$/.test(state.customer_last_name) === false) {
 			alert('Names must be 2 characters long or more and with no numbers or special characters, please try again.')
 		}
 		else if (!(state.customer_password === state.passConfirm)) {
@@ -78,13 +81,16 @@ const PopUpRegister = () => {
 			alert('All passwords must contain one or more capital letters and numbers and have a least 8 characters.\nPlease try again.')
 		}
 		else {
+			setLoading(true);
 			let res = await RegisterCustomer();
 			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
-			if(res.customer_id){
+			if (res.customer_id) {
+				setLoading(false);
 				alert('registered successfuly!');
 				window.location = '/';
 			}
-			else{
+			else {
+				setLoading(false);
 				alert('registration was rejected!');
 			}
 		}
@@ -102,16 +108,16 @@ const PopUpRegister = () => {
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
-							<UserData>
-								<PopupRegAreaInput
-									id="customer_last_name"
-									onChange={handleChange}
-									value={state.customer_last_name}
-									type="text"
-									placeholder="שם משפחה"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-							</UserData>
+								<UserData>
+									<PopupRegAreaInput
+										id="customer_last_name"
+										onChange={handleChange}
+										value={state.customer_last_name}
+										type="text"
+										placeholder="שם משפחה"
+									/>
+									<InputMustSpan>*</InputMustSpan>
+								</UserData>
 								<PopupRegAreaInput
 									id="customer_first_name"
 									onChange={handleChange}
@@ -148,16 +154,16 @@ const PopUpRegister = () => {
 								</UserData>
 							</RegUserName>
 							<UserData>
-									<PopupRegAreaInput
-										id="customer_birthday"
-										onChange={handleChange}
-										value={state.customer_birthdate}
-										type="date"
-										placeholder="תאריך לידה"
-										min="1900-01-01" max="2018-12-31"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
+								<PopupRegAreaInput
+									id="customer_birthday"
+									onChange={handleChange}
+									value={state.customer_birthdate}
+									type="date"
+									placeholder="תאריך לידה"
+									min="1900-01-01" max="2018-12-31"
+								/>
+								<InputMustSpan>*</InputMustSpan>
+							</UserData>
 							<UserData>
 								<PopupRegAreaInput
 									id="customer_password"
@@ -179,6 +185,11 @@ const PopUpRegister = () => {
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
+							{loading &&
+								<Loader>
+									<BeatLoader color='navy' loading />
+								</Loader>
+							}
 						</InputsReg>
 
 						<div>
@@ -356,5 +367,13 @@ const RegUserName = styled.div`
 		}
 	}
 `;
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+}`;
+
 
 export default PopUpRegister;
