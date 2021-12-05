@@ -4,6 +4,7 @@ import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { categoriesAPI } from '../api/api';
 import { GET } from '../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 
 const Category = ({ setProductsState, loadProducts }) => {
@@ -37,6 +38,9 @@ const Category = ({ setProductsState, loadProducts }) => {
                     <ReloadProducts onClick={loadProducts}>
                         כל המוצרים
                     </ReloadProducts>
+                    <Loader>
+                        {categories.length === 0 && <BeatLoader color='navy' loading />}
+                    </Loader>
                     {categories.map && categories.map((category, key) => {
                         return <SidebarCategory key={key}>
                             <SubMenu item={category} setProductsState={setProductsState} />
@@ -129,4 +133,14 @@ const ReloadProducts = styled.div`{
         background-color: rgba(0, 145, 355, 0.15);
     }
 }`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
+}`
+
 export default Category;

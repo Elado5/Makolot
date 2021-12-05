@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Footer = () => {
     return (
@@ -10,11 +11,10 @@ const Footer = () => {
                     <LinksElement>
                         <h4>יצירת קשר</h4>
                         <p>055-6663999</p>
-
                         <ListInline>
-                            <Link to="/"><i className="fa fa-facebook"></i></Link>
-                            <Link to="/"><i className="fa fa-instagram"></i></Link>
-                            <Link to="/"><i className="fa fa-twitter"></i></Link>
+                            <a href="https://api.whatsapp.com/send?phone=9720505263528&amp;text=&amp;source=&amp;data="><FontAwesomeIcon icon={["fab", "whatsapp"]}></FontAwesomeIcon></a>
+                            <a href="https://www.facebook.com/www.makolot.co.il/"><FontAwesomeIcon icon={["fab", "facebook"]} /></a>
+                            <a href="tel:050563528"><FontAwesomeIcon icon="phone" /></a>
                         </ListInline>
                     </LinksElement>
 
@@ -94,11 +94,11 @@ const LinksElement = styled.div`{
   }`
 
 const ListInline = styled.ul`{
-    margin-left: 3em;
     display: flex;
     justify-content: space-between;
     list-style: none;
     color: #27407f;
+    font-size: 1.8rem;
   }`
 
 const FormSubscribe = styled.div`{
@@ -107,6 +107,7 @@ const FormSubscribe = styled.div`{
     height: 108%;
     display: flex;
     flex-direction: column;
+    text-align: center;
     align-items: center;
     justify-content: center;
   }`

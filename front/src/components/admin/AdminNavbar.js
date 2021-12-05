@@ -37,16 +37,6 @@ const AdminNavbar = ({products, load_products}) => {
 			</ContainerLeft>
 
 			<ContainerRight>
-				<SearchSomeBtn>
-					<SearchSome alt="search" src="/images/icons8-search-500.png" />
-				</SearchSomeBtn>
-
-				<InputSearch
-					type="text"
-					placeholder="?מה תרצו למצוא"
-					value={searchBox}
-					onInput={(e) => setSearchBox(e.target.value)}
-				/>
 			</ContainerRight>
 		</Nav>
 	);

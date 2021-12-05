@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { productsAPI } from '../../api/api';
 import { GET, POST, PUT, DELETE } from '../../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 
 const AdminProducts = () => {
@@ -73,6 +74,9 @@ const AdminProducts = () => {
         <PContainer>
             <Link to="/adminPage"><ClosePopup>x</ClosePopup></Link>
             <Title>ניהול מוצרים</Title>
+            <Loader>
+                {products.length === 0 && <BeatLoader color='navy' loading />}
+            </Loader>
             {products.length > 0 && products.map((product, key) => {
                 return (
                     <ProductLine>
@@ -192,4 +196,12 @@ const Delete = styled.span`{
     }
 }`
 
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
+}`
 export default AdminProducts

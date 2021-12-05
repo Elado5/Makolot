@@ -8,11 +8,13 @@ const SubMenu = ({ item, setProductsState }) => {
   const showSubnav = () => setSubnav(!subnav);
 
   const LoadProductsFromSubCategory = async (id) => {
+    setProductsState([]);
     let res = await GET(productsAPI.get_by_sub_category, [id]);
     setProductsState(res);
   }
 
   const LoadProductsFromCategory = async (id) => {
+    setProductsState([]);
     let res = await GET(productsAPI.get_by_category, [id]);
     setProductsState(res);
   }

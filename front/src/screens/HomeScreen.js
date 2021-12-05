@@ -9,11 +9,9 @@ import SortingPanel from '../components/SortingPanel';
 import Carousel from "react-elastic-carousel";
 import styled from 'styled-components';
 import { GET } from '../api/fetch';
-// import { POST, PUT, DELETE} from '../api/fetch';
 import { productsAPI } from '../api/api';
-// import {customersAPI, addressesAPI, categoriesAPI, sub_categoriesAPI, CACAPI,shopsAPI, ordersAPI} from '../api/api'
+import { BeatLoader } from 'react-spinners';
 
-// get items from local storage
 const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRemoveItem, loggedUser, loggedAdmin }) => {
     //*States
     const [allProductsLoaded, setAllProductsLoaded] = useState(false);
@@ -26,6 +24,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
     //* Funcs
 
     const loadProducts = async () => {
+        setProducts([]);
         let res = await GET(productsAPI.get_all);
         setProducts(res);
     }
@@ -72,21 +71,24 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>
+                <Loader>
+                    {discountedProducts.length === 0 && <BeatLoader color='navy' loading />}
+                </Loader>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        { !windowSize.matches &&
+                        {!windowSize.matches &&
                             <Carousel itemsToShow={5} itemsToScroll={5}>
                                 {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                                 ))}
                             </Carousel>
                         }
-                        { windowSize.matches &&
+                        {windowSize.matches &&
                             <Carousel itemsToShow={1} itemsToScroll={1}>
-                            {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
-                                <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
-                            ))}
-                        </Carousel>
+                                {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
+                                    <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
+                                ))}
+                            </Carousel>
                         }
                     </CarouselWrapper>
                 </ArticleSlider>
@@ -96,6 +98,9 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                 <SortingPanel products={products} setProducts={setProducts} />
                 <ProductsManage>
                     <ProductsManageAreas>
+                        <Loader>
+                            {products.length === 0 && <BeatLoader color='navy' size='24' loading />}
+                        </Loader>
                         <MainProducts>
                             {products.length > 0 && products.map((product, key) => (
                                 <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
@@ -104,6 +109,9 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
 
                         <SalesSlider>
                             <TitleSlider>מוצרים מובילים</TitleSlider>
+                            <Loader>
+                                {products.length === 0 && <BeatLoader color='navy' loading />}
+                            </Loader>
                             <ArticleSlider>
                                 <CarouselWrapper>
                                     <Carousel itemsToShow={3} >
@@ -207,5 +215,14 @@ const ProductsManageAreas = styled.div`{
     display:flex;
     flex-direction: column;
     width: 100%;
+}`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
 }`
 export default HomeScreen;

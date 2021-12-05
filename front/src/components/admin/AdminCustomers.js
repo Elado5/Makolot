@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { customersAPI } from '../../api/api';
 import { GET, DELETE } from '../../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 const AdminCustomers = () => {
 
@@ -49,6 +50,9 @@ const AdminCustomers = () => {
                     <ClosePopup>x</ClosePopup>
                 </Link>
                 <Title>ניהול משתמשים</Title>
+                <Loader>
+                {customers.length === 0 && <BeatLoader color='navy' loading />}
+                </Loader>
                 {customers.length > 0 && customers.map((Customer, key) => {
                     return (
                         <>
@@ -149,6 +153,15 @@ const Delete = styled.span`{
     :hover{
         text-decoration: underline;
     }
+}`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
 }`
 
 export default AdminCustomers;

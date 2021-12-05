@@ -67,19 +67,6 @@ const Navbar = (props) => {
                 <Link to={`/about`}>אודות העמותה</Link>
                 <HrNav />
                 <span className="">055-6663999</span>
-                <HrNav />
-                <Icons>
-                    <Icon>
-                        <a href="https://api.whatsapp.com/send?phone=9720505263528&amp;text=&amp;source=&amp;data="><FontAwesomeIcon icon={["fab", "whatsapp"]}></FontAwesomeIcon></a>
-                    </Icon>
-                    <Icon>
-                        <a href="https://www.facebook.com/www.makolot.co.il/"><FontAwesomeIcon icon={["fab", "facebook"]} /></a>
-                    </Icon>
-                    <Icon>
-                        <a href="tel:050563528"><FontAwesomeIcon icon="phone" /></a>
-                    </Icon>
-                </Icons>
-
 
             </ContainerLeft>
 
