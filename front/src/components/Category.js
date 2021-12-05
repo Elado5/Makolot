@@ -123,6 +123,7 @@ const ReloadProducts = styled.div`{
     color: #27407f;
     padding: 0.5rem;
     margin-top: 1rem;
+    border-radius: 2rem;
     :hover {
         transition: 0.5s ease;
         background-color: rgba(0, 145, 355, 0.15);
