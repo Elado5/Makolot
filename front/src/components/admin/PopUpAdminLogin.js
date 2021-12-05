@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { adminsAPI } from '../../api/api';
 import { POST } from '../../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 const AdminLogin = () => {
 
@@ -13,6 +14,7 @@ const AdminLogin = () => {
 
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     if (loggedAdmin || loggedUser) {
         //* if a user is already logged in - redirect to main page 
@@ -20,16 +22,19 @@ const AdminLogin = () => {
     }
 
     const LoginAdmin = async (email, password) => {
+        setLoading(true);
         let res = await POST(adminsAPI.post_login, { admin_email: email, admin_password: password });
         
         console.log(res);
 
         if (res.admin_email && res.admin_password) {
+            setLoading(false);
             alert("login succesful.")
             sessionStorage.setItem(`adminLoggedIn`, JSON.stringify(res));
             window.location = '/adminPage';
         }
         else {
+            setLoading(false);
             alert("login failed - email or password do not exist.")
         }
     }
@@ -69,7 +74,11 @@ const AdminLogin = () => {
                                         type="password" id="user_pass" placeholder="סיסמה" />
                                     <InputMustSpan>*</InputMustSpan>
                                 </div>
-                                {/* {error && <div className="error-input">{error}</div>} */}
+                                {loading &&
+                                    <Loader>
+                                        <BeatLoader color='navy' loading />
+                                    </Loader>
+                                }
                             </InputsReg>
 
                             <InputLinksArea>
@@ -170,6 +179,15 @@ const BtnDefault = styled.button`{
     width: 10em;
     font-family: system-ui;
     cursor: pointer;
+}`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
 }`
 
 export default AdminLogin;
