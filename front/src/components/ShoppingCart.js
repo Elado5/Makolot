@@ -213,6 +213,7 @@ const MoneySaved = styled.span`{
     flex-direction: row;
     justify-content: center;
     text-align: center;
+    margin-top: 0.5rem;
     font-size: 1.75rem;
     text-shadow: 0px 0px 2px skyblue;
 

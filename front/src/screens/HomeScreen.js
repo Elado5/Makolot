@@ -25,7 +25,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
 
     const loadProducts = async () => {
         setProducts([]);
-        let res = await GET(productsAPI.get_all);
+        let res = await GET(productsAPI.get_active_products);
         setProducts(res);
     }
 
