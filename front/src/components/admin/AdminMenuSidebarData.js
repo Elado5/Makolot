@@ -1,10 +1,7 @@
 export const AdminMenuSidebarData = [
   {
-    title: 'דשבורד',
+    title: 'עמוד הבית',
     path: '',
-  }, {
-    title: 'ניהול הזמנות',
-    path: '/adminPage/orders' || `/`,
   }, {
     title: 'ניהול משתמשים',
     path: '/adminPage/customers',
@@ -17,6 +14,10 @@ export const AdminMenuSidebarData = [
   }, {
     title: 'ניהול מכולות',
     path: '/adminPage/shops',
+  },
+  {
+    title: 'ניהול הזמנות',
+    path: '/adminPage/orders' || `/`,
   }, {
     title: 'טסט',
     path: '/',

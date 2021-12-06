@@ -122,10 +122,9 @@ const AdminHomeScreen = () => {
             {verified &&
                 <Container>
                     <AdminNavbar products={products} load_products={loadProductsByName} />
-                    <AdminSideBar />
+                    {/*<AdminSideBar />*/}
                     <PContainer>
                     </PContainer>
-                    )
                 </Container>
             }
         </>

@@ -69,7 +69,7 @@ const AdminCustomers = () => {
                     <ClosePopup>x</ClosePopup>
                 </Link>
                 <Title>ניהול משתמשים</Title>
-                <InputSearch type="text" placeholder="חיפוש מוצר" onChange={(e) => setSearchValue(e.target.value)}>
+                <InputSearch type="text" placeholder="חיפוש משתמש" onChange={(e) => setSearchValue(e.target.value)}>
                 </InputSearch>
                 <SearchSome onClick={() => loadCustomersByName(searchValue)}>חפש משתמשים</SearchSome>
                 <SearchSome onClick={() => loadCustomers()}>כל המשתמשים</SearchSome>
