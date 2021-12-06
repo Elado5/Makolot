@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ShoppingCard = (props) => {
-    const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen} = props;
+    const { cartItems, addItem, removeItem, completelyRemoveItem, open, setOpen } = props;
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
+    const moneySaved = (cartItems.reduce((x, obj) => x + obj.product_price * obj.qty, 0) - cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0));
 
 
     //* get currently logged in admin if it exists
@@ -118,6 +119,8 @@ const ShoppingCard = (props) => {
                         </div>
                     )}
                 </div>
+
+                <MoneySaved>₪{moneySaved.toFixed(2)} - בקניה זו חסכת</MoneySaved>
                 <hr />
             </ShoppingItems>
 
@@ -204,6 +207,15 @@ const TotalBasket = styled.span`{
 
 const CurrencyBasket = styled.span`{
     font-size: 25px;
+}`
+const MoneySaved = styled.span`{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.75rem;
+    text-shadow: 0px 0px 2px skyblue;
+
 }`
 
 
