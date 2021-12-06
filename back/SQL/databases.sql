@@ -212,6 +212,12 @@ as
 	select * from customers where [customer_id] = @customer_id
 go
 
+create proc get_customers_by_name
+	@customer_name nvarchar(150)
+as
+	select * from Customers where [customer_first_name] LIKE '%' + @customer_name + '%' or [customer_last_name] LIKE '%' + @customer_name + '%'
+go
+
 create proc update_customer
 	@customer_id int,
 	@customer_phone_number varchar(10),

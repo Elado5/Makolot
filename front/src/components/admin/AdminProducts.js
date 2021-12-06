@@ -9,13 +9,22 @@ import { BarLoader, BeatLoader } from 'react-spinners';
 const AdminProducts = () => {
     const [products, setProducts] = useState([]);
     const [productsLoaded, setProductsLoaded] = useState(false);
-    const [activationLoad, setActivationLoad] = useState(false);
+    const [load, setLoad] = useState(false);
+    const [serachValue, setSerachValue] = useState('');
 
     const loadProductsByName = async (name) => {
-        let res = await GET(productsAPI.get_by_name, [name]);
-        console.log(res);
-        if (res.length > 0)
-            setProducts(res);
+        try {
+            setLoad(true);
+            let res = await GET(productsAPI.get_by_name, [name]);
+            console.log(res);
+            if (res && res.length > 0)
+                setProducts(res);
+        }
+        catch (err) {
+            console.error(err);
+        }
+        setLoad(false);
+
     }
 
     const loadProducts = async () => {
@@ -25,26 +34,26 @@ const AdminProducts = () => {
 
     const ActivateItem = async (id) => {
         try {
-            setActivationLoad(true);
+            setLoad(true);
             let res = await PUT(productsAPI.put_activate, [id]);
             loadProducts(res);
         }
         catch (err) {
             console.error(`err`, err)
         }
-        setActivationLoad(false);
+        setLoad(false);
     }
 
     const DeactivateItem = async (id) => {
         try {
-            setActivationLoad(true);
+            setLoad(true);
             let res = await PUT(productsAPI.put_deactivate, [id]);
             loadProducts(res);
         }
         catch (err) {
             console.error(`err`, err)
         }
-        setActivationLoad(false);
+        setLoad(false);
     }
 
     const DeleteItem = async (id) => {
@@ -79,14 +88,21 @@ const AdminProducts = () => {
         <PContainer>
             <Link to="/adminPage"><ClosePopup>x</ClosePopup></Link>
             <Title>ניהול מוצרים</Title>
-            {activationLoad &&
+            <InputSearch type="text" placeholder="חיפוש מוצר" onChange={(e) => setSerachValue(e.target.value)}>
+            </InputSearch>
+            <SearchSome onClick={() => loadProductsByName(serachValue)}>חפש מוצר</SearchSome>
+            <SearchSome onClick={() => loadProducts()}>כל המוצרים</SearchSome>
+
+            {load &&
                 <Loader>
-                    <BarLoader color='navy' loading />
+                    <BeatLoader color='teal' loading />
                 </Loader>
             }
-            <Loader>
-                {products.length === 0 && <BeatLoader color='navy' loading />}
-            </Loader>
+            {products.length === 0 &&
+                <Loader>
+                    <BeatLoader color='navy' loading />
+                </Loader>
+            }
             {products.length > 0 && products.map((product, key) => {
                 return (
                     <>
@@ -124,6 +140,18 @@ const PContainer = styled.div`{
     padding-top: 5rem;
   
 }`
+const SearchSome = styled.button`{
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    height: 3em;
+    width:15rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    :hover{
+        background-color: rgba(175, 255, 255, 0.5)
+    }
+}`
 
 const ClosePopup = styled.button`{
     border: none;
@@ -149,6 +177,8 @@ const Title = styled.div`
 		-webkit-text-fill-color: transparent;
 		-webkit-text-stroke: 1px lightgrey;
         text-shadow: 0px 0px 3px black;
+        margin-bottom: 1rem;
+
 	}
 `;
 
@@ -175,6 +205,29 @@ const ProductLine = styled.div`{
         width: 10rem;
     }
 
+}`
+
+const InputSearch = styled.input`{
+    height: 4em;
+    width: 35rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-self: center;
+    border: none;
+    border-bottom: 2px solid #27407f;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    color: #27407f;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+
+    &::placeholder{
+        color: #27407f;
+        font-size: 1.5em;
+        text-shadow: 0px 0px 5px white;
+    }
 }`
 
 const ProductName = styled.span`{

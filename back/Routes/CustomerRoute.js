@@ -50,6 +50,32 @@ route.get(`/:id`, async (req, res) => {
 
 });
 
+route.get(`/byName/:name`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`customer_name`, sql.NVarChar(150), params.name).execute(`get_customers_by_name`);
+
+		let data = await query;
+
+		await db.close();
+
+		if (data.recordset.length == 0) {
+			res.send({ message: "customer not found." });
+			return;
+		}
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+
+});
+
 route.post(`/register`, async (req, res) => {
 	try {
 		let body = req.body;

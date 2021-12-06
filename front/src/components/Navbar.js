@@ -77,7 +77,6 @@ const Navbar = (props) => {
 
                 <InputSearch type="text" placeholder="?מה תרצו למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
-                <MenuSideBar />
             </ContainerRight>
         </Nav>
     )

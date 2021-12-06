@@ -9,10 +9,27 @@ const AdminCustomers = () => {
 
     const [customers, setCustomers] = useState([]);
     const [customersLoaded, setCustomersLoaded] = useState(false);
+    const [load, setLoad] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
+
+    const loadCustomersByName = async (name) => {
+        try {
+        setLoad(true);
+        console.log(`name`, name)
+        let res = await GET(customersAPI.get_by_name, [name]);
+        console.log(`res name`, res);
+        setCustomers(res);}
+        catch (err) {
+            console.error(err);
+        }
+        setLoad(false);
+    }
 
     const loadCustomers = async () => {
+        setLoad(true);
         let res = await GET(customersAPI.get_all);
         setCustomers(res);
+        setLoad(false);
     }
 
     const DeleteItem = async (id) => {
@@ -34,11 +51,13 @@ const AdminCustomers = () => {
     //*Making sure the 'customers' state is loaded ONCE.
     useEffect(() => {
         if (!customersLoaded) {
+            setLoad(true);
             loadCustomers();
             setCustomersLoaded(true);
+            setLoad(false);
         }
         else {
-            console.log(`Customers Loaded:`, customersLoaded)
+            console.log(`Customers Loaded:`, load)
         }
     }, [customersLoaded])
 
@@ -50,9 +69,21 @@ const AdminCustomers = () => {
                     <ClosePopup>x</ClosePopup>
                 </Link>
                 <Title>ניהול משתמשים</Title>
-                <Loader>
-                {customers.length === 0 && <BeatLoader color='navy' loading />}
-                </Loader>
+                <InputSearch type="text" placeholder="חיפוש מוצר" onChange={(e) => setSearchValue(e.target.value)}>
+                </InputSearch>
+                <SearchSome onClick={() => loadCustomersByName(searchValue)}>חפש משתמשים</SearchSome>
+                <SearchSome onClick={() => loadCustomers()}>כל המשתמשים</SearchSome>
+
+                {load &&
+                    <Loader>
+                        <BeatLoader color='teal' loading />
+                    </Loader>
+                }
+                {customers.length === 0 &&
+                    <Loader>
+                        <BeatLoader color='navy' loading />
+                    </Loader>
+                }
                 {customers.length > 0 && customers.map((Customer, key) => {
                     return (
                         <>
@@ -162,6 +193,44 @@ const Loader = styled.div`{
     width: 100%;
     z-index: 2;
     margin-bottom: 2px;
+}`
+
+
+const InputSearch = styled.input`{
+    height: 4em;
+    width: 35rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-self: center;
+    border: none;
+    border-bottom: 2px solid #27407f;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    color: #27407f;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+
+    &::placeholder{
+        color: #27407f;
+        font-size: 1.5em;
+        text-shadow: 0px 0px 5px white;
+    }
+}`
+
+
+const SearchSome = styled.button`{
+    cursor: pointer;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    height: 3em;
+    width:15rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    :hover{
+        background-color: rgba(175, 255, 255, 0.5)
+    }
 }`
 
 export default AdminCustomers;

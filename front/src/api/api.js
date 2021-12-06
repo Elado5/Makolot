@@ -3,6 +3,7 @@ import { baseAPI } from './baseAPI';
 export const customersAPI = {
     get_all: `${baseAPI}/customers/all`,
     get_by_id: `${baseAPI}/customers/`,
+    get_by_name: `${baseAPI}/customers/byName/`,
     post_register: `${baseAPI}/customers/register`,
     post_login: `${baseAPI}/customers/login`,
     put_update: `${baseAPI}/customers/update`,
