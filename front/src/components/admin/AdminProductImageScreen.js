@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { productsAPI } from '../../api/api';
-import { PUT, POST, GET } from '../../api/fetch';
+import { PUT, POST, GET, POST_IMAGE } from '../../api/fetch';
 
 
 const AdminProductImageScreen = (props) => {
-	const [state, setState] = useState({
-		"product_image": ""
-	})
+
+	let location = useLocation();
+	let id = location?.state?.id;
+
+	const [state, setState] = useState({})
+
+	if (!id) {
+		return (
+			<Redirect to={`/adminPage`} />
+		)
+	}
 
 	const handleChange = (value) => {
 		setState(value)
@@ -16,19 +24,23 @@ const AdminProductImageScreen = (props) => {
 
 
 	const UpdateProduct = async () => {
-		console.log("product update state to send: ", state);
-		let uploadResult = await POST(productsAPI.post_single_upload, state);
-		console.log(`image uploaded to`, uploadResult)
-		if (uploadResult) {
-			let updateResult = await PUT(productsAPI.put_update_image, [props.match.params.id], state);
-			console.log("product update res: ", updateResult);
-			if (updateResult)
-				alert("Image updated succesfully.");
+
+		if (state?.name) {
+			let uploadResult = await POST_IMAGE(productsAPI.post_single_upload, state);
+
+			if (uploadResult) {
+				let updateResult = await PUT(productsAPI.put_update_image, [id], { "product_image": uploadResult.path });
+				if (updateResult)
+					alert("Image updated succesfully.");
+				else
+					alert("Image updated failed.")
+			}
 			else
-				alert("Image updated failed.")
+				alert("Upload failed!");
 		}
-		else 
-			alert("Upload failed!");
+		else{
+			console.log(`state`, state)
+		}
 	}
 
 
@@ -46,7 +58,7 @@ const AdminProductImageScreen = (props) => {
 						<PopupRegAreaInput
 							type="file"
 							accept="image/png, image/webp, image/jpeg"
-							onChange={(e) => {handleChange(e.target.value)}}
+							onChange={(e) => { handleChange(e.target.files[0]) }}
 						/>
 
 						<BtnDefault onClick={UpdateProduct} type="submit"> עדכן תמונת מוצר</BtnDefault>

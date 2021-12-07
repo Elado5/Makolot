@@ -17,8 +17,8 @@ const fileStorageEngine = multer.diskStorage({
 const upload = multer({ storage: fileStorageEngine });
 
 route.post("/singleUp", upload.single("image"), (req, res) => {
-	console.log(req.file.filename);
-	res.send("/product-img/" + req.file.filename);
+	console.log('req', req.file.filename);
+	res.send({path: `/product-img/${req.file.filename}`});
 });
 
 route.post(`/multipleUp`, upload.array("images", 3), (req, res) => {

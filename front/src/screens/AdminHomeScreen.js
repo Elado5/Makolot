@@ -71,7 +71,8 @@ const Container = styled.div`{
     width: 100%;
     overflow: scroll;
     backdrop-filter: blur(50px);
-    background-image: url("/images/adminBG.jpg");
+    background-image: url("/images/customerBG.png");
+    background-color: blue;
     background-size: cover;
     background-repeat: no-repeat;
 }`

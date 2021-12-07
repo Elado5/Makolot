@@ -1,24 +1,30 @@
 import React from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {AdminNavbarData} from './AdminNavbarData';
+import { AdminNavbarData } from './AdminNavbarData';
 
 
-const AdminNavbar = ({ products, load_products }) => {
+const AdminNavbar = () => {
 
 	return (
 		<Nav>
 			<Container>
-				<Link to="/adminPage">
-					<NavImg
-						alt="logo"
-						src="/images/logo.png"
-					/>
-				</Link>
 				{AdminNavbarData.map((item, key) =>
 					<>
-						<HrNav />
 						<Link to={item.path} key={key}>{item.title}</Link>
+						<HrNav />
+
+						{key === AdminNavbarData.length / 2 - 1 &&
+							<>
+								<Link to="/adminPage">
+									<NavImg
+										alt="logo"
+										src="/images/logo.png"
+									/>
+								</Link>
+								<HrNav />
+							</>
+						}
 					</>
 				)}
 			</Container>
@@ -32,7 +38,7 @@ const Nav = styled.nav`
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: center;
-		background-image: linear-gradient(rgba(115, 185, 255, 0.9),white, rgba(55, 65, 85, 0.8));
+		background-image: linear-gradient(rgba(45, 85, 155, 0.9),#cad4fa, rgba(65, 85, 195, 0.5));
 		background-color: white;
 		position: fixed;
 		width: 100%;
@@ -67,7 +73,7 @@ const HrNav = styled.hr`
 	 {
 		height: 65px;
 		display: inline-block;
-		border: 1px solid #00968838;
+		border: 1px solid #37968838;
 		width: 0px;
 		margin: 17px;
 	}

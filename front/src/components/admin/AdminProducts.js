@@ -113,6 +113,12 @@ const AdminProducts = () => {
                             {product.isActive && <Active>ACTIVE</Active>}
                             {!product.isActive && <Inactive>INACTIVE</Inactive>}
                             <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                            <ProductName><Link to={
+                                {pathname:  `/adminPage/product/${product.product_id}/image`,
+                            state: {id: product.product_id}}
+                            }
+                                >Update Image</Link></ProductName>
+
                             {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
                             {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
                             <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
@@ -192,9 +198,12 @@ const ProductLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
+    border-radius: 2rem;
+    margin-bottom: 0.35rem;
+    box-shadow: 0px 0px 4px black;
     height: 6em;
-    font-size: 1.05rem;
     width: 75vh;
+    font-size: 1.05rem;
     background-color: rgba(255, 255, 255, 0.85);
     img{
         width: 3rem;

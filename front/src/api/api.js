@@ -85,7 +85,7 @@ export const productsAPI = {
     post_single_upload: `${baseAPI}/products/singleUp`,
     post_multi_upload: `${baseAPI}/products/multipleUp`,
     put_update: `${baseAPI}/products/update/`,
-    put_update_image: `${baseAPI}/products/update/image/:id`,
+    put_update_image: `${baseAPI}/products/update/image/`,
     put_activate: `${baseAPI}/products/activate/`,
     put_deactivate: `${baseAPI}/products/deactivate/`,
     put_discount: `${baseAPI}/products/discount/`,

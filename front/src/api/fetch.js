@@ -31,6 +31,21 @@ export const POST = async (url, body = undefined) => {
 	}
 };
 
+export const POST_IMAGE = async (url, image) => {
+	try {
+		let form = new FormData();
+		form.append('image',image);
+		let res = await fetch(url, {
+			method: "POST",
+			body: form
+		});
+		let data = await res.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
+
 export const PUT = async (url, params = undefined, body = undefined) => {
 	try {
 		if (params) {
