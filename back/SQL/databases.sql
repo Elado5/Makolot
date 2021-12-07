@@ -223,14 +223,16 @@ create proc update_customer
 	@customer_phone_number varchar(10),
 	@customer_password nvarchar(50),
 	@customer_city nvarchar(50),
-	@address_id int
+	@address_id int,
+	@customer_id_output int output
 AS
 	update [dbo].[Customers]
 		set
 			[customer_phone_number] = @customer_phone_number,
 			[customer_password] = @customer_password,
 			[customer_city] = @customer_city,
-			[address_id] = @address_id -- להתייחס לשדות זהות כמו רגילים?
+			[address_id] = @address_id,
+			@customer_id_output = customer_id
 		where [customer_id] = @customer_id
 go
 

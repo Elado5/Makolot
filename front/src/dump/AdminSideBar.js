@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
-import { AdminMenuSidebarData } from './AdminMenuSidebarData';
+//import { AdminMenuSidebarData } from '../components/admin/AdminMenuSidebarData';
 
 const AdminSideBar = (props) => {
     const [sidebar, setSidebar] = useState(true);
@@ -11,12 +11,12 @@ const AdminSideBar = (props) => {
         <div>
             <SidebarNav sidebar={sidebar}>
                 <SidebarWrap>
-                    {AdminMenuSidebarData.map((item, key) => {
+                    {/*AdminMenuSidebarData.map((item, key) => {
                         return <SidebarCategory key={key}>
                             <Link to={item.path}>{item.title}</Link>
                             <hr/>
                         </SidebarCategory>
-                    })}
+                    })*/}
                 </SidebarWrap>
             </SidebarNav>
         </div>

@@ -1,24 +1,24 @@
 import React from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {AdminNavbarData} from './AdminNavbarData';
+import {UserNavbarData} from './UserNavbarData';
 
 
-const AdminNavbar = ({ products, load_products }) => {
+const UserNavbar = ({user}) => {
 
 	return (
 		<Nav>
 			<Container>
-				<Link to="/adminPage">
+				<Link to="/">
 					<NavImg
 						alt="logo"
 						src="/images/logo.png"
 					/>
 				</Link>
-				{AdminNavbarData.map((item, key) =>
+				{UserNavbarData.map((item, key) =>
 					<>
 						<HrNav />
-						<Link to={item.path} key={key}>{item.title}</Link>
+						<Link to={item.path + '/' + user.customer_id} state={user} key={key}>{item.title}</Link>
 					</>
 				)}
 			</Container>
@@ -72,4 +72,4 @@ const HrNav = styled.hr`
 		margin: 17px;
 	}
 `;
-export default AdminNavbar;
+export default UserNavbar;

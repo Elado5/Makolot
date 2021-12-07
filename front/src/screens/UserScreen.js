@@ -1,29 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import AdminNavbar from '../components/admin/AdminNavbar';
-import { adminsAPI } from '../api/api';
-import { productsAPI } from '../api/api';
+import UserNavbar from '../components/UserNavbar';
+import { customersAPI } from '../api/api';
 import { GET, POST, PUT, DELETE } from '../api/fetch';
 
 
 
-const AdminHomeScreen = () => {
+const UserScreen = () => {
+
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
     const [verified, setVerified] = useState(false);
-    const loggedAdmin = JSON.parse(sessionStorage.getItem('adminLoggedIn')) || false;
+    const [customer, setCustomer] = useState([]);
+    const [customerLoaded, setCustomerLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const loadCustomerByID = async (id) => {
+        try {
+            setLoading(true);
+            let res = await GET(customersAPI.get_by_id, [id]);
+            setCustomer(res);
+            setLoading(false);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     useEffect(() => {
-        const veryifyAdminInfo = async (admin) => {
-            if (!loggedAdmin.admin_email || !loggedAdmin.admin_password) {
-                alert("no admin logged in");
+        const veryifyCustomerInfo = async () => {
+            if (!loggedUser.customer_email || !loggedUser.customer_password) {
+                alert("no user logged in");
                 window.location = '/';
             }
-            let res = await POST(adminsAPI.post_login, { admin_email: loggedAdmin.admin_email, admin_password: loggedAdmin.admin_password })
+            let res = await POST(customersAPI.post_login, { customer_email: loggedUser.customer_email, customer_password: loggedUser.customer_password })
             console.log(res)
-            if (!res.admin_password || !res.admin_email) {
+            if (!res.customer_password || !res.customer_email) {
                 setVerified(false);
-                alert("false admin detected.")
+                alert("false user detected.")
                 window.location = '/';
             }
             else {
@@ -31,32 +45,27 @@ const AdminHomeScreen = () => {
             }
         }
 
-        veryifyAdminInfo();
+        veryifyCustomerInfo();
     })
 
-    /*
-    {products && products.map((product, key) => {
-        return (
-            <ProductLine>
-                <span>{key}</span>
-                <span><img src={product.product_image} alt={product.product_name} /></span>
-                <ProductName>{product.product_name}</ProductName>
-                {product.isActive && <Active>ACTIVE</Active>}
-                {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
-                {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
-            </ProductLine>
-        )
-    })}
-    */
+    useEffect(() => {
+        try{
+            if(!customerLoaded){
+        loadCustomerByID(loggedUser.customer_id);
+        setCustomerLoaded(true);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
+    }, [customerLoaded])
 
     return (
         <>
             {verified &&
                 <Container>
-                    <AdminNavbar />
+                    <UserNavbar user={customer}/>
+                    {/*<customerSideBar />*/}
                     <PContainer>
                     </PContainer>
                 </Container>
@@ -71,7 +80,7 @@ const Container = styled.div`{
     width: 100%;
     overflow: scroll;
     backdrop-filter: blur(50px);
-    background-image: url("/images/adminBG.jpg");
+    background-image: url("/images/customerBG.png");
     background-size: cover;
     background-repeat: no-repeat;
 }`
@@ -136,29 +145,4 @@ const ProductName = styled.span`{
     padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
 }`
-
-const Active = styled.span`{
-    text-align: center;
-    color: green;
-}`
-const Inactive = styled.span`{
-    text-align: center;
-    color: red;
-}`
-
-const Hover = styled.span`{
-    cursor: pointer;
-    :hover{
-        text-decoration: underline;
-    }
-}`
-
-const Delete = styled.span`{
-    color: darkred;
-    cursor: pointer;
-    text-align: center;
-    :hover{
-        text-decoration: underline;
-    }
-}`
-export default AdminHomeScreen;
+export default UserScreen;

@@ -194,7 +194,12 @@ h4 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  text-align: right;
+  text-align: center;
+}
+
+.product-name-basket {
+margin-right: 0.5rem;
+margin-left: 0.5rem;
 }
 
 .pay-area {

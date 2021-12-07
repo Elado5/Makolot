@@ -163,11 +163,12 @@ route.put(`/update/:id`, async (req, res) => {
 			.input(`customer_password`, sql.NVarChar(50), body.customer_password)
 			.input(`customer_city`, sql.NVarChar(50), body.customer_city)
 			.input(`address_id`, sql.Int, body.address_id)
+			.output(`customer_id_output`, sql.Int)
 			.execute(`update_customer`);
 
 		let data = await query;
 		await db.close();
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

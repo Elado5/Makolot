@@ -1,7 +1,7 @@
-export const AdminMenuSidebarData = [
+export const AdminNavbarData = [
   {
     title: 'עמוד הבית',
-    path: '',
+    path: '/',
   }, {
     title: 'ניהול משתמשים',
     path: '/adminPage/customers',
@@ -18,8 +18,5 @@ export const AdminMenuSidebarData = [
   {
     title: 'ניהול הזמנות',
     path: '/adminPage/orders' || `/`,
-  }, {
-    title: 'טסט',
-    path: '/',
-  }
+  },
 ];

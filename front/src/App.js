@@ -2,12 +2,13 @@ import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
+import UserScreen from './screens/UserScreen';
 import ProductScreen from './components/ProductScreen';
 import PopUpRegister from './components/PopUpRegister';
 import PopUpLogin from './components/PopUpLogin';
 import ForgotPass from './components/ForgotPass';
 import PaymentScreen from './screens/PaymentScreen';
-import UserDataScreen from './screens/UserDataScreen';
+import UserUpdate from './screens/UserUpdate';
 import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
 import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
@@ -78,6 +79,7 @@ function App () {
     <BrowserRouter>
       <Switch>
         <Route path="/adminPage" component={AdminHomeScreen}></Route>
+        <Route path="/userPage" component={UserScreen}></Route>
         <Route exact path="/AdminLogin">
           <AdminLogin />
         </Route>
@@ -96,7 +98,7 @@ function App () {
       <Route path="/adminPage/customers" component={AdminCustomers}/>
       <Route path="/adminPage/retailers" component={AdminRetailers}/>
       <Route path="/adminPage/shops" component={AdminShops}/>
-      <Route path="/userdata" component={UserDataScreen}></Route>
+      <Route path="/UserPage/update" component={UserUpdate}></Route>
       <Route path="/about" component={AboutScreen}></Route>
       <Route path="/map" component={MapScreen}></Route>
       <Route path="/paymentsuccess" component={PaymentSuccessScreen}></Route>

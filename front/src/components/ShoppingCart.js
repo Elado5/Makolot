@@ -34,9 +34,9 @@ const ShoppingCard = (props) => {
                         {loggedUser && <div>
                             <div className="user-name">
                                 <div> שלום </div>
-                                <Link to="#"> {loggedUser.customer_first_name} {loggedUser.customer_last_name} </Link>
+                                <Link to="/UserPage"> {loggedUser.customer_first_name} {loggedUser.customer_last_name} </Link>
                             </div>
-                            <Link onClick={logOutFunc} to="#logout"> התנתק </Link>
+                            <Link onClick={logOutFunc} to="#logout"> התנתק/י </Link>
                         </div>
                         }
                         {loggedAdmin && <div>
@@ -94,7 +94,7 @@ const ShoppingCard = (props) => {
                                 </div>
 
                                 <div className="item-basket">
-                                    <div>{item.product_name}</div>
+                                    <div className="product-name-basket">{item.product_name}</div>
                                     <div className="image-container-basket">
                                         <div className="count-manage">
                                             <button onClick={() => addItem(item)}>+</button>
@@ -169,12 +169,14 @@ const RegLogArea = styled.div`{
     flex-direction: row;
     justify-content: space-between;
     width: 22em; 
+    
 }`
 
 const LoginArea = styled.div`{
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-align: center;
   justify-content: ${loggedUser => loggedUser ? "space-between" : "right"};
   color: #27407f;
   font-weight: 500;
@@ -186,6 +188,7 @@ const ShoppingItems = styled.div`{
     display: flex;
     flex-direction: column;
     width: 22em;
+    
 }`
 
 const ShipTime = styled.div`{
@@ -198,6 +201,7 @@ const TotalItemsArea = styled.div`{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }`
 
 const TotalBasket = styled.span`{
@@ -216,19 +220,6 @@ const MoneySaved = styled.span`{
     margin-top: 0.5rem;
     font-size: 1.75rem;
     text-shadow: 0px 0px 2px skyblue;
-
-}`
-
-
-const ContainerRight = styled.div`{
-  
-}`
-
-const SearchSomeBtn = styled.button`{
-   
-}`
-
-const SearchSome = styled.img`{
 
 }`
 
