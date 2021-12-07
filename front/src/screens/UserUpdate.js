@@ -3,15 +3,17 @@ import { Link, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { customersAPI } from '../api/api';
 import { PUT, GET } from '../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 
 const UserUpdate = (props) => {
 
-    const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
+	const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
 	const [onLoad, setOnLoad] = useState(false);
+	const [load, setLoad] = useState(false); //beat loader
 	const [state, setState] = useState({
-		"customer_email": "",
+		"customer_city": "",
 		"customer_phone_number": ""
 	})
 
@@ -27,21 +29,27 @@ const UserUpdate = (props) => {
 
 
 	const UpdateCustomer = async () => {
+		setLoad(true);
 		console.log("customer update state to send: ", state);
 		console.log(JSON.stringify(state))
 		let res = await PUT(customersAPI.put_update, [state.customer_id], state);
 		console.log("customer update res: ", res); //see if it worked
-
 		if (res) {
+			let user = await GET(customersAPI.get_by_id, [res.customer_id_output]);
+			sessionStorage.removeItem(`currentLoggedIn`);
+			sessionStorage.setItem(`currentLoggedIn`, JSON.stringify(user));
 			alert('updated succesfuly!');
+
 		}
 		else {
 			alert('update was rejected!');
 		}
+		setLoad(false);
 	}
 
 	useEffect(() => {
 		const getCustomerDetails = async () => {
+			setLoad(true);
 			console.log(`loggedUser.customer_id`, loggedUser.customer_id)
 			let res = await GET(customersAPI.get_by_id, [loggedUser.customer_id]);
 			console.log(`res`, res)
@@ -50,16 +58,16 @@ const UserUpdate = (props) => {
 				setState(res);
 			}
 			console.log(`state`, state)
+			setLoad(false);
 			setOnLoad(true);
 		}
-
 		getCustomerDetails();
 	}, [onLoad])
 
-	if(!loggedUser) {
+	if (!loggedUser) {
 		return (
-			<Redirect to="/userPage"/>
-			)
+			<Redirect to="/userPage" />
+		)
 	}
 
 	return (
@@ -84,17 +92,16 @@ const UserUpdate = (props) => {
 							</UserData>
 							<UserData>
 								<PopupRegAreaInput
-									id="customer_email"
+									id="customer_city"
 									onChange={handleChange}
-									value={state.customer_email}
-									type="email"
-									placeholder="דואר אלקטרוני"
+									value={state.customer_city}
+									type="text"
+									placeholder="עיר"
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
-
-
 						</InputsReg>
+						<BeatLoader color='navy' loading={load} />
 
 						<BtnDefault onClick={UpdateCustomer} type="submit"> עדכן פרטים</BtnDefault>
 					</PopupRegInputs>
@@ -200,7 +207,7 @@ const BtnDefault = styled.button`
 		color: aliceblue;
 		border: none;
 		border-radius: 25px;
-		height: 2.5em;
+		height: 3em;
 		width: 10em;
 		font-family: system-ui;
 		cursor: pointer;

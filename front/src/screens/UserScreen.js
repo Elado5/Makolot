@@ -20,7 +20,9 @@ const UserScreen = () => {
         try {
             setLoading(true);
             let res = await GET(customersAPI.get_by_id, [id]);
+            if(res){
             setCustomer(res);
+            }
             setLoading(false);
         } catch (err) {
             console.error(err);
