@@ -43,7 +43,9 @@ const Nav = styled.nav`
 		position: fixed;
 		width: 100%;
 		z-index: 6;
-		height: 6em;
+		height: 6.5rem;
+		box-shadow: 0px 1px 8px black;
+		
 	}
 `;
 
@@ -59,7 +61,7 @@ const Container = styled.div`
 		margin-left: 35px;
 		font-weight: 500;
 		font-size: 1.3rem;
-		text-shadow: 0 1px 2px rgba(255, 255, 255, 1);
+		text-shadow: 0px 1px 4px rgba(255, 255, 255, 1);
 	}
 `;
 

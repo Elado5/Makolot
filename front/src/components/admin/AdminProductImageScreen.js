@@ -11,12 +11,26 @@ const AdminProductImageScreen = (props) => {
 	let id = location?.state?.id;
 
 	const [state, setState] = useState({})
+	const [product, setProduct] = useState([]);
+
+
+	const GetProductByID = async () => {
+		let res = await GET(productsAPI.get_by_id, [id]) //*get product by id
+		setProduct(res[0]);
+		console.log(`res`, res)
+	}
+
+	useEffect(() => {
+		GetProductByID();
+	}, [state])
 
 	if (!id) {
 		return (
 			<Redirect to={`/adminPage`} />
 		)
 	}
+
+
 
 	const handleChange = (value) => {
 		setState(value)
@@ -38,10 +52,11 @@ const AdminProductImageScreen = (props) => {
 			else
 				alert("Upload failed!");
 		}
-		else{
+		else {
 			console.log(`state`, state)
 		}
 	}
+
 
 
 	return (
@@ -52,9 +67,9 @@ const AdminProductImageScreen = (props) => {
 				</Link>
 				<PopupRegArea>
 					<PopupRegAreaSpan>עדכון תמונת מוצר</PopupRegAreaSpan>
+					<ProductItemImage src={product?.product_image} alt={product?.product_name} />
 					<PopupRegInputs>
 
-						<InputMustSpan>*</InputMustSpan>
 						<PopupRegAreaInput
 							type="file"
 							accept="image/png, image/webp, image/jpeg"
@@ -126,8 +141,9 @@ const PopupRegAreaInput = styled.input`
 const PopupRegAreaSpan = styled.span`
 	 {
 		color: #27407f;
-		font-size: 30px;
-		font-weight: 800;
+		font-size: 2.5rem;
+		font-weight: 500;
+		text-decoration: underline;
 	}
 `;
 
@@ -142,13 +158,6 @@ const PopupRegInputs = styled.div`
 	}
 `;
 
-const InputsReg = styled.div`
-	 {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-	}
-`;
 
 const InputMustSpan = styled.span`
 	 {
@@ -170,44 +179,11 @@ const BtnDefault = styled.button`
 	}
 `;
 
-const CheckboxInput = styled.div`
-	 {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		text-align: end;
-		width: 100%;
-		margin: 10px;
-	}
-`;
 
-const Checkbox = styled.input`
-	 {
-		margin: 10px;
-	}
-`;
-
-const UserData = styled.div`
-	 {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		margin: 1em;
-	}
-`;
-
-const RegUserName = styled.div`
-	 {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-
-		${UserData} {
-			margin: 1em;
-		}
-	}
-`;
+const ProductItemImage = styled.img`{
+	margin-top: 2rem;
+    height: 15rem;
+	border-radius: 2rem;
+}`
 
 export default AdminProductImageScreen;

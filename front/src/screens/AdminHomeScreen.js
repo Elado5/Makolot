@@ -72,24 +72,8 @@ const Container = styled.div`{
     overflow: scroll;
     backdrop-filter: blur(50px);
     background-image: url("/images/customerBG.png");
-    background-color: blue;
     background-size: cover;
     background-repeat: no-repeat;
-}`
-
-const ManagementSection = styled.div`{
-    position: fixed;
-    z-index: 5;
-    top: 22%;
-    left: 12%;
-    bottom: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    width: 80vh;
-    border: 1px solid black;
 }`
 
 
@@ -107,59 +91,4 @@ const PContainer = styled.div`{
     backdrop-filter: blur(10px);
 }`
 
-const ProductLine = styled.div`{
-    font-weight: 600;
-    align-items: center;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-right: 2rem;
-    padding-left: 2rem;
-    border: 1px solid rgba(50, 80, 100, 0.95);
-    height: 6em;
-    font-size: 1.05rem;
-    width: 75vh;
-    background-color: rgba(255, 255, 255, 0.85);
-    img{
-        width: 3rem;
-        height: 20px:
-        justify-content: left;
-    }
-    span{
-        width: 10rem;
-    }
-
-}`
-
-const ProductName = styled.span`{
-    text-align: center;
-    padding-right: 1rem;
-    color: rgba(10, 30, 50, 1);
-}`
-
-const Active = styled.span`{
-    text-align: center;
-    color: green;
-}`
-const Inactive = styled.span`{
-    text-align: center;
-    color: red;
-}`
-
-const Hover = styled.span`{
-    cursor: pointer;
-    :hover{
-        text-decoration: underline;
-    }
-}`
-
-const Delete = styled.span`{
-    color: darkred;
-    cursor: pointer;
-    text-align: center;
-    :hover{
-        text-decoration: underline;
-    }
-}`
 export default AdminHomeScreen;
