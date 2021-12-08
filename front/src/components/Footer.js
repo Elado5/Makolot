@@ -117,6 +117,9 @@ const FooterImg = styled.div`{
     position: absolute;
     margin-top: 13em;
     margin-left: 15em;
+    img{
+        width: 100%;
+    }
   }`
 
 export default Footer;

@@ -145,15 +145,18 @@ const MainProducts = styled.div`{
 
 const SalesSlider = styled.div`{
     background-color: #fafafa;
-    width:100%;
     padding-top: 6rem;
+    width:100%;
     z-index: 1;
+    @media (max-width: 768px) {
+        width:max-content;
+    }
 }`
 
 const TitleSlider = styled.div`{
     display: flex;
     justify-content: flex-end;
-    font-size: 35px;
+    font-size: 2.3rem;
     color: #27407f;
     font-weight: 500;
     margin-right: 30px;
@@ -164,6 +167,9 @@ const ProductsArea = styled.div`{
     flex-direction: column;
     align-items: center;
     background-color: #fafafa;
+    @media (max-width: 768px) {
+        width:100%;
+    }
 }`
 
 const ProductsManage = styled.div`{
@@ -184,11 +190,11 @@ const ArticleSlider = styled.div`{
     display: flex;
     flex-direction: row;
     position: relative;
-
+    width: 100%;
     ${ProductCard}{
-        margin: 1.5em;
-        height: 20em;
-        width: 25em;
+        margin: 1.5rem;
+        height: 20rem;
+        width: 25rem;
     }
 }`
 

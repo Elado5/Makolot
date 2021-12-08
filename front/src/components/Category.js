@@ -93,7 +93,7 @@ const HideCategories = styled.button`{
 const SidebarNav = styled.nav`{
     background-color: #fafafa;
     color: #27407f;
-    width: 30em;
+    width: 30rem;
     height: 100vh;
     display: flex;
     justify-content: center;
