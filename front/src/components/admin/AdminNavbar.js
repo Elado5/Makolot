@@ -75,7 +75,7 @@ const HrNav = styled.hr`
 	 {
 		height: 65px;
 		display: inline-block;
-		border: 1px solid #37968838;
+		border: 1px solid #37668839;
 		width: 0px;
 		margin: 17px;
 	}

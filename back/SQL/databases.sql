@@ -531,10 +531,12 @@ create proc add_product
 	@product_details nvarchar(150),
 	@product_description nvarchar(150),
 	@product_image Text,
-	@product_suppliers nvarchar(150)
+	@product_suppliers nvarchar(150),
+	@product_id int output
 AS
 	insert into [dbo].[Products]([category_id],[sub_category_id],[product_name],[product_price],[product_final_price],[product_details],[product_description], [product_image], [product_suppliers])
 	values (@category_id, @sub_category_id, @product_name, @product_price, @product_final_price, @product_details, @product_description, @product_image, @product_suppliers)
+	set @product_id = @@IDENTITY
 GO
 
 create proc get_all_products

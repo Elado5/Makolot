@@ -278,6 +278,7 @@ route.post(`/add`, async (req, res) => {
 			.input(`product_description`, sql.NVarChar(150), body.product_description)
 			.input(`product_image`, sql.Text, body.product_image)
 			.input(`product_suppliers`, sql.NVarChar(150), body.product_suppliers)
+			.output(`product_id`, sql.Int)
 			.execute(`add_product`);
 
 		//get the data from the query result
@@ -287,7 +288,7 @@ route.post(`/add`, async (req, res) => {
 		await db.close();
 
 		//send the data to the client via api
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 	}

@@ -90,8 +90,12 @@ const AdminProducts = () => {
             <Title>ניהול מוצרים</Title>
             <InputSearch type="text" placeholder="חיפוש מוצר" onChange={(e) => setSerachValue(e.target.value)}>
             </InputSearch>
-            <SearchSome onClick={() => loadProductsByName(serachValue)}>חפש מוצר</SearchSome>
-            <SearchSome onClick={() => loadProducts()}>כל המוצרים</SearchSome>
+            <ActionButton onClick={() => loadProductsByName(serachValue)}>חפש מוצר</ActionButton>
+            <ActionButton onClick={() => loadProducts()}>טען את כל המוצרים</ActionButton>
+            <Link to={`/adminPage/products/add`}>
+                <ActionButton>הוסף מוצר</ActionButton>
+            </Link>
+
 
             {load &&
                 <Loader>
@@ -114,10 +118,12 @@ const AdminProducts = () => {
                             {!product.isActive && <Inactive>INACTIVE</Inactive>}
                             <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
                             <ProductName><Link to={
-                                {pathname:  `/adminPage/product/${product.product_id}/image`,
-                            state: {id: product.product_id}}
+                                {
+                                    pathname: `/adminPage/product/${product.product_id}/image`,
+                                    state: { id: product.product_id }
+                                }
                             }
-                                >Update Image</Link></ProductName>
+                            >Update Image</Link></ProductName>
 
                             {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
                             {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
@@ -146,7 +152,7 @@ const PContainer = styled.div`{
     padding-top: 5rem;
   
 }`
-const SearchSome = styled.button`{
+const ActionButton = styled.button`{
     cursor: pointer;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
@@ -154,6 +160,8 @@ const SearchSome = styled.button`{
     width:15rem;
     border-radius: 1rem;
     background-color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+    color: #27407f;
     :hover{
         background-color: rgba(175, 255, 255, 0.5)
     }
@@ -207,11 +215,12 @@ const ProductLine = styled.div`{
     background-color: rgba(255, 255, 255, 0.85);
     img{
         width: 3rem;
-        height: 20px:
+        height: 1rem:
         justify-content: left;
     }
     span{
-        width: 10rem;
+        width: 100%;
+        text-overflow: ellipsis;
     }
 
 }`
@@ -241,13 +250,13 @@ const InputSearch = styled.input`{
 
 const ProductName = styled.span`{
     text-align: center;
-    padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
 }`
 
 const Active = styled.span`{
     text-align: center;
     color: green;
+    padding-left: 0.5rem;
 }`
 const Inactive = styled.span`{
     text-align: center;

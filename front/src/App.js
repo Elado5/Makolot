@@ -16,6 +16,7 @@ import AdminHomeScreen from './screens/AdminHomeScreen';
 import PopUpShops from './components/PopUpShops';
 import AdminLogin from './components/admin/PopUpAdminLogin';
 import AdminProducts from './components/admin/AdminProducts';
+import AdminProductAdd from './components/admin/AdminProductAdd';
 import AdminProductUpdate from './components/admin/AdminProductUpdate';
 import AdminProductImageScreen from './components/admin/AdminProductImageScreen';
 import AdminCustomers from './components/admin/AdminCustomers';
@@ -92,6 +93,8 @@ function App () {
           </HomeScreen>
       </Switch>
       <Route path="/adminPage/products" component={AdminProducts}></Route>
+      <Route path="/adminPage/products/add" component={AdminProductAdd}></Route>
+
       <Route path="/adminPage/product/:id" component={AdminProductUpdate}>
       </Route>
       <Route path="/adminPage/product/:id/image" component={AdminProductImageScreen}/>
