@@ -1,22 +1,27 @@
 import React from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import {UserNavbarData} from './UserNavbarData';
+import { UserNavbarData } from './UserNavbarData';
 
 
-const UserNavbar = ({user}) => {
+const UserNavbar = ({ user }) => {
 
 	return (
 		<Nav>
 			<Container>
-				<Link to="/">
-					<NavImg
-						alt="logo"
-						src="/images/logo.png"
-					/>
-				</Link>
+
 				{UserNavbarData.map((item, key) =>
 					<>
+						{key === UserNavbarData.length / 2 &&
+							<>
+								<HrNav />
+								<Link to="/">
+									<NavImg
+										alt="logo"
+										src="/images/logo.png"
+									/>
+								</Link>
+							</>}
 						<HrNav />
 						<Link to={item.path + '/' + user.customer_id} state={user} key={key}>{item.title}</Link>
 					</>
