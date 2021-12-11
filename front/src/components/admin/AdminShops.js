@@ -3,28 +3,38 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { shopsAPI } from '../../api/api';
 import { GET, POST, PUT, DELETE } from '../../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 
 const AdminShops = () => {
     const [shops, setShops] = useState([]);
     const [shopsLoaded, setShopsLoaded] = useState(false);
+    const [load, setLoad] = useState(false);
+
 
     const loadShopsByName = async (name) => {
+        setLoad(true);
         let res = await GET(shopsAPI.get_by_name, [name]);
         console.log(res);
-        if (res.length > 0)
+        if (res.length > 0) {
             setShops(res);
+        }
+        setLoad(false);
     }
 
     const loadShops = async () => {
+        setLoad(true);
         let res = await GET(shopsAPI.get_all);
         setShops(res);
+        setLoad(false);
     }
 
     const ActivateItem = async (id) => {
         try {
+            setLoad(true);
             let res = await PUT(shopsAPI.put_activate, [id]);
             loadShops(res);
+            setLoad(false);
         }
         catch (err) {
             console.error(`err`, err)
@@ -33,8 +43,10 @@ const AdminShops = () => {
 
     const DeactivateItem = async (id) => {
         try {
+            setLoad(true);
             let res = await PUT(shopsAPI.put_deactivate, [id]);
             loadShops(res);
+            setLoad(false);
         }
         catch (err) {
             console.error(`err`, err)
@@ -73,6 +85,11 @@ const AdminShops = () => {
         <PContainer>
             <Link to="/adminPage"><ClosePopup>x</ClosePopup></Link>
             <Title>ניהול חנויות</Title>
+            {load &&
+                <Loader>
+                    <BeatLoader color='teal' loading />
+                </Loader>
+            }
             {shops.length > 0 && shops.map((shop, key) => {
                 return (
                     <ShopLine>
@@ -131,12 +148,12 @@ const Title = styled.div`
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		-webkit-text-stroke: 1px lightgrey;
-        text-shadow: 0px 0px 3px black;
+        text-shadow: 0px 0px 3px rgba(0, 0, 100, 0.7);
 	}
 `;
 
 const ShopLine = styled.div`{
-    font-weight: 600;
+  font-weight: 600;
     align-items: center;
     position: relative;
     display: flex;
@@ -145,17 +162,21 @@ const ShopLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
+    border-radius: 2rem;
+    margin-bottom: 0.35rem;
+    box-shadow: 0px 0px 4px black;
     height: 6em;
-    font-size: 1.05rem;
     width: 75vh;
-    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+    background-color: rgba(235, 235, 255, 0.85);
     img{
         width: 3rem;
-        height: 20px:
+        height: 1rem:
         justify-content: left;
     }
     span{
-        width: 10rem;
+        width: 100%;
+        text-overflow: ellipsis;
     }
 
 }`
@@ -190,5 +211,14 @@ const Delete = styled.span`{
         text-decoration: underline;
     }
 }`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
+}`;
 
 export default AdminShops

@@ -6,6 +6,7 @@ import { AdminNavbarData } from './AdminNavbarData';
 
 const AdminNavbar = () => {
 
+	
 	return (
 		<Nav>
 			<Container>

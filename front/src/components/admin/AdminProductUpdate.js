@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { productsAPI } from '../../api/api';
 import { PUT, GET } from '../../api/fetch';
-
+import { BeatLoader } from 'react-spinners';
 
 const AdminProductUpdate = (props) => {
+
+	const [load, setLoad] = useState(false);
+
 	const [state, setState] = useState({
 		"product_name": "",
 		"category_id": "",
@@ -30,25 +33,29 @@ const AdminProductUpdate = (props) => {
 
 
 	const UpdateProduct = async () => {
-		console.log("product update state to send: ", state);
-		console.log(JSON.stringify(state))
+		setLoad(true);
 		let res = await PUT(productsAPI.put_update, [state.product_id], state);
-		console.log("product update res: ", res); //see if it worked
-
 		if (res) {
 			alert('updated succesfuly!');
 		}
 		else {
 			alert('update was rejected!');
 		}
+		setLoad(false);
 	}
+
 
 	useEffect(() => {
 		const getProductDetails = async () => {
+			setLoad(true);
 			let res = await GET(productsAPI.get_by_id, [props.match.params.id]);
-			if (res.product_id);
+			if (res[0]?.product_id)
 			setState(res[0]);
+			else{
+				window.location = '/adminPage'
+			}
 			console.log(`state`, state)
+			setLoad(false);
 		}
 
 		getProductDetails();
@@ -63,6 +70,11 @@ const AdminProductUpdate = (props) => {
 				</Link>
 				<PopupRegArea>
 					<PopupRegAreaSpan>עדכון מוצר</PopupRegAreaSpan>
+					{load &&
+						<Loader>
+							<BeatLoader color='teal' loading />
+						</Loader>
+					}
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
@@ -130,23 +142,6 @@ const AdminProductUpdate = (props) => {
 									placeholder="ספקים"
 								/>
 								<InputMustSpan>*</InputMustSpan>
-							</UserData>
-
-							<UserData>
-								<PopupRegAreaInput
-									id="product_image"
-									onChange={handleChange}
-									value={state.product_image}
-									type="text"
-									placeholder="תמונת מוצר"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-								<PopupRegAreaInput
-									type="file"
-									name="myImage"
-									accept="image/png, image/webp, image/jpeg" 
-								/>
-
 							</UserData>
 						</InputsReg>
 
@@ -216,7 +211,7 @@ const PopupRegAreaSpan = styled.span`
 	 {
 		color: #27407f;
 		font-size: 30px;
-		font-weight: 800;
+		font-weight: 500;
 	}
 `;
 
@@ -281,5 +276,15 @@ const RegUserName = styled.div`
 		}
 	}
 `;
+
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
+}`;
 
 export default AdminProductUpdate;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { productsAPI } from '../../api/api';
 import { GET, POST, PUT, DELETE } from '../../api/fetch';
-import { BarLoader, BeatLoader } from 'react-spinners';
+import { BeatLoader } from 'react-spinners';
 
 
 const AdminProducts = () => {
@@ -111,7 +111,7 @@ const AdminProducts = () => {
                 return (
                     <>
                         <ProductLine>
-                            <span>{key}</span>
+                            <Key>{key+1}</Key>
                             <span><img src={product.product_image} alt={product.product_name} /></span>
                             <ProductName>{product.product_name}</ProductName>
                             {product.isActive && <Active>ACTIVE</Active>}
@@ -206,13 +206,11 @@ const ProductLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
-    border-radius: 2rem;
-    margin-bottom: 0.35rem;
     box-shadow: 0px 0px 4px black;
     height: 6em;
     width: 75vh;
     font-size: 1.05rem;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(235, 235, 255, 0.85);
     img{
         width: 3rem;
         height: 1rem:
@@ -223,6 +221,12 @@ const ProductLine = styled.div`{
         text-overflow: ellipsis;
     }
 
+}`
+
+const Key = styled.span`{
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: rgba(0, 0, 80, 0.8);
 }`
 
 const InputSearch = styled.input`{

@@ -3,15 +3,19 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { retailersAPI } from '../../api/api';
 import { GET, DELETE } from '../../api/fetch';
+import { BeatLoader } from 'react-spinners';
 
 const AdminRetailers = () => {
 
     const [retailers, setretailers] = useState([]);
     const [retailersLoaded, setRetailers] = useState(false);
+    const [load, setLoad] = useState(false);
 
     const loadRetailers = async () => {
+        setLoad(true);
         let res = await GET(retailersAPI.get_all);
         setretailers(res);
+        setLoad(false);
     }
 
     const DeleteItem = async (id) => {
@@ -49,6 +53,11 @@ const AdminRetailers = () => {
                     <ClosePopup>x</ClosePopup>
                 </Link>
                 <Title>ניהול קמעונאים</Title>
+                {load &&
+                    <Loader>
+                        <BeatLoader color='teal' loading />
+                    </Loader>
+                }
                 {retailers.length > 0 && retailers.map((retailer, key) => {
                     return (
                         <>
@@ -150,5 +159,14 @@ const Delete = styled.span`{
         text-decoration: underline;
     }
 }`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 2px;
+}`;
 
 export default AdminRetailers;

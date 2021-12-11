@@ -236,7 +236,7 @@ const PopupRegAreaSpan = styled.span`
 	 {
 		color: #27407f;
 		font-size: 30px;
-		font-weight: 800;
+		font-weight: 500;
 	}
 `;
 

@@ -44,8 +44,10 @@ const AdminProductImageScreen = (props) => {
 
 			if (uploadResult) {
 				let updateResult = await PUT(productsAPI.put_update_image, [id], { "product_image": uploadResult.path });
-				if (updateResult)
+				if (updateResult){
 					alert("Image updated succesfully.");
+					GetProductByID();
+				}
 				else
 					alert("Image updated failed.")
 			}
@@ -62,7 +64,7 @@ const AdminProductImageScreen = (props) => {
 	return (
 		<ContainerPopup>
 			<PopupReg>
-				<Link className="close-button" to="/adminPage">
+				<Link className="close-button" to="/adminPage/products">
 					X
 				</Link>
 				<PopupRegArea>
