@@ -68,9 +68,6 @@ const SortingPanel = ({ products, setProducts }) => {
                         <SortOption onClick={sortProductsPriceHigh}>יקר לזול</SortOption>
                     </SortlingList>
                 }
-                <SortingTagBtn>
-                    <SortingBtnImg alt="sorting by tag" src="/images/icons8-slider-100.png" />
-                </SortingTagBtn>
 
             </ContainerSorting>
 
@@ -90,6 +87,8 @@ const SortingPanelBox = styled.div`{
     justify-content: space-between;
     align-items: center;
     width: 95%;
+    z-index:1;
+    box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.1);
 }`
 
 const ContainerSorting = styled.div`{

@@ -93,6 +93,7 @@ const Nav = styled.nav`{
     width: 100%;
     z-index: 2;
     height: 6em;
+    box-shadow: 0px 0px 5px lightgrey;
 }`
 
 const ContainerLeft = styled.div`{

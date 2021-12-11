@@ -168,6 +168,7 @@ const MainElements = styled.div`{
 const TextAreaMain = styled.div`{
     text-align: right;
     color: #27407f;
+    text-shadow: 0 0 4px white;
   }`
 
 const SearchSomeBtn = styled.button`{
