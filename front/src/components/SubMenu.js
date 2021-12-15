@@ -9,13 +9,13 @@ const SubMenu = ({ item, setProductsState }) => {
 
   const LoadProductsFromSubCategory = async (id) => {
     setProductsState([]);
-    let res = await GET(productsAPI.get_by_sub_category, [id]);
+    let res = await GET(productsAPI.get_by_sub_category_active, [id]);
     setProductsState(res);
   }
 
   const LoadProductsFromCategory = async (id) => {
     setProductsState([]);
-    let res = await GET(productsAPI.get_by_category, [id]);
+    let res = await GET(productsAPI.get_by_category_active, [id]);
     setProductsState(res);
   }
 

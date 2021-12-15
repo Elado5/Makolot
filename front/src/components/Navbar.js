@@ -16,14 +16,14 @@ const Navbar = (props) => {
 
     //*Load products by name form API
     const LoadProductsByName = async (name) => {
-        let res = await GET(productsAPI.get_by_name, [name])
+        let res = await GET(productsAPI.get_by_name_active, [name])
         console.log("products loaded by name: " + res);
         setProducts(res);
     }
 
     //*Bring back all products to the screen
     const LoadAllProducts = async () => {
-        let res = await GET(productsAPI.get_all);
+        let res = await GET(productsAPI.get_active_products);
         console.log("search bar empty -> loading back all products");
         setProducts(res);
     }
@@ -37,7 +37,7 @@ const Navbar = (props) => {
             LoadProductsByName(searchBox);
         }
         else {
-            LoadAllProducts(); //doesn't trigger when deleting the text - why?
+            LoadAllProducts(); //!doesn't trigger when deleting the text - why?
         }
     }, [searchBox])
 

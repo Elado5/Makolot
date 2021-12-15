@@ -22,7 +22,6 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
     let windowSize = window.matchMedia("(max-width: 700px)");
 
     //* Funcs
-
     const loadProducts = async () => {
         setProducts([]);
         let res = await GET(productsAPI.get_active_products);
@@ -30,13 +29,13 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
     }
 
     const loadDiscountedProducts = async () => {
-        let res = await GET(productsAPI.get_all_discounted)
+        let res = await GET(productsAPI.get_all_active_discounted)
         setDiscountedProducts(res);
     }
 
     //* UseEffects
 
-    //*Making sure the 'products' state is loaded ONCE.
+    //Making sure the 'products' state is loaded ONCE.
     useEffect(() => {
         if (!allProductsLoaded) {
             loadProducts();
@@ -50,7 +49,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [allProductsLoaded, cartItems])
 
-    //*Making sure the 'discountedProducts' state is loaded ONCE.
+    //Making sure the 'discountedProducts' state is loaded ONCE.
     useEffect(() => {
         if (!discountedProductsLoaded) {
             loadDiscountedProducts();
