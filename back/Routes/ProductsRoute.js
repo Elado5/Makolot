@@ -65,6 +65,27 @@ route.get(`/all_discounted`, async (req, res) => {
 	}
 })
 
+route.get(`/all_discounted_active`, async (req, res) => {
+
+	try {
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().execute(`get_all_active_discounted_products`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+})
+
+
 route.get(`/by_name/:name`, async (req, res) => {
 
 	try {
@@ -76,6 +97,29 @@ route.get(`/by_name/:name`, async (req, res) => {
 		let db = await sql.connect(config.db);
 
 		let query = await db.request().input(`product_name`,sql.NVarChar(150), params.name).execute(`get_products_by_name`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+})
+
+route.get(`/by_name_active/:name`, async (req, res) => {
+
+	try {
+
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`product_name`,sql.NVarChar(150), params.name).execute(`get_active_products_by_name`);
 
 		let data = await query;
 
@@ -110,6 +154,28 @@ route.get(`/by_id/:id`, async (req, res) => {
 	}
 });
 
+route.get(`/by_id_active/:id`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_active_product_by_id`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+		return;
+	}
+});
+
 route.get(`/byCategory/:id`, async (req, res) => {
 	try {
 		let params = req.params;
@@ -131,6 +197,27 @@ route.get(`/byCategory/:id`, async (req, res) => {
 	}
 });
 
+route.get(`/byCategoryActive/:id`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_active_products_by_category`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.get(`/bySubCategory/:id`, async (req, res) => {
 	try {
 		let params = req.params;
@@ -140,6 +227,27 @@ route.get(`/bySubCategory/:id`, async (req, res) => {
 		let db = await sql.connect(config.db);
 
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_products_by_sub_category`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
+route.get(`/bySubCategoryActive/:id`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_active_products_by_sub_category`);
 
 		let data = await query;
 

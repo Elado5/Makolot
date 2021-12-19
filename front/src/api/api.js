@@ -72,15 +72,20 @@ export const CACAPI = {
 export const productsAPI = {
     get_all: `${baseAPI}/products/all`,
     get_all_discounted: `${baseAPI}/products/all_discounted`,
+    get_all_active_discounted: `${baseAPI}/products/all_discounted_active`, //!!
     get_by_id: `${baseAPI}/products/by_id/`,
+    get_by_id_active: `${baseAPI}/products/by_id_active/`, //!!
     get_by_name: `${baseAPI}/products/by_name/`,
-    get_by_category: `${baseAPI}/products/bycategory/`,
-    get_by_sub_category: `${baseAPI}/products/bysubcategory/`,
+    get_by_name_active: `${baseAPI}/products/by_name_active/`, //!!
+    get_by_category: `${baseAPI}/products/byCategory/`, 
+    get_by_category_active: `${baseAPI}/products/byCategoryActive/`, //!!
+    get_by_sub_category: `${baseAPI}/products/bySubCategory/`,
+    get_by_sub_category_active: `${baseAPI}/products/bySubCategoryActive/`, //!!
     get_preview_by_id: `${baseAPI}/products/preview/`,
     get_preview2_by_id: `${baseAPI}/products/preview2/`,
     get_product_discount: `${baseAPI}/products/discount/`,
-    get_active_products: `${baseAPI}/products/allactive`,
-    get_inactive_products: `${baseAPI}/products/allinactive`,
+    get_active_products: `${baseAPI}/products/allActive`,
+    get_inactive_products: `${baseAPI}/products/allInactive`,
     post_add: `${baseAPI}/products/add`,
     post_single_upload: `${baseAPI}/products/singleUp`,
     post_multi_upload: `${baseAPI}/products/multipleUp`,
@@ -90,7 +95,7 @@ export const productsAPI = {
     put_deactivate: `${baseAPI}/products/deactivate/`,
     put_discount: `${baseAPI}/products/discount/`,
     put_discount_category: `${baseAPI}/products/discount/category/`,
-    put_discount_subcategory: `${baseAPI}/products/discount/subcategory/`,
+    put_discount_subcategory: `${baseAPI}/products/discount/subCategory/`,
     put_cancel_all_discount: `${baseAPI}/products/discount/cancelAll`,
     put_cancel_discount: `${baseAPI}/products/discount/cancel/`,
     put_cancel_discount_by_category: `${baseAPI}/products/discount/cancelCategory/`,

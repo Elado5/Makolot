@@ -549,16 +549,33 @@ AS
 	select * from Products where [product_price] != [product_final_price]
 go
 
+create proc get_all_active_discounted_products
+AS
+	select * from Products where [product_price] != [product_final_price] and [isActive] = 1
+go
+
 create proc get_products_by_name
 	@product_name nvarchar(150)
 as
 	select * from Products where [product_name] LIKE '%' + @product_name + '%'
 go
 
+create proc get_active_products_by_name
+	@product_name nvarchar(150)
+as
+	select * from Products where [product_name] LIKE '%' + @product_name + '%' and [isActive] = 1
+go
+
 create proc get_product_by_id
 	@product_id int
 as
 	select * from Products where [product_id] = @product_id
+go
+
+create proc get_active_product_by_id
+	@product_id int
+as
+	select * from Products where [product_id] = @product_id and [isActive] = 1
 go
 
 create proc get_product_image_and_price
@@ -579,16 +596,29 @@ as
 	select (100 - [product_final_price] / [product_price]) from Products where [product_id] = @product_id
 go
 
+
 create proc get_products_by_category
 	@category_id int
 as
 	select * from Products where [category_id] = @category_id;
 go
 
+create proc get_active_products_by_category
+	@category_id int
+as
+	select * from Products where [category_id] = @category_id and [isActive] = 1;
+go
+
 create proc get_products_by_sub_category
 	@sub_category_id int
 as
 	select * from Products where [sub_category_id] = @sub_category_id;
+go
+
+create proc get_active_products_by_sub_category
+	@sub_category_id int
+as
+	select * from Products where [sub_category_id] = @sub_category_id and [isActive] = 1;
 go
 
 create proc discount_product

@@ -253,11 +253,16 @@ margin-left: 0.5rem;
 }
 
 .remove-item-basket {
+  cursor: pointer;
   border: none;
   background-color: transparent;
   color: #27407f;
   font-size: 30px;
   font-weight: 500;
+}
+
+.remove-item-basket:hover{
+  color:navy;
 }
 
 .pay-area hr {
