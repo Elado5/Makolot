@@ -30,16 +30,15 @@ const AdminProductAdd = (props) => {
 		console.log(`state`, state)
 	}
 
-	const handleChangeCategory = async (event) => {
+	const handleChangeCategory = async (value) => {
 		try {
-			const { id, value } = event.target
 			setState(prevState => ({
 				...prevState,
-				[id]: value
+				category_id: value.value
 			}))
 		}
 		catch (err) { console.error(err) }
-		await getSubCategories(state.category_id)
+		await getSubCategories(value.value)
 		console.log(`state`, state)
 	}
 
@@ -76,26 +75,18 @@ const AdminProductAdd = (props) => {
 
 	const getCategories = async () => {
 		const res = await GET(categoriesAPI.get_all);
-		console.log(`res`, res)
 		if (res?.length > 0) {
-			setCategories([
-				res.map(category => ({ value: category.category_name, label: category.category_id })
-				)
-			]
-			)
+			const mapping = await res.map(category => ({ value: category.category_id, label: category.category_name }));
+			setCategories(mapping);
 		}
 	}
 
 	const getSubCategories = async (id) => {
-		console.log(`id ->`, parseInt(id))
+		setSubCategories([]);
 		const res = await GET(sub_categoriesAPI.get_by_category_id, [id]);
-		console.log(`sub category res ->`, res)
 		if (res?.length > 0) {
-			setSubCategories([
-				res.map(subCategory => ({ value: subCategory.category_name, label: subCategory.category_id })
-				)
-			]
-			)
+			const mapping = await res.map(subCategory => ({ value: subCategory.sub_category_id, label: subCategory.sub_category_name }));
+			setSubCategories(mapping);
 		}
 	}
 
@@ -175,6 +166,17 @@ const AdminProductAdd = (props) => {
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
 
+							<Select
+								options={categories} placeholder="קטגוריות"
+								id="category_id"
+								setValue={state.category_id}
+								onChange={handleChangeCategory}
+							/>
+							<Select
+								options={subCategories} placeholder=" תת קטגוריות"
+								setValue={state.sub_category_id}
+								id="sub_category_id"
+							/>
 							<UserData>
 								<PopupRegAreaInput
 									id="category_id"
@@ -182,7 +184,6 @@ const AdminProductAdd = (props) => {
 									value={state.category_id}
 									type="number"
 									placeholder="מספר קטגוריה"
-									options={categories}
 								/>
 								<InputMustSpan>*</InputMustSpan>
 								<PopupRegAreaInput
