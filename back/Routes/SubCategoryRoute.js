@@ -59,7 +59,7 @@ route.get("/byCategory/:id", async (req, res) => {
 
 		await db.close();
 
-		res.send(data.recordset[0]);
+		res.send(data.recordset);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

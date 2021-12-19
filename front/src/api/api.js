@@ -52,7 +52,7 @@ export const categoriesAPI = {
 export const sub_categoriesAPI = {
     get_all: `${baseAPI}/subcategories/all`,
     get_by_id: `${baseAPI}/subcategories/`,
-    get_by_category_id: `${baseAPI}/subcategories/byCategory`,
+    get_by_category_id: `${baseAPI}/subcategories/byCategory/`,
     post_add: `${baseAPI}/subcategories/add`,
     post_single_upload: `${baseAPI}/subcategories/singleUp`,
     post_multi_upload: `${baseAPI}/subcategories/multipleUp`,

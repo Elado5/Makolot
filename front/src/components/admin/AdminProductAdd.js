@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { productsAPI, categoriesAPI, sub_categoriesAPI } from '../../api/api';
@@ -30,6 +30,18 @@ const AdminProductAdd = (props) => {
 		console.log(`state`, state)
 	}
 
+	const handleChangeCategory = async (event) => {
+		try {
+			const { id, value } = event.target
+			setState(prevState => ({
+				...prevState,
+				[id]: value
+			}))
+		}
+		catch (err) { console.error(err) }
+		await getSubCategories(state.category_id)
+		console.log(`state`, state)
+	}
 
 	const handleChangeImage = (file) => {
 		setImage(file);
@@ -62,9 +74,10 @@ const AdminProductAdd = (props) => {
 		}
 	}
 
-	const getCategories = () => {
-		const res = GET(categoriesAPI.get_categories);
-		if (res.length > 0) {
+	const getCategories = async () => {
+		const res = await GET(categoriesAPI.get_all);
+		console.log(`res`, res)
+		if (res?.length > 0) {
 			setCategories([
 				res.map(category => ({ value: category.category_name, label: category.category_id })
 				)
@@ -73,10 +86,12 @@ const AdminProductAdd = (props) => {
 		}
 	}
 
-	const getSubCategories = (id) => {
-		const res = GET(sub_categoriesAPI.get_by_category_id, [id]);
-		if (res.length > 0) {
-			setCategories([
+	const getSubCategories = async (id) => {
+		console.log(`id ->`, parseInt(id))
+		const res = await GET(sub_categoriesAPI.get_by_category_id, [id]);
+		console.log(`sub category res ->`, res)
+		if (res?.length > 0) {
+			setSubCategories([
 				res.map(subCategory => ({ value: subCategory.category_name, label: subCategory.category_id })
 				)
 			]
@@ -84,10 +99,13 @@ const AdminProductAdd = (props) => {
 		}
 	}
 
-	const [categories, setCategories] = useState([
-	]);
+	const [categories, setCategories] = useState([]);
 
 	const [subCategories, setSubCategories] = useState([]);
+
+	useEffect(() => {
+		getCategories();
+	}, [])
 
 
 	return (
@@ -160,10 +178,11 @@ const AdminProductAdd = (props) => {
 							<UserData>
 								<PopupRegAreaInput
 									id="category_id"
-									onChange={handleChange}
+									onChange={handleChangeCategory}
 									value={state.category_id}
 									type="number"
 									placeholder="מספר קטגוריה"
+									options={categories}
 								/>
 								<InputMustSpan>*</InputMustSpan>
 								<PopupRegAreaInput
