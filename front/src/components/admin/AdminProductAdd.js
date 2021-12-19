@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { productsAPI } from '../../api/api';
+import { productsAPI, categoriesAPI, sub_categoriesAPI } from '../../api/api';
 import { POST, POST_IMAGE, PUT, GET } from '../../api/fetch';
+import Select from 'react-select';
+
 
 
 const AdminProductAdd = (props) => {
@@ -28,9 +30,9 @@ const AdminProductAdd = (props) => {
 		console.log(`state`, state)
 	}
 
-	
+
 	const handleChangeImage = (file) => {
-			setImage(file);
+		setImage(file);
 	}
 
 	const UpdateProduct = async () => {
@@ -60,11 +62,38 @@ const AdminProductAdd = (props) => {
 		}
 	}
 
+	const getCategories = () => {
+		const res = GET(categoriesAPI.get_categories);
+		if (res.length > 0) {
+			setCategories([
+				res.map(category => ({ value: category.category_name, label: category.category_id })
+				)
+			]
+			)
+		}
+	}
+
+	const getSubCategories = (id) => {
+		const res = GET(sub_categoriesAPI.get_by_category_id, [id]);
+		if (res.length > 0) {
+			setCategories([
+				res.map(subCategory => ({ value: subCategory.category_name, label: subCategory.category_id })
+				)
+			]
+			)
+		}
+	}
+
+	const [categories, setCategories] = useState([
+	]);
+
+	const [subCategories, setSubCategories] = useState([]);
+
 
 	return (
 		<ContainerPopup>
 			<PopupReg>
-				<Link className="close-button" to="/adminPage">
+				<Link className="close-button" to="/adminPage/products">
 					X
 				</Link>
 				<PopupRegArea>
@@ -127,7 +156,7 @@ const AdminProductAdd = (props) => {
 								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
-							
+
 							<UserData>
 								<PopupRegAreaInput
 									id="category_id"
@@ -159,7 +188,7 @@ const AdminProductAdd = (props) => {
 
 							<UserData>
 								<PopupRegAreaInput
-									onChange={(e) => { handleChangeImage(e.target.files[0])  }}
+									onChange={(e) => { handleChangeImage(e.target.files[0]) }}
 									type="file"
 									name="myImage"
 									placeholder="תמונת מוצר"
