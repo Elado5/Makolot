@@ -6,6 +6,14 @@ import styled from 'styled-components';
 import { GET } from '../api/fetch';
 import { productsAPI } from '../api/api';
 import { BeatLoader } from 'react-spinners';
+import {
+    Magnifier,
+    GlassMagnifier,
+    SideBySideMagnifier,
+    PictureInPictureMagnifier,
+    MOUSE_ACTIVATION,
+    TOUCH_ACTIVATION
+  } from "react-image-magnifiers";
 
 const ProductScreen = ({ cartItems, addItem, removeItem }) => {
 

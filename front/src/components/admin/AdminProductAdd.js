@@ -42,6 +42,14 @@ const AdminProductAdd = (props) => {
 		console.log(`state`, state)
 	}
 
+	const handleChangeSubCategory = async (value) => {
+		setState(prevState => ({
+			...prevState,
+			sub_category_id: value.value
+		}))
+		console.log(`state`, state)
+	}
+
 	const handleChangeImage = (file) => {
 		setImage(file);
 	}
@@ -166,35 +174,22 @@ const AdminProductAdd = (props) => {
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
 
-							<Select
-								options={categories} placeholder="קטגוריות"
-								id="category_id"
-								setValue={state.category_id}
-								onChange={handleChangeCategory}
-							/>
-							<Select
-								options={subCategories} placeholder=" תת קטגוריות"
-								setValue={state.sub_category_id}
-								id="sub_category_id"
-							/>
-							<UserData>
-								<PopupRegAreaInput
-									id="category_id"
-									onChange={handleChangeCategory}
-									value={state.category_id}
-									type="number"
-									placeholder="מספר קטגוריה"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-								<PopupRegAreaInput
-									id="sub_category_id"
-									onChange={handleChange}
-									value={state.sub_category_id}
-									type="number"
-									placeholder="מספר תת קטגוריה"
-								/>
-								<InputMustSpan>*</InputMustSpan>
-							</UserData>
+								<ReactSelectStyle>
+									<Select
+										options={categories} placeholder="קטגוריות"
+										id="category_id"
+										setValue={state.category_id}
+										onChange={handleChangeCategory}
+									/>
+								</ReactSelectStyle>
+								<ReactSelectStyle>
+									<Select
+										options={subCategories} placeholder=" תת קטגוריות"
+										setValue={state.sub_category_id}
+										id="sub_category_id"
+										onChange={handleChangeSubCategory}
+									/>
+								</ReactSelectStyle>
 							<UserData>
 								<PopupRegAreaInput
 									id="product_suppliers"
@@ -278,6 +273,17 @@ const PopupRegAreaInput = styled.input`
 		color: #27407f;
 		font-weight: bold;
 		font-size: 15px;
+	}
+`;
+
+const ReactSelectStyle = styled.div`
+	 {
+		text-align: right;
+		margin-top: 1.2rem;
+		margin-bottom: 1.2rem;
+		color: #27407f;
+		font-weight: 500;
+		font-size: 1.2rem;
 	}
 `;
 
