@@ -8,11 +8,12 @@ import { Link, Redirect } from 'react-router-dom';
 const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
-    
+
     const totalPrice = cartItems.reduce((x, obj) => x + obj.product_final_price * obj.qty, 0);
     const delieveryPrice = 0;
-    const [fullName, setFullName] = useState(`${loggedUser.customer_first_name} ${loggedUser.customer_last_name}`);
-    const [phone, setPhone] = useState(loggedUser.customer_phone_number);
+    const [fullName, setFullName] = useState(`${loggedUser.customer_first_name} ${loggedUser.customer_last_name}` || "");
+    const [phone, setPhone] = useState(loggedUser.customer_phone_number || "");
+    const [addresses, setAddresses] = useState(loggedUser.customer_city);
 
     const removeItem = (event) => {
         console.log(event.value);
