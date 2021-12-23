@@ -175,6 +175,29 @@ route.put(`/update/:id`, async (req, res) => {
 	}
 });
 
+route.put(`/update_address`, async (req, res) => {
+	try {
+		let body = req.body;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db
+			.request()
+			.input(`customer_id`, sql.Int, body.id)
+			.output(`address_id`, sql.Int, body.address_id)
+			.execute(`update_customer_address`);
+
+		let data = await query;
+		await db.close();
+		res.send(data.output);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.put(`/update_card/:id`, async (req, res) => {
 	try {
 		let body = req.body;

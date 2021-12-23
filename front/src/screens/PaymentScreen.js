@@ -60,7 +60,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                         <ScrollBox>
                             <BtnAddPaymentArea>
                                 <BtnAddPaymentAreaSpan> + </BtnAddPaymentAreaSpan>
-                                <span>הוספה</span>
+                                <Link to={`/payment/registerAddress`}>הוספה</Link>
                             </BtnAddPaymentArea>
 
                             <DataArea>

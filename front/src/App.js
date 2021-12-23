@@ -8,6 +8,7 @@ import PopUpRegister from './components/PopUpRegister';
 import PopUpLogin from './components/PopUpLogin';
 import ForgotPass from './components/ForgotPass';
 import PaymentScreen from './screens/PaymentScreen';
+import PopUpAddressRegister from './components/PopUpAddressRegister';
 import UserUpdate from './screens/UserUpdate';
 import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
 import MapScreen from './screens/MapScreen';
@@ -101,14 +102,15 @@ function App () {
       <Route path="/adminPage/customers" component={AdminCustomers}/>
       <Route path="/adminPage/retailers" component={AdminRetailers}/>
       <Route path="/adminPage/shops" component={AdminShops}/>
-      <Route path="/UserPage/update" component={UserUpdate}></Route>
-      <Route path="/about" component={AboutScreen}></Route>
-      <Route path="/map" component={MapScreen}></Route>
-      <Route path="/paymentsuccess" component={PaymentSuccessScreen}></Route>
-      <Route path="/forgot" component={ForgotPass}></Route>
-      <Route path="/register" component={PopUpRegister}></Route>
-      <Route path="/login" component={PopUpLogin}></Route>
-      <Route path="/shopsSearch" component={PopUpShops}></Route>
+      <Route path="/UserPage/update" component={UserUpdate}/>
+      <Route path="/about" component={AboutScreen}/>
+      <Route path="/map" component={MapScreen}/>
+      <Route path="/paymentsuccess" component={PaymentSuccessScreen}/>
+      <Route path="/payment/registerAddress" component={PopUpAddressRegister}/>
+      <Route path="/forgot" component={ForgotPass}/>
+      <Route path="/register" component={PopUpRegister}/>
+      <Route path="/login" component={PopUpLogin}/>
+      <Route path="/shopsSearch" component={PopUpShops}/>
       <Route path="/product/:id" render={() =>
         (<ProductScreen cartItems={cartItems} setCartItems={setCartItems} addItem={addItem} removeItem={removeItem} />)}>
       </Route>

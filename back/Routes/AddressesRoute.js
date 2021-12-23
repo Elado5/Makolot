@@ -92,13 +92,14 @@ route.post(`/add`, async (req, res) => {
 		.input(`street`, sql.NVarChar(150), body.street)
 		.input(`other_data`, sql.NVarChar(150), body.other_data)
 		.input(`zip_code`, sql.Int, body.zip_code)
+		.output(`address_id`, sql.Int)
 		.execute(`add_address`);
 
 	let data = await query;
 
 	await db.close();
 
-	res.send(data.recordset);
+	res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

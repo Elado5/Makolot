@@ -23,11 +23,13 @@ create proc add_address
 	@city nvarchar(150),
 	@street nvarchar(150),
 	@other_data nvarchar(150),
-	@zip_code int
+	@zip_code int,
+	@address_id int output
 as
 	
 	insert into [dbo].Addresses([city], [street], [other_data], [zip_code])
 		VALUES(@city, @street, @other_data, @zip_code)
+		set @address_id = @@IDENTITY
 go
 
 exec add_address "kokbo", "yho", 14234
@@ -235,6 +237,15 @@ AS
 			@customer_id_output = customer_id
 		where [customer_id] = @customer_id
 go
+
+create proc update_customer_address
+	@address_id int,
+	@customer_id int
+	as
+		UPDATE [dbo].[Customers]
+	set [address_id] = @address_id where [customer_id] = @customer_id
+go
+
 
 create proc delete_customer
 	@customer_id int

@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { addressesAPI } from '../api/api';
+import { addressesAPI, customersAPI } from '../api/api';
 import { POST, PUT, DELETE } from '../api/fetch';
 import { BeatLoader } from 'react-spinners';
 
 
 const PopUpAddressRegister = () => {
+
+	const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
+
+
 	const [state, setState] = useState({
-        "city": "",
-        "street": "",
-        "other_data": "",
-        "zip_code": ""
+		"city": "",
+		"street": "",
+		"other_data": "",
+		"zip_code": ""
 	})
 
-    const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = (event) => {
 		const { id, value } = event.target
@@ -25,23 +29,23 @@ const PopUpAddressRegister = () => {
 	}
 
 
-	const RegisterCustomer = async () => {
+	const RegisterAddress = async () => {
 
 		console.log("customer reg state: ", state)
 		let address = {
-            city: state.city,
-            street: state.street,
-            other_data: state.other_data,
-            zip_code: state.zip_code
+			city: state.city,
+			street: state.street,
+			other_data: state.other_data,
+			zip_code: state.zip_code
 		}
 		let res = await POST(addressesAPI.post_add, address);
 		console.log("address added: ", res); //see if it worked
 
 		const payload = {
-            "city": state.city,
-            "street": state.street,
-            "other_data": state.other_data,
-            "zip_code": state.zip_code
+			"city": state.city,
+			"street": state.street,
+			"other_data": state.other_data,
+			"zip_code": state.zip_code
 		}
 		console.log("payload" + payload)
 		return res;
@@ -50,23 +54,31 @@ const PopUpAddressRegister = () => {
 	const submitFunc = async (event) => {
 		event.preventDefault();
 		if (/[a-zA-Z\u0590-\u05fe]/g.test(state.city) === false
-        || /[a-zA-Z\u0590-\u05fe]/g.test(state.street) === false
-        || /[a-zA-Z\u0590-\u05fe]/g.test(state.zip_code) === false) {
-			alert('כל השדות מלבד "פרטים נוספים" הינם שדות חובה');
+			|| /[a-zA-Z\u0590-\u05fe]/g.test(state.street) === false) {
+			alert('.כל השדות מלבד "פרטים נוספים" הינם שדות חובה, אנא הקלידו פרטים נכונים ונסו שנית');
 		}
 
-        //TODO make address add return the address id and then save it in the user's address_id
+		//TODO make address add return the address id and then save it in the user's address_id
 
 		else {
 			setLoading(true);
-			let res = await RegisterCustomer();
+			let res = await RegisterAddress();
 			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
-			if (res.address_id) {
-				setLoading(false);
+			try {
+				if (res?.address_id) {
+					let customerRes = await PUT(customersAPI.put_update_address, [res.address_id], [loggedUser.customer_id]);
+					if (!customerRes?.address_id) {
+						alert("עדכון הכתובת נדחה, אנא נסו שנית")
+					}
+					setLoading(false);
+				}
+				else {
+					setLoading(false);
+					alert('הרשמת הכתובת נדחתה, אנא בדקו את הפרטים שהזנתם ונסו שוב');
+				}
 			}
-			else {
-				setLoading(false);
-				alert('הרשמת הכתובת נדחתה, אנא בדקו את הפרטים שהזנתם ונסו שוב');
+			catch (err) {
+				console.error(err);
 			}
 		}
 	};
@@ -79,20 +91,17 @@ const PopUpAddressRegister = () => {
 					X
 				</Link>
 				<PopupRegArea>
-					<PopupRegAreaSpan>הרשמה לאתר</PopupRegAreaSpan>
+					<PopupRegAreaSpan>הוספת כתובת</PopupRegAreaSpan>
 					<PopupRegInputs>
 						<RegUserName>
 							<UserData>
-								<UserData>
-									<PopupRegAreaInput
-										id="city"
-										onChange={handleChange}
-										value={state.city}
-										type="text"
-										placeholder="עיר"
-									/>
-									<InputMustSpan>*</InputMustSpan>
-								</UserData>
+								<PopupRegAreaInput
+									id="city"
+									onChange={handleChange}
+									value={state.city}
+									type="text"
+									placeholder="עיר"
+								/>
 								<InputMustSpan>*</InputMustSpan>
 							</UserData>
 
@@ -118,8 +127,10 @@ const PopUpAddressRegister = () => {
 										type="text"
 										placeholder="פרטים נוספים"
 									/>
+									<InputMustSpan>*</InputMustSpan>
 								</UserData>
 							</RegUserName>
+							
 							<UserData>
 								<PopupRegAreaInput
 									id="zip_code"
@@ -150,7 +161,7 @@ const PopUpAddressRegister = () => {
 const ContainerPopup = styled.div`
 	 {
 		position: fixed;
-		z-index: 3;
+		z-index: 5;
 		top: 0;
 		left: 0;
 		bottom: 0;
@@ -205,7 +216,7 @@ const PopupRegAreaSpan = styled.span`
 	 {
 		color: #27407f;
 		font-size: 30px;
-		font-weight: 800;
+		font-weight: 500;
 	}
 `;
 
