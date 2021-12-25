@@ -7,6 +7,7 @@ export const customersAPI = {
     post_register: `${baseAPI}/customers/register`,
     post_login: `${baseAPI}/customers/login`,
     put_update: `${baseAPI}/customers/update/`,
+    put_update_address: `${baseAPI}/customers/update_address/`,
     put_update_card: `${baseAPI}/customers/update_card`,
     delete_customer: `${baseAPI}/customers/delete/`
 }

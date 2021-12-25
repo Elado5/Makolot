@@ -274,6 +274,12 @@ as
 	select * from Customer_Addresses_Connector where [customer_id] = @customer_id and [address_id] = @address_id
 go
 
+create proc get_cacs_by_customer_id
+	@customer_id int
+as
+	select * from Customer_Addresses_Connector where [customer_id] = @customer_id
+go
+
 create proc add_cac
 	@customer_id int,
 	@address_id int

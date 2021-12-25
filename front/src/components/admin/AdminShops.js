@@ -153,7 +153,7 @@ const Title = styled.div`
 `;
 
 const ShopLine = styled.div`{
-  font-weight: 600;
+    font-weight: 600;
     align-items: center;
     position: relative;
     display: flex;
@@ -162,21 +162,17 @@ const ShopLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
-    border-radius: 2rem;
-    margin-bottom: 0.35rem;
-    box-shadow: 0px 0px 4px black;
     height: 6em;
-    width: 75vh;
     font-size: 1.05rem;
-    background-color: rgba(235, 235, 255, 0.85);
+    width: 75vh;
+    background-color: rgba(255, 255, 255, 0.85);
     img{
         width: 3rem;
-        height: 1rem:
+        height: 20px:
         justify-content: left;
     }
     span{
-        width: 100%;
-        text-overflow: ellipsis;
+        width: 10rem;
     }
 
 }`

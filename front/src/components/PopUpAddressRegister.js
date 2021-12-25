@@ -66,9 +66,16 @@ const PopUpAddressRegister = () => {
 			//* if it worked it needs to return the customer's id in 'res', if not then there was an error.
 			try {
 				if (res?.address_id) {
-					let customerRes = await PUT(customersAPI.put_update_address, [res.address_id], [loggedUser.customer_id]);
-					if (!customerRes?.address_id) {
+					console.log('res.address_id :>> ', res.address_id);
+					console.log('loggedUser.customer_id :>> ', loggedUser.customer_id);
+					let customerRes = await PUT(customersAPI.put_update_address, [loggedUser.customer_id], {"address_id": res.address_id});
+					console.log('customerRes :>> ', customerRes);
+					if (!customerRes) {
+						console.log('customerRes :>> ', customerRes);
 						alert("עדכון הכתובת נדחה, אנא נסו שנית")
+					}
+					else{
+						alert("הכתובת עודכנה בהצלחה")
 					}
 					setLoading(false);
 				}
