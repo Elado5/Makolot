@@ -94,7 +94,7 @@ const PopUpAddressRegister = () => {
 	return (
 		<ContainerPopup>
 			<PopupReg>
-				<Link className="close-button" to="/">
+				<Link className="close-button" to="/payment">
 					X
 				</Link>
 				<PopupRegArea>

@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import data from '../data.json';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
+import {addressesAPI, customersAPI} from '../api/api';
+import { GET } from '../api/fetch';
 
 const PaymentScreen = ({ cartItems, setCartItems }) => {
 
@@ -13,11 +15,25 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
     const delieveryPrice = 0;
     const [fullName, setFullName] = useState(`${loggedUser.customer_first_name} ${loggedUser.customer_last_name}` || "");
     const [phone, setPhone] = useState(loggedUser.customer_phone_number || "");
-    const [addresses, setAddresses] = useState(loggedUser.customer_city);
+    const [addresses, setAddresses] = useState([]);
+    const [time, setTime] = useState(new Date());
+    const DateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+
+    const getAddress = async () => {
+        const customer = await GET(customersAPI.get_by_id, [loggedUser.customer_id]);
+        const res = await GET(addressesAPI.get_by_id, [customer.address_id]);
+        setAddresses(await res);
+        console.log('res :>> ', res);
+    }
 
     const removeItem = (event) => {
         console.log(event.value);
     }
+
+    useEffect(() => {
+        getAddress();
+    }, [addresses])
 
     if(cartItems.length === 0){
         return(
@@ -25,6 +41,22 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
         )
     }
 
+/* //! Michelle version of DateArea
+    <DataArea>
+    {data.customer_data.map((item, key) => (
+        <PayDataArea key={key}>
+            {item.customer_address.map((subItem, key) =>
+                <PayDataBox key={key} >
+                    <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
+                    <p>{subItem.address_id}</p>
+                    <p>{subItem.address_data}</p>
+                </PayDataBox>
+            )}
+        </PayDataArea>
+    ))}
+
+</DataArea>
+*/
     return (
         <ContainerPopup>
             {/* <Navbar cartItems={cartItems}></Navbar> */}
@@ -60,21 +92,21 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                         <ScrollBox>
                             <BtnAddPaymentArea>
                                 <BtnAddPaymentAreaSpan> + </BtnAddPaymentAreaSpan>
-                                <Link to={`/payment/registerAddress`}>הוספה</Link>
+                                <Link to={`/payment/registerAddress`}>לשינוי</Link>
                             </BtnAddPaymentArea>
 
                             <DataArea>
-                                {data.customer_data.map((item, key) => (
-                                    <PayDataArea key={key}>
-                                        {item.customer_address.map((subItem, key) =>
-                                            <PayDataBox key={key} >
-                                                <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
-                                                <p>{subItem.address_id}</p>
-                                                <p>{subItem.address_data}</p>
+                                {addresses.length > 0 &&
+                                    <PayDataArea >
+                                            <PayDataBox>
+                                                <p>{addresses[0].city}</p>
+                                                <p>{addresses[0].street}</p>
+                                                {addresses[0].zip_code !== "" &&  <p>מיקוד -  {addresses[0].zip_code}</p>}
+                                                {addresses[0].other_data !== "" &&  <p>{addresses[0].other_data} </p>}
+
                                             </PayDataBox>
-                                        )}
                                     </PayDataArea>
-                                ))}
+                                }
 
                             </DataArea>
                         </ScrollBox>
@@ -82,7 +114,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
                     <PaymentDataBox>
                         <PaymentDateTitle>
-                            <h3>  data data </h3>
+                            <h3>  {time.toLocaleDateString(`he-IL`, DateOptions)} </h3>
                             <h3> בחירת זמני משלוח </h3>
                         </PaymentDateTitle>
 
@@ -90,8 +122,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
                         <DateBox>
                             <DaySelectBox>
-                                <h4>Day</h4>
-                                <p>Date</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
+                                <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 24)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -101,8 +133,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>Day</h4>
-                                <p>Date</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 48)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -112,8 +144,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>Day</h4>
-                                <p>Date</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 72)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -123,8 +155,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>Day</h4>
-                                <p>Date</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 96)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -134,8 +166,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>Day</h4>
-                                <p>Date</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 120)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -144,30 +176,6 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <p>select time</p>
                             </DaySelectBox>
                         </DateBox>
-                    </PaymentDataBox>
-
-                    <PaymentDataBox>
-                        <h3> פרטי התקשורת </h3>
-                        <hr />
-                        <ScrollBox>
-                            <BtnAddPaymentArea>
-                                <BtnAddPaymentAreaSpan> + </BtnAddPaymentAreaSpan>
-                                <span>הוספה</span>
-                            </BtnAddPaymentArea>
-                            <DataArea>
-                                {data.customer_data.map((item, key) => (
-                                    <PayDataArea key={key}>
-                                        {item.customer_contact_information.map((subItem, key) =>
-                                            <PayDataBox key={key} >
-                                                <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
-                                                <p>{subItem.contact_information_id}</p>
-                                                <p>{subItem.contact_information_data}</p>
-                                            </PayDataBox>
-                                        )}
-                                    </PayDataArea>
-                                ))}
-                            </DataArea>
-                        </ScrollBox>
                     </PaymentDataBox>
 
                     <PaymentBox>
@@ -184,8 +192,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                         {item.customer_credit_card_id.map((subItem, key) =>
                                             <PayDataBoxCard key={key}>
                                                 <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
-                                                <p>{subItem.credit_last_num}</p>
-                                                <p>{subItem.credit_card_name}</p>
+                                                <h4>{subItem.credit_last_num}</h4>
+                                                <h3>{subItem.credit_card_name}</h3>
                                             </PayDataBoxCard>
                                         )}
                                     </PayDataArea>
@@ -351,7 +359,6 @@ const DataArea = styled.div`{
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    overflow-x: scroll;  
 }`
 
 const PayDataArea = styled.div`{
@@ -371,6 +378,7 @@ const PayDataBox = styled.div`{
     flex-direction: column;
     align-items: center;
     transition: 0.5s;
+    font-size: 1em;
 
     &:hover{
         background-color: #aabff1;
@@ -430,6 +438,7 @@ const DateBox = styled.div`{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    direction: rtl;
 }`
 const DaySelectBox = styled.div`{
     width: 15%;
