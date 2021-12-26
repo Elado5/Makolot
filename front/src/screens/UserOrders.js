@@ -9,10 +9,8 @@ const UserOrders = () => {
 
     const loggedUser = JSON.parse(sessionStorage.getItem('currentLoggedIn')) || false;
 
-
     const [orders, setOrders] = useState([]);
     const [load, setLoad] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
 
     const DateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -51,15 +49,36 @@ const UserOrders = () => {
                 {orders.length > 0 && orders.map((order, key) => {
 
                     const get_shop_name = async (id) => {
-                        order.grocery_shop_name = await GET(shopsAPI.get_by_id, [id]);
+                        //order.grocery_shop_name = await GET(shopsAPI.get_by_id, [id]);
                         console.log(`order.grocery_shop_name`, order.grocery_shop_name);
                     }
 
                     get_shop_name(order.grocery_shop_id);
 
+
+
                     return (
                         <>
-                            <CustomerLine>
+                            {key === 0 && <>
+                                <OrderLine>
+                                    <HrNav />
+                                    <CustomerName>סטטוס</CustomerName>
+                                    <HrNav />
+                                    {order.order_discount > 0 && (<CustomerName>אחוזי הנחה</CustomerName>
+                                    )}
+                                    {order.order_discount > 0 && <HrNav />}
+                                    <CustomerName>סכום בש"ח</CustomerName>
+                                    <HrNav />
+                                    <CustomerName>תאריך הזמנה</CustomerName>
+                                    <HrNav />
+                                    <CustomerName>זמן הגעה מועדף</CustomerName>
+                                    <HrNav />
+                                    {order?.grocery_shop_name !== "" && <CustomerName>שם החנות</CustomerName>}
+                                    {order?.grocery_shop_name !== "" && <HrNav />}
+                                    <CustomerName>{order.order_id}</CustomerName>
+                                </OrderLine>
+                            </>}
+                            <OrderLine>
                                 <span>{key}</span>
                                 <HrNav />
                                 <CustomerName>{order.order_status}</CustomerName>
@@ -67,18 +86,16 @@ const UserOrders = () => {
                                 {order.order_discount > 0 && (<CustomerName>{order.order_discount}</CustomerName>
                                 )}
                                 {order.order_discount > 0 && <HrNav />}
-                                <CustomerName>{order.total_price}</CustomerName>
+                                <CustomerName>{order.order_total_price.toFixed(2)}</CustomerName>
                                 <HrNav />
                                 <CustomerName>{new Date(order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</CustomerName>
-                                <HrNav />
-                                <CustomerName>{order.customer_id}</CustomerName>
                                 <HrNav />
                                 <CustomerName>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</CustomerName>
                                 <HrNav />
                                 {order?.grocery_shop_name !== "" && <CustomerName>{order?.grocery_shop_name}</CustomerName>}
                                 {order?.grocery_shop_name !== "" && <HrNav />}
                                 <CustomerName>{order.order_id}</CustomerName>
-                            </CustomerLine>
+                            </OrderLine>
                         </>
                     )
                 })}
@@ -104,9 +121,10 @@ const PContainer = styled.div`{
     overflow-y: scroll;
 }`
 
-const CustomerLine = styled.div`{
+const OrderLine = styled.div`{
     font-weight: 600;
     align-items: center;
+    align-text-align: center;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -114,35 +132,29 @@ const CustomerLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
-    height: 6em;
+    height: 8em;
     font-size: 1.05rem;
     width: 75vh;
     background-color: rgba(255, 255, 255, 0.85);
-    img{
-        width: 3rem;
-        height: 20px:
-        justify-content: left;
-    }
-
-
 }`
 
 const CustomerName = styled.span`{
     text-align: center;
-    padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
 }`
 
 
 const Title = styled.div`
 	{
-		font-size: 3.5rem;
+		font-size: 4.2rem;
 		font-weight: bold;
 		background: -webkit-linear-gradient(-90deg, white, navy);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		-webkit-text-stroke: 1px lightgrey;
-        text-shadow: 0px 0px 3px black;
+        text-shadow: 0px 0px 3px rgba(0, 0, 100, 0.5);
+        margin-bottom: 1rem;
+
 	}
 `;
 
@@ -170,9 +182,9 @@ const Loader = styled.div`{
 }`
 
 const HrNav = styled.hr`{
-    height: 2rem;
+    height: 4rem;
     display: inline-block;
-    border: 1px solid #00968838;
+    border: 1px solid #34468838;
     width: 0px;
     margin: 1rem;
   }`

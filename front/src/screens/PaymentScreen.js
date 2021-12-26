@@ -22,6 +22,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
     const [loadingAddress, setLoadingAddress] = useState(false);
     const [loadingOrder, setLoadingOrder] = useState(false);
 
+    const orderTimeChoices = ["11:00", "13:00", "15:00", "17:00", "19:00"];
+
     const getAddress = async () => {
         setLoadingAddress(true);
         const customer = await GET(customersAPI.get_by_id, [loggedUser.customer_id]);
@@ -48,9 +50,9 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
             console.log(`payload.order_details`, LZString.decompress(payload.order_details))
             const res = await POST(ordersAPI.post_add, payload);
             console.log(`res`, res)
-            if (res?.order_id){
+            if (res?.order_id) {
                 alert('ההזמנה נשלחה בהצלחה!\nניתן לצפות בפרטי ההזמנה באזור האישי');
-                window.location ='/';
+                window.location = '/';
             }
         }
         catch (err) { console.error(err) };
@@ -161,75 +163,65 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 24)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
                                 <Hr />
-                                <h6>11:00</h6>
-                                <HrSmall />
-                                <h6>13:00</h6>
-                                <HrSmall />
-                                <h6>15:00</h6>
-                                <HrSmall />
-                                <h6>17:00</h6>
-                                <HrSmall />
-                                <h6>19:00</h6>
+                                {orderTimeChoices.map((time, key) => 
+                                    <>
+                                        <h6>{time}</h6>
+                                        {key !== 4 && <HrSmall/>}
+                                    </>
+                                )
+                            }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 48)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
                                 <Hr />
-                                <h6>11:00</h6>
-                                <HrSmall />
-                                <h6>13:00</h6>
-                                <HrSmall />
-                                <h6>15:00</h6>
-                                <HrSmall />
-                                <h6>17:00</h6>
-                                <HrSmall />
-                                <h6>19:00</h6>
+                                {orderTimeChoices.map((time, key) => 
+                                    <>
+                                        <h6>{time}</h6>
+                                        {key !== 4 && <HrSmall/>}
+                                    </>
+                                )
+                            }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 72)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
                                 <Hr />
-                                <h6>11:00</h6>
-                                <HrSmall />
-                                <h6>13:00</h6>
-                                <HrSmall />
-                                <h6>15:00</h6>
-                                <HrSmall />
-                                <h6>17:00</h6>
-                                <HrSmall />
-                                <h6>19:00</h6>
+                                {orderTimeChoices.map((time, key) => 
+                                    <>
+                                        <h6>{time}</h6>
+                                        {key !== 4 && <HrSmall/>}
+                                    </>
+                                )
+                            }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 96)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
                                 <Hr />
-                                <h6>11:00</h6>
-                                <HrSmall />
-                                <h6>13:00</h6>
-                                <HrSmall />
-                                <h6>15:00</h6>
-                                <HrSmall />
-                                <h6>17:00</h6>
-                                <HrSmall />
-                                <h6>19:00</h6>
+                                {orderTimeChoices.map((time, key) => 
+                                    <>
+                                        <h6>{time}</h6>
+                                        {key !== 4 && <HrSmall/>}
+                                    </>
+                                )
+                            }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 120)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
                                 <Hr />
-                                <h6>11:00</h6>
-                                <HrSmall />
-                                <h6>13:00</h6>
-                                <HrSmall />
-                                <h6>15:00</h6>
-                                <HrSmall />
-                                <h6>17:00</h6>
-                                <HrSmall />
-                                <h6>19:00</h6>
+                                {orderTimeChoices.map((time, key) => 
+                                    <>
+                                        <h6>{time}</h6>
+                                        {key !== 4 && <HrSmall/>}
+                                    </>
+                                )
+                            }
                             </DaySelectBox>
                         </DateBox>
                     </PaymentDataBox>
@@ -510,6 +502,7 @@ const DaySelectBox = styled.div`{
         cursor: pointer;
         :hover{
             text-shadow: 0 0 1px lightblue;
+            font-size: 1.1rem;
             transition: 0.5s;
         }
     }

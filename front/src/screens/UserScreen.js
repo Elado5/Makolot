@@ -48,7 +48,7 @@ const UserScreen = () => {
         }
 
         veryifyCustomerInfo();
-    })
+    }, [])
 
     useEffect(() => {
         try{
