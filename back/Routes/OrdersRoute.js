@@ -62,13 +62,14 @@ route.post(`/add`, async (req, res) => {
 			.input(`customer_id`, sql.Int, body.customer_id)
 			.input(`order_ship_date_preference`, sql.DateTime, body.order_ship_date_preference)
 			.input(`grocery_shop_id`, sql.Int, body.grocery_shop_id)
+			.output(`order_id`, sql.Int)
 			.execute(`add_order`);
 
 		let data = await query;
 
 		await db.close();
 
-		res.send(data.recordset);
+		res.send(data.output);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

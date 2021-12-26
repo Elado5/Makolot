@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import data from '../data.json';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
-import {addressesAPI, customersAPI} from '../api/api';
-import { GET } from '../api/fetch';
+import { addressesAPI, customersAPI, ordersAPI } from '../api/api';
+import { GET, POST } from '../api/fetch';
+import { BeatLoader } from 'react-spinners';
+import LZString from 'lz-string';
 
 const PaymentScreen = ({ cartItems, setCartItems }) => {
 
@@ -18,13 +19,39 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
     const [addresses, setAddresses] = useState([]);
     const [time, setTime] = useState(new Date());
     const DateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
+    const [loadingAddress, setLoadingAddress] = useState(false);
+    const [loadingOrder, setLoadingOrder] = useState(false);
 
     const getAddress = async () => {
+        setLoadingAddress(true);
         const customer = await GET(customersAPI.get_by_id, [loggedUser.customer_id]);
         const res = await GET(addressesAPI.get_by_id, [customer.address_id]);
         setAddresses(await res);
-        console.log('res :>> ', res);
+        setLoadingAddress(false);
+
+    }
+
+    const addOrder = async () => {
+        setLoadingOrder(true);
+        try{
+            const payload = {
+                "order_status": "בתהליך",
+                "order_discount": 0,
+                "order_total_price": totalPrice,
+                "order_details": LZString.compress(cartItems.map((item, key) => { return `${item.product_name} - ${item.product_final_price.toFixed(2)}₪ `}).toString()),
+                "order_date": new Date(Date.now()).toDateString(),
+                "customer_id": loggedUser.customer_id,
+                "order_ship_date_preference": new Date(Date.now() + 1000 * 3600 * 2).toDateString(),
+                "grocery_shop_id": 7
+            }
+            console.log(`payload`, payload)
+            console.log(`payload.order_details`, LZString.decompress(payload.order_details))
+        const res = await POST(ordersAPI.post_add, payload);
+            console.log(`res`, res)
+        }
+        catch (err) { console.error(err)};
+        setLoadingOrder(false);
+
     }
 
     const removeItem = (event) => {
@@ -33,30 +60,30 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     useEffect(() => {
         getAddress();
-    }, [addresses])
+    }, []);
 
-    if(cartItems.length === 0){
-        return(
-            <Redirect to={"/"}/>
+    if (cartItems.length === 0) {
+        return (
+            <Redirect to={"/"} />
         )
     }
 
-/* //! Michelle version of DateArea
-    <DataArea>
-    {data.customer_data.map((item, key) => (
-        <PayDataArea key={key}>
-            {item.customer_address.map((subItem, key) =>
-                <PayDataBox key={key} >
-                    <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
-                    <p>{subItem.address_id}</p>
-                    <p>{subItem.address_data}</p>
-                </PayDataBox>
-            )}
-        </PayDataArea>
-    ))}
+    /* //? Michelle version of DateArea
+        <DataArea>
+        {data.customer_data.map((item, key) => (
+            <PayDataArea key={key}>
+                {item.customer_address.map((subItem, key) =>
+                    <PayDataBox key={key} >
+                        <BtnRemovePaymentBox onClick={event => removeItem(event.target.value)}>x</BtnRemovePaymentBox>
+                        <p>{subItem.address_id}</p>
+                        <p>{subItem.address_data}</p>
+                    </PayDataBox>
+                )}
+            </PayDataArea>
+        ))}
+    </DataArea>
+    */
 
-</DataArea>
-*/
     return (
         <ContainerPopup>
             {/* <Navbar cartItems={cartItems}></Navbar> */}
@@ -91,20 +118,24 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                         <hr />
                         <ScrollBox>
                             <BtnAddPaymentArea>
-                                <BtnAddPaymentAreaSpan> + </BtnAddPaymentAreaSpan>
                                 <Link to={`/payment/registerAddress`}>לשינוי</Link>
                             </BtnAddPaymentArea>
 
                             <DataArea>
+                                {loadingAddress &&
+                                    <Loader>
+                                        <BeatLoader color='navy' loading />
+                                    </Loader>
+                                }
                                 {addresses.length > 0 &&
                                     <PayDataArea >
-                                            <PayDataBox>
-                                                <p>{addresses[0].city}</p>
-                                                <p>{addresses[0].street}</p>
-                                                {addresses[0].zip_code !== "" &&  <p>מיקוד -  {addresses[0].zip_code}</p>}
-                                                {addresses[0].other_data !== "" &&  <p>{addresses[0].other_data} </p>}
+                                        <PayDataBox>
+                                            <p>{addresses[0].city}</p>
+                                            <p>{addresses[0].street}</p>
+                                            {addresses[0].zip_code !== "" && <p>מיקוד -  {addresses[0].zip_code}</p>}
+                                            {addresses[0].other_data !== "" && <p>{addresses[0].other_data} </p>}
 
-                                            </PayDataBox>
+                                        </PayDataBox>
                                     </PayDataArea>
                                 }
 
@@ -122,8 +153,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
                         <DateBox>
                             <DaySelectBox>
-                                <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
-                                <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 24)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
+                                <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 24)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -133,8 +164,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
-                                <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 48)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 48)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -144,8 +175,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
-                                <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 72)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 72)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -155,8 +186,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
-                                <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 96)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 96)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -166,8 +197,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             </DaySelectBox>
 
                             <DaySelectBox>
-                                <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, {weekday: 'short'})}</h4>
-                                <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate()+'-'+((new Date(Date.now() + 1000 * 3600 * 120)).getMonth()+1)+'-'+(new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
+                                <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
+                                <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 120)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
                                 <hr />
                                 <p>select time</p>
                                 <p>select time</p>
@@ -213,21 +244,21 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                         <div className="product-remove-basket">
                                             <div className="">
                                                 <span className="currency-basket">₪</span>
-                                                {(item.product_final_price*item.qty).toFixed(2)}
+                                                {(item.product_final_price * item.qty).toFixed(2)}
                                             </div>
                                         </div>
 
                                         <div>{item.product_name}</div>
-                                        <div>:כמות<br/>{item.qty}</div>
+                                        <div>:כמות<br />{item.qty}</div>
 
                                         <div className="item-basket">
                                             <div className="image-container-basket">
                                                 <CountManage>
                                                     {item.qty}
                                                 </CountManage>
-                                                    <img className="product-image-basket"
-                                                        src={item.product_image}
-                                                        alt={item.product_name} />
+                                                <img className="product-image-basket"
+                                                    src={item.product_image}
+                                                    alt={item.product_name} />
                                             </div>
                                         </div>
                                     </PaymentBasket>
@@ -262,9 +293,14 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Link to="/">המשך בקניה </Link>
                             </BtnReturnToShop>
 
-                            <BtnPay> תשלום </BtnPay>
+                            <BtnPay onClick={addOrder}> תשלום </BtnPay>
                         </PaymentButtons>
                     </PaymentBox>
+                    {loadingOrder &&
+                                    <Loader>
+                                        <BeatLoader color='navy' loading />
+                                    </Loader>
+                                }
                 </OrderDataBox>
             </ContainerPayment>
             <Footer />
@@ -274,7 +310,6 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
 const ContainerPopup = styled.div`{
     position: fixed;
-    z-index: 4;
     background-color: #fafafa;
     height: 100vh;
     width: 100%;
@@ -511,7 +546,14 @@ const CountManage = styled.div`{
     position: absolute;
     margin-bottom: 60px;
     margin-right: 10px;
-    z-index: 8;
+    z-index: 5;
 }`
+
+const Loader = styled.div`{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    z-index: 8;
+}`;
 
 export default PaymentScreen;
