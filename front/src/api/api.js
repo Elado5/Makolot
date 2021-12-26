@@ -119,6 +119,7 @@ export const shopsAPI = {
 export const ordersAPI = {
     get_all: `${baseAPI}/orders/all`,
     get_by_id: `${baseAPI}/orders/`,
+    get_by_customer_id: `${baseAPI}/orders/customer/`,
     post_add: `${baseAPI}/orders/add`,
     put_update: `${baseAPI}/orders/update/`,
     delete_order: `${baseAPI}/orders/delete/`

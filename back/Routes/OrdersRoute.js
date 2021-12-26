@@ -44,6 +44,27 @@ route.get(`/:id`, async (req, res) => {
 	}
 });
 
+route.get(`/customer/:id`, async (req, res) => {
+	try {
+		let params = req.params;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().input(`customer_id`, sql.Int, params.id).execute(`get_orders_by_customer_id`);
+
+		let data = await query;
+
+		await db.close();
+
+		res.send(data.recordset);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.post(`/add`, async (req, res) => {
 	try {
 		let body = req.body;

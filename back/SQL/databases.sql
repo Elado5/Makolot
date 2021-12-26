@@ -900,6 +900,12 @@ as
 	select * from Orders where [order_id] = @order_id
 go
 
+create proc get_orders_by_customer_id
+	@customer_id int
+as
+	select * from Orders where [customer_id] = @customer_id
+go
+
 create proc add_order
 
 	@order_status nvarchar(20),

@@ -33,12 +33,12 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     const addOrder = async () => {
         setLoadingOrder(true);
-        try{
+        try {
             const payload = {
                 "order_status": "בתהליך",
                 "order_discount": 0,
                 "order_total_price": totalPrice,
-                "order_details": LZString.compress(cartItems.map((item, key) => { return `${item.product_name} - ${item.product_final_price.toFixed(2)}₪ `}).toString()),
+                "order_details": LZString.compress(cartItems.map((item, key) => { return `${item.product_name}: ${item.product_final_price.toFixed(2)}₪ ` }).toString()),
                 "order_date": new Date(Date.now()).toDateString(),
                 "customer_id": loggedUser.customer_id,
                 "order_ship_date_preference": new Date(Date.now() + 1000 * 3600 * 2).toDateString(),
@@ -46,10 +46,14 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
             }
             console.log(`payload`, payload)
             console.log(`payload.order_details`, LZString.decompress(payload.order_details))
-        const res = await POST(ordersAPI.post_add, payload);
+            const res = await POST(ordersAPI.post_add, payload);
             console.log(`res`, res)
+            if (res?.order_id){
+                alert('ההזמנה נשלחה בהצלחה!\nניתן לצפות בפרטי ההזמנה באזור האישי');
+                window.location ='/';
+            }
         }
-        catch (err) { console.error(err)};
+        catch (err) { console.error(err) };
         setLoadingOrder(false);
 
     }
@@ -64,7 +68,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     if (cartItems.length === 0) {
         return (
-            <Redirect to={"/"} />
+            <Redirect to="/" />
         )
     }
 
@@ -130,7 +134,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 {addresses.length > 0 &&
                                     <PayDataArea >
                                         <PayDataBox>
-                                            <p>{addresses[0].city}</p>
+                                            <h5>{addresses[0].city}</h5>
+                                            <Hr />
                                             <p>{addresses[0].street}</p>
                                             {addresses[0].zip_code !== "" && <p>מיקוד -  {addresses[0].zip_code}</p>}
                                             {addresses[0].other_data !== "" && <p>{addresses[0].other_data} </p>}
@@ -155,56 +160,76 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 24)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
-                                <hr />
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
+                                <Hr />
+                                <h6>11:00</h6>
+                                <HrSmall />
+                                <h6>13:00</h6>
+                                <HrSmall />
+                                <h6>15:00</h6>
+                                <HrSmall />
+                                <h6>17:00</h6>
+                                <HrSmall />
+                                <h6>19:00</h6>
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 48)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
-                                <hr />
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
+                                <Hr />
+                                <h6>11:00</h6>
+                                <HrSmall />
+                                <h6>13:00</h6>
+                                <HrSmall />
+                                <h6>15:00</h6>
+                                <HrSmall />
+                                <h6>17:00</h6>
+                                <HrSmall />
+                                <h6>19:00</h6>
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 72)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
-                                <hr />
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
+                                <Hr />
+                                <h6>11:00</h6>
+                                <HrSmall />
+                                <h6>13:00</h6>
+                                <HrSmall />
+                                <h6>15:00</h6>
+                                <HrSmall />
+                                <h6>17:00</h6>
+                                <HrSmall />
+                                <h6>19:00</h6>
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 96)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
-                                <hr />
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
+                                <Hr />
+                                <h6>11:00</h6>
+                                <HrSmall />
+                                <h6>13:00</h6>
+                                <HrSmall />
+                                <h6>15:00</h6>
+                                <HrSmall />
+                                <h6>17:00</h6>
+                                <HrSmall />
+                                <h6>19:00</h6>
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 120)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
-                                <hr />
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
-                                <p>select time</p>
+                                <Hr />
+                                <h6>11:00</h6>
+                                <HrSmall />
+                                <h6>13:00</h6>
+                                <HrSmall />
+                                <h6>15:00</h6>
+                                <HrSmall />
+                                <h6>17:00</h6>
+                                <HrSmall />
+                                <h6>19:00</h6>
                             </DaySelectBox>
                         </DateBox>
                     </PaymentDataBox>
@@ -269,6 +294,11 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                         <hr />
                         <h3> סיכום הזמנה </h3>
                         <hr />
+                        {loadingOrder &&
+                            <Loader>
+                                <BeatLoader color='navy' loading />
+                            </Loader>
+                        }
                         <PaymentTotalData>
                             <PaymentTotalDataBox>
                                 <h3>  סה״כ לתשלום </h3>
@@ -296,11 +326,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                             <BtnPay onClick={addOrder}> תשלום </BtnPay>
                         </PaymentButtons>
                     </PaymentBox>
-                    {loadingOrder &&
-                                    <Loader>
-                                        <BeatLoader color='navy' loading />
-                                    </Loader>
-                                }
+
                 </OrderDataBox>
             </ContainerPayment>
             <Footer />
@@ -403,15 +429,17 @@ const PayDataArea = styled.div`{
 }`
 
 const PayDataBox = styled.div`{
-    height: 12em;
-    width: 15em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-text: center;
+    height: 14em;
+    width: 18em;
     border-radius: 1em;
     background-color: rgb(220 224 234);
     margin: 1em;
     padding: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow: auto;
     transition: 0.5s;
     font-size: 1em;
 
@@ -478,6 +506,13 @@ const DateBox = styled.div`{
 const DaySelectBox = styled.div`{
     width: 15%;
     text-align: center;
+    h6{
+        cursor: pointer;
+        :hover{
+            text-shadow: 0 0 1px lightblue;
+            transition: 0.5s;
+        }
+    }
 }`
 
 const PaymentTotalData = styled.div`{
@@ -551,9 +586,20 @@ const CountManage = styled.div`{
 
 const Loader = styled.div`{
     display: flex;
-    justify-content: center;
+    justify-content: right;
+    padding-right: 3rem;
     width: 100%;
     z-index: 8;
+}`;
+
+const Hr = styled.hr`{
+    border: 1px solid #27407f;
+    width: 80%;
+}`;
+
+const HrSmall = styled.hr`{
+    border: 0.5px solid lightgrey;
+    width: 50%;
 }`;
 
 export default PaymentScreen;
