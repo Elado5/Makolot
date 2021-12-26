@@ -133,7 +133,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                         <BeatLoader color='navy' loading />
                                     </Loader>
                                 }
-                                {addresses.length > 0 &&
+                                {addresses?.length > 0 &&
                                     <PayDataArea >
                                         <PayDataBox>
                                             <h5>{addresses[0].city}</h5>
