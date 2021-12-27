@@ -12,7 +12,7 @@ const UserOrders = () => {
     const [orders, setOrders] = useState([]);
     const [load, setLoad] = useState(false);
 
-    const DateOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+    const DateOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
     const loadOrders = async () => {
         setLoad(true);
@@ -47,63 +47,68 @@ const UserOrders = () => {
                     </Loader>
                 }
                 <table>
-                {orders.length > 0 && orders.map((order, key) => {
+                    {orders.length > 0 && orders.map((order, key) => {
 
-                    const get_shop_name = async (id) => {
-                        //order.grocery_shop_name = await GET(shopsAPI.get_by_id, [id]);
-                        console.log(`order.grocery_shop_name`, order.grocery_shop_name);
-                    }
+                        const get_shop_name = async (id) => {
+                            //order.grocery_shop_name = await GET(shopsAPI.get_by_id, [id]);
+                            console.log(`order.grocery_shop_name`, order.grocery_shop_name);
+                        }
 
-                    get_shop_name(order.grocery_shop_id);
+                        get_shop_name(order.grocery_shop_id);
 
 
 
-                    return (
-                        <>
-                            {key === 0 && <>
-                                <HeaderLine>
-                                    <HeaderDetail>מספר הזמנה</HeaderDetail>
-                                    <HrHeader />
-                                    <HeaderDetail>סטטוס</HeaderDetail>
-                                    <HrHeader />
-                                    {order.order_discount > 0 && (<HeaderDetail>אחוזי הנחה</HeaderDetail>
+                        return (
+                            <>
+                                {key === 0 && <>
+                                    <HeaderLine>
+                                        <HeaderDetail>מספר הזמנה</HeaderDetail>
+                                        <HrHeader />
+                                        <HeaderDetail>סטטוס</HeaderDetail>
+                                        <HrHeader />
+                                        {order.order_discount > 0 && (<HeaderDetail>אחוזי הנחה</HeaderDetail>
+                                        )}
+                                        {order.order_discount > 0 && <HrHeader />}
+                                        <HeaderDetail>סכום בש"ח</HeaderDetail>
+                                        <HrHeader />
+                                        <HeaderDetail>תאריך הזמנה</HeaderDetail>
+                                        <HrHeader />
+                                        <HeaderDetail>זמן הגעה מועדף</HeaderDetail>
+                                        <HrHeader />
+                                        {order?.grocery_shop_name !== undefined && <HeaderDetail>שם החנות</HeaderDetail>}
+                                        {order?.grocery_shop_name !== undefined && <HrDetail />}
+                                        <HeaderDetail>מספר סידורי</HeaderDetail>
+                                    </HeaderLine>
+                                </>}
+                                <Link to={{
+                                    pathname: `/UserPage/orderDetails`,
+                                    state: { details: order.order_details }
+                                }}>
+                                <OrderLine>
+                                    <OrderDetail>{key + 1}</OrderDetail>
+                                    <HrDetail />
+                                    <OrderDetail>{order.order_status}</OrderDetail>
+                                    <HrDetail />
+                                    {order.order_discount > 0 && (<OrderDetail>{order.order_discount}</OrderDetail>
                                     )}
-                                    {order.order_discount > 0 && <HrHeader />}
-                                    <HeaderDetail>סכום בש"ח</HeaderDetail>
-                                    <HrHeader />
-                                    <HeaderDetail>תאריך הזמנה</HeaderDetail>
-                                    <HrHeader />
-                                    <HeaderDetail>זמן הגעה מועדף</HeaderDetail>
-                                    <HrHeader />
-                                    {order?.grocery_shop_name !== undefined && <HeaderDetail>שם החנות</HeaderDetail>}
+                                    {order.order_discount > 0 && <HrDetail />}
+                                    <OrderDetail>{order.order_total_price.toFixed(2)}</OrderDetail>
+                                    <HrDetail />
+                                    <OrderDetail>{new Date(order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
+                                    <HrDetail />
+                                    <OrderDetail>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
+                                    <HrDetail />
+                                    {order?.grocery_shop_name !== undefined && <OrderDetail>{order?.grocery_shop_name}</OrderDetail>}
                                     {order?.grocery_shop_name !== undefined && <HrDetail />}
-                                    <HeaderDetail>מספר סידורי</HeaderDetail>
-                                </HeaderLine>
-                            </>}
-                            <OrderLine>
-                                <OrderDetail>{key+1}</OrderDetail>
-                                <HrDetail />
-                                <OrderDetail>{order.order_status}</OrderDetail>
-                                <HrDetail />
-                                {order.order_discount > 0 && (<OrderDetail>{order.order_discount}</OrderDetail>
-                                )}
-                                {order.order_discount > 0 && <HrDetail />}
-                                <OrderDetail>{order.order_total_price.toFixed(2)}</OrderDetail>
-                                <HrDetail />
-                                <OrderDetail>{new Date(order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
-                                <HrDetail />
-                                <OrderDetail>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
-                                <HrDetail />
-                                {order?.grocery_shop_name !== undefined && <OrderDetail>{order?.grocery_shop_name}</OrderDetail>}
-                                {order?.grocery_shop_name !== undefined && <HrDetail />}
-                                <OrderDetail>{order.order_id}</OrderDetail>
-                            </OrderLine>
-                        </>
-                    )
-                })}
-                </table>
-            </PContainer>
-            )
+                                    <OrderDetail>{order.order_id}</OrderDetail>
+                                </OrderLine>
+                            </Link>
+                            </>
+                )
+                    })}
+            </table>
+        </PContainer>
+    )
         </>
     )
 }
@@ -139,6 +144,11 @@ const OrderLine = styled.div`{
     font-size: 1.05rem;
     width: 75vh;
     background-color: rgba(255, 255, 255, 0.85);
+    :hover{
+        background-color: rgba(235, 235, 255, 0.85);
+        transition: 0.3s;
+
+    }
 }`
 
 const HeaderLine = styled.div`{
@@ -165,13 +175,21 @@ const HeaderDetail = styled.div`{
     color: rgba(10, 30, 50, 1);
     width: 20vh;
     font-weight: 600;
+    background: -webkit-linear-gradient(-90deg, darkblue, navy);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+        text-shadow: 0px 0px 2px rgba(0, 85, 150, 0.5);
 }`
 
 const OrderDetail = styled.span`{
     text-align: center;
     color: rgba(10, 30, 50, 1);
     width: 20vh;
-    font-weight: 400;
+    font-weight: 500;
+    background: -webkit-linear-gradient(-90deg, darkblue, navy);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+        text-shadow: 0px 0px 2px rgba(0, 85, 150, 0.5);
 }`
 
 
@@ -185,7 +203,6 @@ const Title = styled.div`
 		-webkit-text-stroke: 1px lightgrey;
         text-shadow: 0px 0px 3px rgba(0, 0, 100, 0.5);
         margin-bottom: 1rem;
-
 	}
 `;
 

@@ -11,6 +11,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import PopUpAddressRegister from './components/PopUpAddressRegister';
 import UserUpdate from './screens/UserUpdate';
 import UserOrders from './screens/UserOrders';
+import UserOrderDetails from './screens/UserOrderDetails';
 import PaymentSuccessScreen from './screens/PaymentSuccessScreen';
 import MapScreen from './screens/MapScreen';
 import AboutScreen from './screens/AboutScreen';
@@ -105,6 +106,7 @@ function App () {
       <Route path="/adminPage/shops" component={AdminShops}/>
       <Route path="/UserPage/update" component={UserUpdate}/>
       <Route path="/UserPage/orders" component={UserOrders}/>
+      <Route path="/UserPage/orderDetails" component={UserOrderDetails}/>
       <Route path="/about" component={AboutScreen}/>
       <Route path="/map" component={MapScreen}/>
       <Route path="/paymentsuccess" component={PaymentSuccessScreen}/>
