@@ -12,7 +12,7 @@ const UserOrders = () => {
     const [orders, setOrders] = useState([]);
     const [load, setLoad] = useState(false);
 
-    const DateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const DateOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'};
 
     const loadOrders = async () => {
         setLoad(true);
@@ -32,7 +32,7 @@ const UserOrders = () => {
     return (
         <>
             <PContainer>
-                <Link to="/adminPage">
+                <Link to="/UserPage">
                     <ClosePopup>x</ClosePopup>
                 </Link>
                 <Title>הזמנות</Title>
@@ -46,6 +46,7 @@ const UserOrders = () => {
                         <BeatLoader color='navy' loading />
                     </Loader>
                 }
+                <table>
                 {orders.length > 0 && orders.map((order, key) => {
 
                     const get_shop_name = async (id) => {
@@ -60,45 +61,47 @@ const UserOrders = () => {
                     return (
                         <>
                             {key === 0 && <>
-                                <OrderLine>
-                                    <HrNav />
-                                    <CustomerName>סטטוס</CustomerName>
-                                    <HrNav />
-                                    {order.order_discount > 0 && (<CustomerName>אחוזי הנחה</CustomerName>
+                                <HeaderLine>
+                                    <HeaderDetail>מספר הזמנה</HeaderDetail>
+                                    <HrHeader />
+                                    <HeaderDetail>סטטוס</HeaderDetail>
+                                    <HrHeader />
+                                    {order.order_discount > 0 && (<HeaderDetail>אחוזי הנחה</HeaderDetail>
                                     )}
-                                    {order.order_discount > 0 && <HrNav />}
-                                    <CustomerName>סכום בש"ח</CustomerName>
-                                    <HrNav />
-                                    <CustomerName>תאריך הזמנה</CustomerName>
-                                    <HrNav />
-                                    <CustomerName>זמן הגעה מועדף</CustomerName>
-                                    <HrNav />
-                                    {order?.grocery_shop_name !== "" && <CustomerName>שם החנות</CustomerName>}
-                                    {order?.grocery_shop_name !== "" && <HrNav />}
-                                    <CustomerName>{order.order_id}</CustomerName>
-                                </OrderLine>
+                                    {order.order_discount > 0 && <HrHeader />}
+                                    <HeaderDetail>סכום בש"ח</HeaderDetail>
+                                    <HrHeader />
+                                    <HeaderDetail>תאריך הזמנה</HeaderDetail>
+                                    <HrHeader />
+                                    <HeaderDetail>זמן הגעה מועדף</HeaderDetail>
+                                    <HrHeader />
+                                    {order?.grocery_shop_name !== undefined && <HeaderDetail>שם החנות</HeaderDetail>}
+                                    {order?.grocery_shop_name !== undefined && <HrDetail />}
+                                    <HeaderDetail>מספר סידורי</HeaderDetail>
+                                </HeaderLine>
                             </>}
                             <OrderLine>
-                                <span>{key}</span>
-                                <HrNav />
-                                <CustomerName>{order.order_status}</CustomerName>
-                                <HrNav />
-                                {order.order_discount > 0 && (<CustomerName>{order.order_discount}</CustomerName>
+                                <OrderDetail>{key+1}</OrderDetail>
+                                <HrDetail />
+                                <OrderDetail>{order.order_status}</OrderDetail>
+                                <HrDetail />
+                                {order.order_discount > 0 && (<OrderDetail>{order.order_discount}</OrderDetail>
                                 )}
-                                {order.order_discount > 0 && <HrNav />}
-                                <CustomerName>{order.order_total_price.toFixed(2)}</CustomerName>
-                                <HrNav />
-                                <CustomerName>{new Date(order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</CustomerName>
-                                <HrNav />
-                                <CustomerName>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</CustomerName>
-                                <HrNav />
-                                {order?.grocery_shop_name !== "" && <CustomerName>{order?.grocery_shop_name}</CustomerName>}
-                                {order?.grocery_shop_name !== "" && <HrNav />}
-                                <CustomerName>{order.order_id}</CustomerName>
+                                {order.order_discount > 0 && <HrDetail />}
+                                <OrderDetail>{order.order_total_price.toFixed(2)}</OrderDetail>
+                                <HrDetail />
+                                <OrderDetail>{new Date(order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
+                                <HrDetail />
+                                <OrderDetail>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
+                                <HrDetail />
+                                {order?.grocery_shop_name !== undefined && <OrderDetail>{order?.grocery_shop_name}</OrderDetail>}
+                                {order?.grocery_shop_name !== undefined && <HrDetail />}
+                                <OrderDetail>{order.order_id}</OrderDetail>
                             </OrderLine>
                         </>
                     )
                 })}
+                </table>
             </PContainer>
             )
         </>
@@ -124,7 +127,7 @@ const PContainer = styled.div`{
 const OrderLine = styled.div`{
     font-weight: 600;
     align-items: center;
-    align-text-align: center;
+    text-align: center;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -132,15 +135,43 @@ const OrderLine = styled.div`{
     padding-right: 2rem;
     padding-left: 2rem;
     border: 1px solid rgba(50, 80, 100, 0.95);
-    height: 8em;
+    height: 7em;
     font-size: 1.05rem;
     width: 75vh;
     background-color: rgba(255, 255, 255, 0.85);
 }`
 
-const CustomerName = styled.span`{
+const HeaderLine = styled.div`{
+    font-weight: 600;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    height: 4.5em;
+    font-size: 1.05rem;
+    width: 75vh;
+    background-color: rgba(230, 230, 255, 0.9);
+    border: 1px solid navy;
+    color: rgba(10, 50, 50, 1);
+
+}`
+
+const HeaderDetail = styled.div`{
     text-align: center;
     color: rgba(10, 30, 50, 1);
+    width: 20vh;
+    font-weight: 600;
+}`
+
+const OrderDetail = styled.span`{
+    text-align: center;
+    color: rgba(10, 30, 50, 1);
+    width: 20vh;
+    font-weight: 400;
 }`
 
 
@@ -181,7 +212,15 @@ const Loader = styled.div`{
     margin-bottom: 2px;
 }`
 
-const HrNav = styled.hr`{
+const HrDetail = styled.hr`{
+    height: 6rem;
+    display: inline-block;
+    border: 1px solid #34468838;
+    width: 0px;
+    margin: 1rem;
+  }`
+
+const HrHeader = styled.hr`{
     height: 4rem;
     display: inline-block;
     border: 1px solid #34468838;
