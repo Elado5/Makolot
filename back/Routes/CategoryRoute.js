@@ -46,6 +46,8 @@ route.get(`/all`, async (req, res) => {
 		let query = await db.request().execute(`get_all_categories`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		let categories = data.recordset;
 
@@ -84,6 +86,8 @@ route.get(`/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_category_by_id`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -110,6 +114,8 @@ route.post(`/add`, async (req, res) => {
 			.execute(`add_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -136,6 +142,8 @@ route.put(`/update/:id`, async (req, res) => {
 			.execute(`update_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -155,6 +163,8 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`deactivate_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 
@@ -175,6 +185,8 @@ route.put(`/activate/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`activate_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -194,6 +206,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`delete_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {

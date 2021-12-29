@@ -19,7 +19,7 @@ route.get(`/all`, async (req, res) => {
 
 	//get the data from the query result
 	let data = await query;
-
+	db.removeAllListeners();
 	//close connection to server
 	await db.close();
 
@@ -44,6 +44,7 @@ route.get(`/:id`, async (req, res) => {
 
 	//get the data
 	let data = await query;
+	db.removeAllListeners();
 
 	await db.close();
 
@@ -67,6 +68,7 @@ try {
 
 	//get the data
 	let data = await query;
+	db.removeAllListeners();
 
 	await db.close();
 
@@ -96,6 +98,7 @@ route.post(`/add`, async (req, res) => {
 		.execute(`add_address`);
 
 	let data = await query;
+	db.removeAllListeners();
 
 	await db.close();
 
@@ -115,6 +118,8 @@ try {
 	let db = await sql.connect(config.db);
 	let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`activate_address`);
 	let data = await query;
+	db.removeAllListeners();
+
 	await db.close();
 	res.send(data.recordset);
 } catch (error) {
@@ -132,6 +137,7 @@ try {
 	let db = await sql.connect(config.db);
 	let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`deactivate_address`);
 	let data = await query;
+	db.removeAllListeners();
 	await db.close();
 	res.send(data.recordset);
 } catch (error) {
@@ -149,6 +155,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let db = await sql.connect(config.db);
 		let query = await db.request().input(`address_id`, sql.Int, params.id).execute(`delete_address`);
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -176,6 +184,7 @@ route.put(`/update/:id`, async (req, res) => {
 		.execute(`update_address`);
 
 	let data = await query;
+	db.removeAllListeners();
 
 	await db.close();
 

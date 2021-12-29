@@ -13,6 +13,7 @@ route.get(`/all`, async (req, res) => {
 		let query = await db.request().execute(`get_all_grocery_shops`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -34,6 +35,7 @@ route.get(`/:id`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_id`, sql.Int, params.id).execute(`get_grocery_shop_by_id`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -55,6 +57,7 @@ route.get(`/byName/:name`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_name`, sql.Int, params.name).execute(`get_grocery_shop_by_name`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -76,6 +79,7 @@ route.get(`/byCity/:city`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_city`, sql.NVarChar(150), params.city).execute(`get_grocery_shop_by_city`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -107,6 +111,7 @@ route.post(`/add`, async (req, res) => {
 			.execute(`add_grocery_shop`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -140,6 +145,7 @@ route.put(`/update/:id`, async (req, res) => {
 			.execute(`update_grocery_shop`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -161,6 +167,7 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_id`, sql.Int, params.id).execute(`deactivate_grocery_shop`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -182,6 +189,7 @@ route.put(`/activate/:id`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_id`, sql.Int, params.id).execute(`activate_grocery_shop`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -203,6 +211,7 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`grocery_shop_id`, sql.Int, params.id).execute(`delete_grocery_shop`);
 
 		let data = await query;
+		db.removeAllListeners();
 
 		await db.close();
 

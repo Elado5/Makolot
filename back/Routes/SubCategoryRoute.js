@@ -14,6 +14,8 @@ route.get("/all", async (req, res) => {
 
 		let data = await query;
 
+		db.removeAllListeners();
+
 		await db.close();
 
 		res.send(data.recordset);
@@ -34,6 +36,8 @@ route.get("/:id", async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_sub_category_by_id`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -56,6 +60,8 @@ route.get("/byCategory/:id", async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_sub_categories_from_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -83,6 +89,8 @@ route.post(`/add`, async (req, res) => {
 			.execute(`add_sub_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -109,6 +117,8 @@ route.put(`/update/:id`, async (req, res) => {
 			.execute(`add_sub_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -128,6 +138,8 @@ route.put(`/deactivate/:id`, async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`deactivate_sub_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -147,6 +159,8 @@ route.put(`/activate/:id`, async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`activate_sub_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {
@@ -166,6 +180,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`delete_sub_category`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {

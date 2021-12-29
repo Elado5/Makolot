@@ -14,6 +14,8 @@ route.get(`/all`, async (req, res) => {
 
 		let data = await query;
 
+		db.removeAllListeners();
+
 		await db.close();
 
 		res.send(data.recordset);
@@ -35,6 +37,8 @@ route.get(`/:id`, async (req, res) => {
 
 		let data = await query;
 
+		db.removeAllListeners();
+
 		await db.close();
 
 		res.send(data.recordset);
@@ -55,6 +59,8 @@ route.get(`/customer/:id`, async (req, res) => {
 		let query = await db.request().input(`customer_id`, sql.Int, params.id).execute(`get_orders_by_customer_id`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 
 		await db.close();
 
@@ -88,6 +94,8 @@ route.post(`/add`, async (req, res) => {
 
 		let data = await query;
 
+		db.removeAllListeners();
+
 		await db.close();
 
 		res.send(data.output);
@@ -116,6 +124,8 @@ route.put(`/update/:id`, async (req, res) => {
 
 		let data = await query;
 
+		db.removeAllListeners();
+
 		await db.close();
 
 		res.send(data.recordset);
@@ -136,6 +146,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`order_id`, sql.Int, params.id).execute(`delete_order`);
 
 		let data = await query;
+
+		db.removeAllListeners();
 
 		await db.close();
 

@@ -29,9 +29,11 @@ app.get("/", (req, res) => {
 	res.send("Default Home Page");
 });
 
-const server = http.createServer(app);
-server.setMaxListeners(0);
+app.setMaxListeners(1000);
 
+const server = http.createServer(app);
+server.on('warning', e => console.warn(e.stack));
+server.setMaxListeners(1000);
 server.listen(port, () => {
 	console.log(`Server running on port ${port} -> http://localhost:${port}`);
 });

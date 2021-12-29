@@ -13,6 +13,8 @@ route.get(`/all`, async (req, res) => {
 		let query = await db.request().execute(`get_all_admins`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -40,6 +42,8 @@ route.post(`/register`, async (req, res) => {
 			.execute(`add_admin`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -66,6 +70,8 @@ route.post(`/login`, async (req, res) => {
 			.execute(`login_admin`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -93,6 +99,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 		let query = await db.request().input(`admin_id`, sql.Int, params.id).execute(`delete_admin`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 		await db.close();
 		res.send(data.recordset);
 	} catch (error) {

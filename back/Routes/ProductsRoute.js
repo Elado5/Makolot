@@ -18,7 +18,7 @@ const upload = multer({ storage: fileStorageEngine });
 
 route.post("/singleUp", upload.single("image"), (req, res) => {
 	console.log('req', req.file.filename);
-	res.send({path: `/product-img/${req.file.filename}`});
+	res.send({ path: `/product-img/${req.file.filename}` });
 });
 
 route.post(`/multipleUp`, upload.array("images", 3), (req, res) => {
@@ -35,6 +35,8 @@ route.get(`/all`, async (req, res) => {
 		let query = await db.request().execute(`get_all_products`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -55,6 +57,8 @@ route.get(`/all_discounted`, async (req, res) => {
 		let query = await db.request().execute(`get_all_discounted_products`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -75,6 +79,8 @@ route.get(`/all_discounted_active`, async (req, res) => {
 		let query = await db.request().execute(`get_all_active_discounted_products`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -96,9 +102,11 @@ route.get(`/by_name/:name`, async (req, res) => {
 
 		let db = await sql.connect(config.db);
 
-		let query = await db.request().input(`product_name`,sql.NVarChar(150), params.name).execute(`get_products_by_name`);
+		let query = await db.request().input(`product_name`, sql.NVarChar(150), params.name).execute(`get_products_by_name`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -119,9 +127,11 @@ route.get(`/by_name_active/:name`, async (req, res) => {
 
 		let db = await sql.connect(config.db);
 
-		let query = await db.request().input(`product_name`,sql.NVarChar(150), params.name).execute(`get_active_products_by_name`);
+		let query = await db.request().input(`product_name`, sql.NVarChar(150), params.name).execute(`get_active_products_by_name`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -143,6 +153,8 @@ route.get(`/by_id/:id`, async (req, res) => {
 		let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_by_id`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -165,6 +177,8 @@ route.get(`/by_id_active/:id`, async (req, res) => {
 		let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_active_product_by_id`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -187,6 +201,8 @@ route.get(`/byCategory/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_products_by_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -208,6 +224,8 @@ route.get(`/byCategoryActive/:id`, async (req, res) => {
 		let query = await db.request().input(`category_id`, sql.Int, params.id).execute(`get_active_products_by_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -229,6 +247,8 @@ route.get(`/bySubCategory/:id`, async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_products_by_sub_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -250,6 +270,8 @@ route.get(`/bySubCategoryActive/:id`, async (req, res) => {
 		let query = await db.request().input(`sub_category_id`, sql.Int, params.id).execute(`get_active_products_by_sub_category`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -271,6 +293,8 @@ route.get(`/preview/:id`, async (req, res) => {
 		let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_image_and_price`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -295,6 +319,8 @@ route.get(`/preview2/:id`, async (req, res) => {
 			.execute(`get_product_image_price_and_description`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -316,6 +342,8 @@ route.get(`/discount/:id`, async (req, res) => {
 		let query = await db.request().input(`product_id`, sql.Int, params.id).execute(`get_product_discount`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -335,6 +363,8 @@ route.get(`/allactive`, async (req, res) => {
 		let query = await db.request().execute(`get_active_products`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -354,6 +384,8 @@ route.get(`/allinactive`, async (req, res) => {
 		let query = await db.request().execute(`get_inactive_products`);
 
 		let data = await query;
+		db.removeAllListeners();
+
 
 		await db.close();
 
@@ -391,6 +423,8 @@ route.post(`/add`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -431,6 +465,8 @@ route.put(`/update/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -464,6 +500,8 @@ route.put(`/update/Image/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -496,6 +534,8 @@ route.put(`/discount/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -528,6 +568,8 @@ route.put(`/discount/category/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -560,6 +602,8 @@ route.put(`/discount/subCategory/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -587,6 +631,8 @@ route.put(`/discount/cancelAll`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -614,6 +660,8 @@ route.put(`/discount/cancel/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -641,6 +689,8 @@ route.put(`/discount/cancelCategory/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -671,6 +721,8 @@ route.put(`/discount/cancelSubCategory/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -698,6 +750,8 @@ route.put(`/activate/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -725,6 +779,8 @@ route.put(`/deactivate/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
@@ -752,6 +808,8 @@ route.delete(`/delete/:id`, async (req, res) => {
 
 		//get the data from the query result
 		let data = await query;
+		db.removeAllListeners();
+
 
 		//close connection to server
 		await db.close();
