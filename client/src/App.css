@@ -1,0 +1,304 @@
+a {
+  text-decoration: none;
+  color: #27407f;
+}
+
+button:active {
+  outline: none;
+}
+
+button:focus {
+  outline: 0;
+}
+
+input::placeholder {
+  color: #27407f;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.flickity-page-dots {
+  display: none;
+}
+
+.flickity-slider {
+  margin-left: -40em;
+  overflow: visible;
+}
+
+/* ------------------------------------------ */
+.circular {
+  height: 100px;
+  width: 100px;
+  position: relative;
+  transform: scale(2);
+  margin-bottom: 5em;
+}
+
+.circular .inner {
+  position: absolute;
+  z-index: 6;
+  top: 50%;
+  left: 50%;
+  height: 88px;
+  width: 88px;
+  margin: -44px 0 0 -44px;
+  background: #fafafa;
+  border-radius: 100%;
+}
+
+.product-box {
+  position: relative;
+}
+
+.circular .number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  font-size: 14px;
+  font-weight: 800;
+  color: #27407f;
+  text-align: center;
+}
+
+.span-text {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.circular .bar {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  border-radius: 100%;
+  clip: rect(0px, 100px, 100px, 50px);
+}
+
+.circle .bar .progress {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+  clip: rect(0px, 50px, 100px, 0px);
+  background: #27407f;
+}
+
+.circle .left .progress {
+  z-index: 1;
+  animation: left 4s linear both;
+}
+
+@keyframes left {
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.circle .right {
+  transform: rotate(180deg);
+  z-index: 3;
+
+}
+
+.circle .right .progress {
+  animation: right 4s linear both;
+  animation-delay: 4s;
+}
+
+@keyframes right {
+  100% {
+    transform: rotate(180deg);
+  }
+}
+/* ------------------------------------------ */
+
+
+/* ----------------------------------- */
+
+
+.product-slider .card {
+  margin: 1.5em;
+  width: 18em;
+  height: 17em;
+}
+
+
+
+
+/* ----------------------------------- */
+
+h1 {
+  font-size: 50px;
+  font-weight: 500;
+}
+
+h4 {
+  margin-top: 30px;
+}
+
+.text-area-main p {
+  font-size: 20px;
+}
+
+
+
+
+
+.user-icon {
+  font-size: 40px;
+}
+
+.login-area div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+
+
+.shopping-card hr {
+  width: 72%;
+}
+
+
+
+.product-item-basket {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.basket-main {
+  overflow-y: scroll;
+  height: 20em;
+  text-align: center;
+}
+
+.product-remove-basket {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.product-image-basket {
+  height: 4em;
+  position: relative;
+}
+
+.item-basket {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.product-name-basket {
+margin-right: 0.5rem;
+margin-left: 0.5rem;
+}
+
+.pay-area {
+  display: flex;
+  justify-content: space-between;
+  width: 20em;
+  margin-bottom: 10px;
+}
+
+.item-basket button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.btn-pay {
+  background-color: #27407f;
+  box-shadow: 1px 2px 3px #27407f66;
+  color: aliceblue;
+  border: none;
+  border-radius: 25px;
+  height: 2.5em;
+  width: 10em;
+  font-family: system-ui;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.5s;
+}
+
+.btn-close-basket {
+  border: none;
+  background-color: transparent;
+  font-size: 35px;
+  color: #f5a51d;
+  cursor: pointer;
+  height: 40px;
+}
+
+.image-container-basket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 15px;
+  height: 6em;
+  min-width: 8em;
+  box-shadow: 0px 4px 7px 0px #c6cbdb;
+  margin: 5px;
+  position: relative;
+}
+
+.remove-item-basket {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: #27407f;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.remove-item-basket:hover{
+  color:navy;
+}
+
+.pay-area hr {
+
+  height: 38px;
+  display: inline-block;
+  border: 1px solid #00968838;
+  width: 0px;
+  margin: 0px;
+}
+
+
+
+
+
+
+.count-manage {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  position: absolute;
+  margin-bottom: 60px;
+  z-index: 8;
+}
+
+.error-input {
+  color: red;
+}
+
+.close-button {
+  align-self: flex-start;
+  border: none;
+  background-color: transparent;
+  color: #f5a51d;
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-left: 22px;
+}
