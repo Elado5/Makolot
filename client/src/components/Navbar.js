@@ -64,7 +64,7 @@ const Navbar = (props) => {
                 }
 
                 <HrNav />
-                <Link to={`/about`}>אודות העמותה</Link>
+                <Link to={`/about`} onClick={() => setOpen(false)} >אודות העמותה</Link>
                 <HrNav />
                 <span className="">055-6663999</span>
 

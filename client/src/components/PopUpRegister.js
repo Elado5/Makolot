@@ -155,7 +155,7 @@ const PopUpRegister = () => {
 							</RegUserName>
 							<UserData>
 								<PopupRegAreaInput
-									id="customer_birthday"
+									id="customer_birthdate"
 									onChange={handleChange}
 									value={state.customer_birthdate}
 									type="date"

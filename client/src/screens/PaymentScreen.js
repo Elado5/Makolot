@@ -35,6 +35,11 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     const addOrder = async () => {
         setLoadingOrder(true);
+        if(!addresses){
+            setLoadingOrder(false);
+            alert("לא זוהתה כתובת למשלוח, אנא הוסיפו כתובת ונסו שנית")
+        return;
+        }
         try {
             const payload = {
                 "order_status": "בתהליך",
