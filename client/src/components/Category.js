@@ -102,6 +102,12 @@ const SidebarNav = styled.nav`{
     z-index: 10;
     overflow-y: scroll;
     padding: 15px;
+    @media (max-width: 768px) {
+        width: auto;
+        text-align: center;
+        align-items: center;
+        align-content: center;
+    }
 }`;
 
 const SidebarWrap = styled.div`{

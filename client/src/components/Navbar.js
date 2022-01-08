@@ -42,7 +42,7 @@ const Navbar = (props) => {
     }, [searchBox])
 
     return (
-        <Nav>
+        <NavBar>
             <ContainerLeft>
                 <Link to="/">
                     <NavImg alt="logo" src="/images/logo.png" onClick={() => { document.location.href = '/' }} />
@@ -78,23 +78,9 @@ const Navbar = (props) => {
                 <InputSearch type="text" placeholder="?מה תרצו למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
             </ContainerRight>
-        </Nav>
+        </NavBar>
     )
 }
-
-
-const Nav = styled.nav`{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
-    background-color: #fafafa;
-    position: fixed;
-    width: 100%;
-    z-index: 2;
-    height: 6em;
-    box-shadow: 0px 0px 5px lightgrey;
-}`
 
 const ContainerLeft = styled.div`{
     display: flex;
@@ -193,6 +179,23 @@ const InputSearch = styled.input`{
         color: #27407f;
         font-size: 1.5em;
     }
+}`
+
+
+const NavBar = styled.nav`{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    background-color: #fafafa;
+    position: fixed;
+    z-index: 2;
+    height: 6em;
+    box-shadow: 0px 0px 5px lightgrey; 
+    width: max-content;
+    @media only screen and (min-width: 900px)  {
+        width: 100%;
+   }
 }`
 
 const Icon = styled.span`{

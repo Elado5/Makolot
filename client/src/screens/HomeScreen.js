@@ -19,7 +19,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
     const [products, setProducts] = useState([]);
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
-    let windowSize = window.matchMedia("(max-width: 700px)");
+    let windowSize = window.matchMedia("(min-width: 1080px)");
 
     //* Funcs
     const loadProducts = async () => {
@@ -66,7 +66,9 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
 
     return (
         <div>
-            <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}> loggedUser={loggedUser} loggedAdmin={loggedAdmin}</Navbar>
+            <NavBarMediaController>
+                <Navbar addItem={addItem} removeItem={removeItem} completelyRemoveItem={completelyRemoveItem} cartItems={cartItems} products={products} setProducts={setProducts}> loggedUser={loggedUser} loggedAdmin={loggedAdmin}</Navbar>
+            </NavBarMediaController>
             <Main />
             <SalesSlider>
                 <TitleSlider>המבצעים שלנו</TitleSlider>
@@ -75,14 +77,14 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                 </Loader>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        {!windowSize.matches &&
+                        {windowSize.matches &&
                             <Carousel itemsToShow={5} itemsToScroll={5}>
                                 {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                                 ))}
                             </Carousel>
                         }
-                        {windowSize.matches &&
+                        {!windowSize.matches &&
                             <Carousel itemsToShow={1} itemsToScroll={1}>
                                 {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
@@ -113,11 +115,20 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                             </Loader>
                             <ArticleSlider>
                                 <CarouselWrapper>
+                                {windowSize.matches &&
                                     <Carousel itemsToShow={3} >
                                         {products.length > 0 && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
                                     </Carousel>
+                                }
+                                {!windowSize.matches &&
+                                    <Carousel itemsToShow={1} >
+                                        {products.length > 0 && products.map((product, key) => (
+                                            <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
+                                        ))}
+                                    </Carousel>
+                                }
                                 </CarouselWrapper>
                             </ArticleSlider>
                         </SalesSlider>
@@ -147,8 +158,8 @@ const SalesSlider = styled.div`{
     padding-top: 6rem;
     width:100%;
     z-index: 1;
-    @media (max-width: 768px) {
-        width:max-content;
+    @media (max-width: 1080px) {
+        width:110vh;
     }
 }`
 
@@ -159,6 +170,8 @@ const TitleSlider = styled.div`{
     color: #27407f;
     font-weight: 500;
     margin-right: 30px;
+    background-color: #fafafa;
+
 }`
 
 const ProductsArea = styled.div`{
@@ -167,7 +180,7 @@ const ProductsArea = styled.div`{
     align-items: center;
     background-color: #fafafa;
     @media (max-width: 768px) {
-        width:100%;
+        width:100vh;
     }
 }`
 
@@ -230,4 +243,11 @@ const Loader = styled.div`{
     z-index: 2;
     margin-bottom: 2px;
 }`
+
+const NavBarMediaController = styled.div`{
+    @media (max-width 1080px) {
+    width: max-content !important;
+    };
+}`
+
 export default HomeScreen;

@@ -66,7 +66,7 @@ const Footer = () => {
 
 const FooterBox = styled.footer`{
     background-color: #fafafa;
-  }`
+}`
 
 const FooterLinks = styled.div`{
     display: flex;
@@ -75,8 +75,11 @@ const FooterLinks = styled.div`{
     text-align: right;
     color: #27407f;
     height: 32em;
-    width: 100%;
     background-color: #fafafa;
+    width: 100%;
+    @media only screen and (max-width: 900px)  {
+        width: 112vh;
+    }
   }`
 
 const FooterBlocks = styled.div`{
@@ -120,6 +123,13 @@ const FooterImg = styled.div`{
     img{
         width: 100%;
     }
+    @media only screen and (max-width: 900px)  {
+        margin-left: 0;
+        margin-top: 15em;
+        img{
+        width: 50vh;
+        }
+   }
   }`
 
 export default Footer;
