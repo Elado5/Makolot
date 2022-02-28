@@ -20,6 +20,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
     const [discountedProducts, setDiscountedProducts] = useState([]);
 
     let windowSize = window.matchMedia("(min-width: 1080px)");
+    let windowRatio = window.devicePixelRatio;
 
     //* Funcs
     const loadProducts = async () => {
@@ -42,6 +43,7 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
             setAllProductsLoaded(true);
         }
         else {
+            console.log('windowRatio', windowRatio);
             console.log("Homescreen products loaded!");
         }
 
@@ -77,14 +79,14 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                 </Loader>
                 <ArticleSlider>
                     <CarouselWrapper>
-                        {windowSize.matches &&
+                        { (windowRatio <=1 && windowSize.matches) &&
                             <Carousel itemsToShow={5} itemsToScroll={5}>
                                 {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
                                 ))}
                             </Carousel>
                         }
-                        {!windowSize.matches &&
+                        {(windowRatio >1 || !windowSize.matches) &&
                             <Carousel itemsToShow={1} itemsToScroll={1}>
                                 {discountedProducts.length > 0 && discountedProducts.map((product, key) => (
                                     <Product addItem={addItem} removeItem={removeItem} cartItems={cartItems} key={key} product={product} cartItemsFunc={setCartItems}></Product>
@@ -115,14 +117,14 @@ const HomeScreen = ({ cartItems, setCartItems, addItem, removeItem, completelyRe
                             </Loader>
                             <ArticleSlider>
                                 <CarouselWrapper>
-                                {windowSize.matches &&
+                                {(windowRatio <=1 && windowSize.matches) &&
                                     <Carousel itemsToShow={3} >
                                         {products.length > 0 && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />
                                         ))}
                                     </Carousel>
                                 }
-                                {!windowSize.matches &&
+                                {(windowRatio >1 || !windowSize.matches) &&
                                     <Carousel itemsToShow={1} >
                                         {products.length > 0 && products.map((product, key) => (
                                             <Product addItem={addItem} removeItem={removeItem} key={key} product={product} cartItems={cartItems} cartItemsFunc={setCartItems} />

@@ -128,7 +128,7 @@ route.put(`/update/:id`, async (req, res) => {
 
 		let data = await query;
 		await db.close();
-		res.send(data.recordset);
+		res.send(data);
 	} catch (error) {
 		console.error(error);
 		res.send(error);

@@ -64,7 +64,7 @@ const AdminRetailers = () => {
                             <CustomerLine>
                                 <span>{key}</span>
                                 <RetailerName>{retailer.retailer_first_name} {retailer.retailer_last_name}</RetailerName>
-                                <RetailerName><Link to={`/adminPage/retailer/${retailer.retailer_id}`}>Update</Link></RetailerName>
+                                <RetailerName><Link to={`/adminPage/retailers/${retailer.retailer_id}`}>Update</Link></RetailerName>
                                 <Delete onClick={() => { DeleteItem(retailer.retailer_id) }}>Delete</Delete>
                             </CustomerLine>
                         </>

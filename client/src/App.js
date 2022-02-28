@@ -28,6 +28,7 @@ import AdminShops from './components/admin/AdminShops';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import AdminRetailerUpdate from './components/admin/AdminRetailerUpdate';
 
 library.add(fab, faPhone);
 
@@ -103,6 +104,7 @@ function App () {
       <Route path="/adminPage/product/:id/image" component={AdminProductImageScreen}/>
       <Route path="/adminPage/customers" component={AdminCustomers}/>
       <Route path="/adminPage/retailers" component={AdminRetailers}/>
+      <Route path="/adminPage/retailers/:id" component={AdminRetailerUpdate}/>
       <Route path="/adminPage/shops" component={AdminShops}/>
       <Route path="/UserPage/update" component={UserUpdate}/>
       <Route path="/UserPage/orders" component={UserOrders}/>
