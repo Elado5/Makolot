@@ -97,7 +97,7 @@ const AdminShops = () => {
                         <ShopName>{shop.grocery_shop_name}</ShopName>
                         {shop.isActive && <Active>ACTIVE</Active>}
                         {!shop.isActive && <Inactive>INACTIVE</Inactive>}
-                        <ShopName><Link to={`/adminPage/shop/${shop.grocery_shop_id}`}>Update</Link></ShopName>
+                        <ShopName><Link to={`/adminPage/shops/${shop.grocery_shop_id}`}>Update</Link></ShopName>
                         {shop.isActive && <Hover onClick={() => { DeactivateItem(shop.grocery_shop_id) }}>Deactivate</Hover>}
                         {!shop.isActive && <Hover onClick={() => { ActivateItem(shop.grocery_shop_id) }}>Activate</Hover>}
                         <Delete onClick={() => { DeleteItem(shop.grocery_shop_id) }}>Delete</Delete>
