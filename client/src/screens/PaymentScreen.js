@@ -3,9 +3,10 @@ import Footer from '../components/Footer';
 import data from '../data.json';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
-import { addressesAPI, customersAPI, ordersAPI } from '../api/api';
+import { shopsAPI, addressesAPI, customersAPI, ordersAPI } from '../api/api';
 import { GET, POST } from '../api/fetch';
 import { BeatLoader } from 'react-spinners';
+import Select from 'react-select';
 import LZString from 'lz-string';
 
 const PaymentScreen = ({ cartItems, setCartItems }) => {
@@ -21,6 +22,9 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
     const DateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const [loadingAddress, setLoadingAddress] = useState(false);
     const [loadingOrder, setLoadingOrder] = useState(false);
+	const [shops, setShops] = useState([]);
+    const [chosenShop, setChosenShop] = useState([]);
+
 
     const orderTimeChoices = ["11:00", "13:00", "15:00", "17:00", "19:00"];
 
@@ -30,15 +34,30 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
         const res = await GET(addressesAPI.get_by_id, [customer.address_id]);
         setAddresses(await res);
         setLoadingAddress(false);
-
     }
+
+	const getShops = async () => {
+		const res = await GET(shopsAPI.get_all);
+		if (res?.length > 0) {
+			const mapping = await res.map(shop => ({ value: shop.grocery_shop_id, label: shop.grocery_shop_name }));
+			setShops(mapping);
+		}
+	}
+    const handleShopChoice = async (value) => {
+		try {
+			setChosenShop(value.value)
+		}
+		catch (err) { console.error(err) }
+		console.log(`chosenShop`, chosenShop)
+	}
+
 
     const addOrder = async () => {
         setLoadingOrder(true);
-        if(!addresses){
+        if (!addresses) {
             setLoadingOrder(false);
             alert("לא זוהתה כתובת למשלוח, אנא הוסיפו כתובת ונסו שנית")
-        return;
+            return;
         }
         try {
             const payload = {
@@ -73,6 +92,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     useEffect(() => {
         getAddress();
+        getShops();
     }, []);
 
     if (cartItems.length === 0) {
@@ -158,6 +178,17 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                     </PaymentDataBox>
 
                     <PaymentDataBox>
+                        <ReactSelectStyle>
+                            <Select
+                                options={shops} placeholder="מכולות"
+                                id="shop"
+                                onChange={handleShopChoice}
+                            />
+                        </ReactSelectStyle>
+                    </PaymentDataBox>
+
+
+                    <PaymentDataBox>
                         <PaymentDateTitle>
                             <h3>  {time.toLocaleDateString(`he-IL`, DateOptions)} </h3>
                             <h3> בחירת זמני משלוח </h3>
@@ -170,65 +201,65 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 24)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{((new Date(Date.now() + 1000 * 3600 * 24)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 24)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 24)).getFullYear())}</p>
                                 <Hr />
-                                {orderTimeChoices.map((time, key) => 
+                                {orderTimeChoices.map((time, key) =>
                                     <>
                                         <h6>{time}</h6>
-                                        {key !== 4 && <HrSmall/>}
+                                        {key !== 4 && <HrSmall />}
                                     </>
                                 )
-                            }
+                                }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 48)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 48)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 48)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 48)).getFullYear()}</p>
                                 <Hr />
-                                {orderTimeChoices.map((time, key) => 
+                                {orderTimeChoices.map((time, key) =>
                                     <>
                                         <h6>{time}</h6>
-                                        {key !== 4 && <HrSmall/>}
+                                        {key !== 4 && <HrSmall />}
                                     </>
                                 )
-                            }
+                                }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 72)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 72)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 72)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 72)).getFullYear()}</p>
                                 <Hr />
-                                {orderTimeChoices.map((time, key) => 
+                                {orderTimeChoices.map((time, key) =>
                                     <>
                                         <h6>{time}</h6>
-                                        {key !== 4 && <HrSmall/>}
+                                        {key !== 4 && <HrSmall />}
                                     </>
                                 )
-                            }
+                                }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 96)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 96)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 96)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 96)).getFullYear()}</p>
                                 <Hr />
-                                {orderTimeChoices.map((time, key) => 
+                                {orderTimeChoices.map((time, key) =>
                                     <>
                                         <h6>{time}</h6>
-                                        {key !== 4 && <HrSmall/>}
+                                        {key !== 4 && <HrSmall />}
                                     </>
                                 )
-                            }
+                                }
                             </DaySelectBox>
 
                             <DaySelectBox>
                                 <h4>{(new Date(Date.now() + 1000 * 3600 * 120)).toLocaleDateString(`he-IL`, { weekday: 'short' })}</h4>
                                 <p>{(new Date(Date.now() + 1000 * 3600 * 120)).getDate() + '-' + ((new Date(Date.now() + 1000 * 3600 * 120)).getMonth() + 1) + '-' + (new Date(Date.now() + 1000 * 3600 * 120)).getFullYear()}</p>
                                 <Hr />
-                                {orderTimeChoices.map((time, key) => 
+                                {orderTimeChoices.map((time, key) =>
                                     <>
                                         <h6>{time}</h6>
-                                        {key !== 4 && <HrSmall/>}
+                                        {key !== 4 && <HrSmall />}
                                     </>
                                 )
-                            }
+                                }
                             </DaySelectBox>
                         </DateBox>
                     </PaymentDataBox>
@@ -549,6 +580,17 @@ const BtnReturnToShop = styled.button`{
         box-shadow: 1px 2px 3px #27407f66;
     }
 }`
+
+const ReactSelectStyle = styled.div`
+	 {
+		text-align: right;
+		margin-top: 1.2rem;
+		margin-bottom: 1.2rem;
+		color: #27407f;
+		font-weight: 500;
+		font-size: 1.2rem;
+	}
+`;
 
 const OrderDataBox = styled.div`{
     margin-top: 3em;

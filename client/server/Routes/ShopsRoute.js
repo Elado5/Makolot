@@ -24,6 +24,27 @@ route.get(`/all`, async (req, res) => {
 	}
 });
 
+route.get(`/all_active`, async (req, res) => {
+	try {
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db.request().execute(`get_all_active_grocery_shops`);
+
+		let data = await query;
+		db.removeAllListeners();
+
+		await db.close();
+
+		res.send(data.recordset);
+		
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.get(`/:id`, async (req, res) => {
 	try {
 		let params = req.params;

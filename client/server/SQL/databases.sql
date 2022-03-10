@@ -810,6 +810,11 @@ as
 	select * from Grocery_Shops
 go
 
+create proc get_all_active_grocery_shops
+as
+	select * from Grocery_Shops where isActive = 1;
+go
+
 create proc get_grocery_shop_by_id
 	@grocery_shop_id int
 as
