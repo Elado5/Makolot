@@ -68,7 +68,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                 "order_date": new Date(Date.now()).toDateString(),
                 "customer_id": loggedUser.customer_id,
                 "order_ship_date_preference": new Date(Date.now() + 1000 * 3600 * 2).toDateString(),
-                "grocery_shop_id": 7
+                "grocery_shop_id": chosenShop
             }
             console.log(`payload`, payload)
             console.log(`payload.order_details`, LZString.decompress(payload.order_details))

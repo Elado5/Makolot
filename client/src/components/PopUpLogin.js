@@ -140,7 +140,7 @@ const PopupLogAreaInput = styled.input`{
 const PopupLogAreaSpan = styled.span`{
     color: #27407f;
     font-size: 30px;
-    font-weight: 800;
+    font-weight: 600;
 }`
 
 const PopupLogInputs = styled.div`{
