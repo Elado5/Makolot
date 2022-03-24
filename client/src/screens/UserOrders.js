@@ -54,8 +54,6 @@ const UserOrders = () => {
                 <table>
                     {orders.length > 0 && orders.map((order, key) => {
 
-                        let orderName = get_shop_name(order.order_id);
-
                         return (
                             <>
                                 {key === 0 && <>
@@ -80,7 +78,7 @@ const UserOrders = () => {
                                 </>}
                                 <Link to={{
                                     pathname: `/UserPage/orderDetails`,
-                                    state: { details: order.order_details }
+                                    state: { details: order.order_details, shop_id: order.grocery_shop_id }
                                 }}>
                                 <OrderLine>
                                     <OrderDetail>{key + 1}</OrderDetail>
