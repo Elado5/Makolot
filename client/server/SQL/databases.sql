@@ -818,7 +818,7 @@ go
 create proc get_grocery_shop_by_id
 	@grocery_shop_id int
 as
-	select * from Grocery_Shops where [grocery_shop_id] = grocery_shop_id
+	select * from Grocery_Shops where [grocery_shop_id] = @grocery_shop_id
 go
 
 

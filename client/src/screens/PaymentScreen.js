@@ -59,6 +59,11 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
             alert("לא זוהתה כתובת למשלוח, אנא הוסיפו כתובת ונסו שנית")
             return;
         }
+        else if (chosenShop?.length === 0 || !chosenShop){
+            setLoadingOrder(false);
+            alert("לא נבחרה מכולת רצויה לביצוע המשלוח, אנא בחרו ונסו שנית")
+            return;
+        }
         try {
             const payload = {
                 "order_status": "בתהליך",

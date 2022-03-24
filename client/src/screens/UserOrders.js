@@ -21,6 +21,11 @@ const UserOrders = () => {
         setLoad(false);
     }
 
+    const get_shop_name = async (id) => {
+        let shopFound = await GET(shopsAPI.get_by_id, [id]);
+        return shopFound?.grocery_shop_name;
+    }
+
     //*Making sure the 'customers' state is loaded ONCE.
     useEffect(() => {
         setLoad(true);
@@ -49,14 +54,7 @@ const UserOrders = () => {
                 <table>
                     {orders.length > 0 && orders.map((order, key) => {
 
-                        const get_shop_name = async (id) => {
-                            //order.grocery_shop_name = await GET(shopsAPI.get_by_id, [id]);
-                            console.log(`order.grocery_shop_name`, order.grocery_shop_name);
-                        }
-
-                        get_shop_name(order.grocery_shop_id);
-
-
+                        let orderName = get_shop_name(order.order_id);
 
                         return (
                             <>
@@ -75,8 +73,8 @@ const UserOrders = () => {
                                         <HrHeader />
                                         <HeaderDetail>זמן הגעה מועדף</HeaderDetail>
                                         <HrHeader />
-                                        {order?.grocery_shop_name !== undefined && <HeaderDetail>שם החנות</HeaderDetail>}
-                                        {order?.grocery_shop_name !== undefined && <HrDetail />}
+                                        {/*orderName !== undefined && <HeaderDetail>שם החנות</HeaderDetail>*/}
+                                        {/*orderName !== undefined && <HrDetail />*/}
                                         <HeaderDetail>מספר סידורי</HeaderDetail>
                                     </HeaderLine>
                                 </>}
@@ -98,8 +96,8 @@ const UserOrders = () => {
                                     <HrDetail />
                                     <OrderDetail>{new Date(order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</OrderDetail>
                                     <HrDetail />
-                                    {order?.grocery_shop_name !== undefined && <OrderDetail>{order?.grocery_shop_name}</OrderDetail>}
-                                    {order?.grocery_shop_name !== undefined && <HrDetail />}
+                                    {/*orderName !== undefined && <OrderDetail>{orderName}</OrderDetail>}
+                                    {orderName !== undefined && <HrDetail />*/}
                                     <OrderDetail>{order.order_id}</OrderDetail>
                                 </OrderLine>
                             </Link>
