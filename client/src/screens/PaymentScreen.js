@@ -24,9 +24,24 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
     const [loadingOrder, setLoadingOrder] = useState(false);
 	const [shops, setShops] = useState([]);
     const [chosenShop, setChosenShop] = useState([]);
-
+    const [chosenTime, setChosenTime] = useState("");
 
     const orderTimeChoices = ["11:00", "13:00", "15:00", "17:00", "19:00"];
+
+    const changeColor = (id) =>
+    {
+        console.log('id', id);
+        console.log('chosenTime', chosenTime)
+        if(chosenTime !== ""){
+            console.log('chosenTime', chosenTime)
+            document.getElementById(chosenTime).style.color = "#27407f";
+            document.getElementById(chosenTime).style.backgroundColor = "transparent"; // backcolor
+        }
+        setChosenTime(id);
+        console.log('chosenTime', chosenTime)
+      document.getElementById(id).style.color = "#ff6000"; // forecolor
+      document.getElementById(id).style.backgroundColor = "#ff0000"; // backcolor
+    }
 
     const getAddress = async () => {
         setLoadingAddress(true);
@@ -208,7 +223,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6>{time}</h6>
+                                        <h6 id={"time"+key} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -260,7 +275,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6>{time}</h6>
+                                        <h6 >{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -456,6 +471,12 @@ const DataArea = styled.div`{
     justify-content: space-between;
     align-items: flex-start;
 }`
+
+const HighlightedTime = styled.div`{
+    stroke: solid 2rem navy;
+    background-color: lightblue;
+}`
+
 
 const PayDataArea = styled.div`{
     display: flex;
