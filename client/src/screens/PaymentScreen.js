@@ -28,19 +28,8 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
 
     const orderTimeChoices = ["11:00", "13:00", "15:00", "17:00", "19:00"];
 
-    const changeColor = (id) =>
-    {
-        console.log('id', id);
-        console.log('chosenTime', chosenTime)
-        if(chosenTime !== ""){
-            console.log('chosenTime', chosenTime)
-            document.getElementById(chosenTime).style.color = "#27407f";
-            document.getElementById(chosenTime).style.backgroundColor = "transparent"; // backcolor
-        }
-        setChosenTime(id);
-        console.log('chosenTime', chosenTime)
-      document.getElementById(id).style.color = "#ff6000"; // forecolor
-      document.getElementById(id).style.backgroundColor = "#ff0000"; // backcolor
+    const changeColor = async (id) => {
+         setChosenTime(id);
     }
 
     const getAddress = async () => {
@@ -223,7 +212,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6 id={"time"+key} onClick={e => changeColor(e.target.id)}>{time}</h6>
+                                        <h6 id={"time"+key} className={`${("time"+key) === chosenTime ? "chosen-time" : ""}`} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -236,7 +225,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6>{time}</h6>
+                                        <h6 id={"time2"+key} className={`${("time2"+key) === chosenTime ? "chosen-time" : ""}`} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -249,7 +238,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6>{time}</h6>
+                                        <h6 id={"time3"+key} className={`${("time3"+key) === chosenTime ? "chosen-time" : ""}`} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -262,7 +251,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6>{time}</h6>
+                                        <h6 id={"time4"+key} className={`${("time4"+key) === chosenTime ? "chosen-time" : ""}`} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -275,7 +264,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                                 <Hr />
                                 {orderTimeChoices.map((time, key) =>
                                     <>
-                                        <h6 >{time}</h6>
+                                        <h6 id={"time5"+key} className={`${("time5"+key) === chosenTime ? "chosen-time" : ""}`} onClick={e => changeColor(e.target.id)}>{time}</h6>
                                         {key !== 4 && <HrSmall />}
                                     </>
                                 )
@@ -472,9 +461,16 @@ const DataArea = styled.div`{
     align-items: flex-start;
 }`
 
+const OrderTime = styled.div`{
+    stroke: none;
+    font-size :0.75rem;
+}`
+
 const HighlightedTime = styled.div`{
     stroke: solid 2rem navy;
-    background-color: lightblue;
+    transition :ease-in 1s;
+    font-size :1.5rem;
+    color:#27407f;
 }`
 
 
