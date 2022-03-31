@@ -1,46 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { customersAPI } from '../../api/api';
+import { ordersAPI } from '../../api/api';
 import { GET, DELETE } from '../../api/fetch';
 import { BeatLoader } from 'react-spinners';
 
-const AdminCustomers = () => {
+const AdminOrders = () => {
 
-    const [customers, setCustomers] = useState([]);
-    const [customersLoaded, setCustomersLoaded] = useState(false);
+    const [Orders, setOrders] = useState([]);
+    const [OrdersLoaded, setOrdersLoaded] = useState(false);
     const [load, setLoad] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
-    const loadCustomersByName = async (name) => {
+    const DateOptions = { weekday: 'short', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+
+    const loadOrdersByid = async (id) => {
+        if(!id || isNaN(id) || id<0 || id >= 2147483647){
+            alert('אנא הזינו מספר תקין בשדה החיפוש')
+            setLoad(false);
+            return;
+        }
         try {
-        setLoad(true);
-        console.log(`name`, name)
-        let res = await GET(customersAPI.get_by_name, [name]);
-        console.log(`res name`, res);
-        setCustomers(res);}
+            setLoad(true);
+            console.log(`id`, id)
+            let res = await GET(ordersAPI.get_by_id, [id]);
+            console.log(`res id`, res);
+            setOrders(res);
+        }
         catch (err) {
             console.error(err);
         }
         setLoad(false);
     }
 
-    const loadCustomers = async () => {
+    const loadOrders = async () => {
         setLoad(true);
-        let res = await GET(customersAPI.get_all);
-        setCustomers(res);
+        let res = await GET(ordersAPI.get_all);
+        setOrders(res);
         setLoad(false);
     }
 
     const DeleteItem = async (id) => {
         try {
-            let choice = window.confirm('Are you sure you want to delete this item?');
+            let choice = window.confirm('האם ברצונך לבצע מחיקה מוחלטת של ההזמנה מהמערכת?');
             if (choice) {
-                let res = await DELETE(customersAPI.delete_customer, [id]);
-                loadCustomers(res);
+                let res = await DELETE(ordersAPI.delete_Order, [id]);
+                loadOrders(res);
             }
             else {
-                alert('The Customer was not deleted.')
+                alert('המחיקה בוטלה.')
             }
         }
         catch (err) {
@@ -48,18 +56,18 @@ const AdminCustomers = () => {
         }
     }
 
-    //*Making sure the 'customers' state is loaded ONCE.
+    //*Making sure the 'Orders' state is loaded ONCE.
     useEffect(() => {
-        if (!customersLoaded) {
+        if (!OrdersLoaded) {
             setLoad(true);
-            loadCustomers();
-            setCustomersLoaded(true);
+            loadOrders();
+            setOrdersLoaded(true);
             setLoad(false);
         }
         else {
-            console.log(`Customers Loaded:`, load)
+            console.log(`Orders Loaded:`, load)
         }
-    }, [customersLoaded])
+    }, [OrdersLoaded])
 
 
     return (
@@ -68,32 +76,44 @@ const AdminCustomers = () => {
                 <Link to="/adminPage">
                     <ClosePopup>x</ClosePopup>
                 </Link>
-                <Title>ניהול משתמשים</Title>
-                <InputSearch type="text" placeholder="חיפוש משתמש" onChange={(e) => setSearchValue(e.target.value)}>
+                <Title>ניהול הזמנות</Title>
+                <InputSearch type="text" placeholder="חיפוש הזמנה לפי מספר סידורי" onChange={(e) => setSearchValue(e.target.value)}>
                 </InputSearch>
-                <SearchSome onClick={() => loadCustomersByName(searchValue)}>חפש משתמשים</SearchSome>
-                <SearchSome onClick={() => loadCustomers()}>כל המשתמשים</SearchSome>
+                <SearchSome onClick={() => loadOrdersByid(searchValue)}>חפש הזמנה לפי מספר סידורי</SearchSome>
+                <SearchSome onClick={() => loadOrders()}>כל ההזמנות</SearchSome>
 
                 {load &&
                     <Loader>
                         <BeatLoader color='teal' loading />
                     </Loader>
                 }
-                {customers.length === 0 &&
+                {Orders.length === 0 &&
                     <Loader>
                         <BeatLoader color='navy' loading />
                     </Loader>
                 }
-                {customers.length > 0 && customers.map((Customer, key) => {
-                    console.log('Customer', Customer)
+                <OrderLine>
+                    <span>הזמנה מספר</span>
+                    <Orderid>מספר סידורי</Orderid>
+                    <Orderid>סטטוס הזמנה</Orderid>
+                    <Orderid>תאריך הזמנה</Orderid>
+                    <Orderid>תאריך הגעה רצוי</Orderid>
+                    <Orderid>עדכון הזמנה</Orderid>
+                    <Orderid>מחיקת הזמנה</Orderid>
+                </OrderLine>
+                {Orders.length > 0 && Orders.map((Order, key) => {
+                    console.log('Order', Order)
                     return (
                         <>
-                            <CustomerLine>
+                            <OrderLine>
                                 <span>{key}</span>
-                                <CustomerName>{Customer.customer_first_name} {Customer.customer_last_name}</CustomerName>
-                                <CustomerName><Link to={`/adminPage/Customer/${Customer.customer_id}`}>Update</Link></CustomerName>
-                                <Delete onClick={() => { DeleteItem(Customer.customer_id) }}>Delete</Delete>
-                            </CustomerLine>
+                                <Orderid>{Order.order_id}</Orderid>
+                                <Orderid>{Order.order_status}</Orderid>
+                                <Orderid>{new Date(Order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</Orderid>
+                                <Orderid>{new Date(Order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</Orderid>
+                                <Orderid><Link to={`/adminPage/Order/${Order.order_id}`}>Update</Link></Orderid>
+                                <Delete onClick={() => { DeleteItem(Order.order_id) }}>Delete</Delete>
+                            </OrderLine>
                         </>
                     )
                 })}
@@ -119,7 +139,7 @@ const PContainer = styled.div`{
     overflow-y: scroll;
 }`
 
-const CustomerLine = styled.div`{
+const OrderLine = styled.div`{
     font-weight: 600;
     align-items: center;
     position: relative;
@@ -144,7 +164,7 @@ const CustomerLine = styled.div`{
 
 }`
 
-const CustomerName = styled.span`{
+const Orderid = styled.span`{
     text-align: center;
     padding-right: 1rem;
     color: rgba(10, 30, 50, 1);
@@ -234,4 +254,4 @@ const SearchSome = styled.button`{
     }
 }`
 
-export default AdminCustomers;
+export default AdminOrders;
