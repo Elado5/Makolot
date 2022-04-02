@@ -83,8 +83,8 @@ const AdminOrders = () => {
         try {
             let choice = window.confirm('האם ברצונך לבצע מחיקה מוחלטת של ההזמנה מהמערכת?');
             if (choice) {
-                let res = await DELETE(ordersAPI.delete_Order, [id]);
-                loadOrders(res);
+                let res = await DELETE(ordersAPI.delete_order, [id]);
+                loadOrders();
             }
             else {
                 alert('המחיקה בוטלה.')

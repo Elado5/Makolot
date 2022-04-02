@@ -10,6 +10,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Navbar = (props) => {
     const { addItem, removeItem, completelyRemoveItem, cartItems, setProducts, loggedUser, loggedAdmin } = props;
 
+    // window.onscroll = function() {
+    //     var currentScrollPos = window.pageYOffset;
+    //     if (prevScrollpos > currentScrollPos) {
+    //       document.getElementById("navbar").style.top = "0";
+    //     } else {
+    //       document.getElementById("navbar").style.top = "-50px";
+    //     }
+    //     prevScrollpos = currentScrollPos;
+    //   }
+
     //*states
     const [open, setOpen] = useState(true);
     const [searchBox, setSearchBox] = useState('');
@@ -70,6 +80,7 @@ const Navbar = (props) => {
 
             </ContainerLeft>
 
+                {window.scrollY < 500 &&
             <ContainerRight>
                 <SearchSomeBtn>
                     <SearchSome alt="search" src="/images/icons8-search-500.png" />
@@ -78,6 +89,7 @@ const Navbar = (props) => {
                 <InputSearch type="text" placeholder="?מה תרצו למצוא" value={searchBox} onInput={(e) => setSearchBox(e.target.value)} />
 
             </ContainerRight>
+            }
         </NavBar>
     )
 }

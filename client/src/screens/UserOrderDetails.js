@@ -78,6 +78,7 @@ const Order = styled.div`{
     flex-direction: column;
     justify-content: space-evenly;
     position: relative;
+    overflow-Y: scroll;
 
 }`
 
