@@ -942,6 +942,16 @@ as
 	[grocery_shop_id] = @grocery_shop_id
 go
 
+create proc update_order_status
+	@order_status nvarchar(20),
+	@order_id int output
+as
+	update [dbo].[Orders]
+	set
+	[order_status] = @order_status
+	where [order_id] = @order_id
+go
+
 --update order - not needed? (only delete)
 
 create proc delete_order

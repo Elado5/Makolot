@@ -135,6 +135,34 @@ route.put(`/update/:id`, async (req, res) => {
 	}
 });
 
+route.put(`/update_status/:id`, async (req, res) => {
+	try {
+		let params = req.params;
+		let body = req.body;
+
+		sql.on(`error`, (error) => res.send(error));
+
+		let db = await sql.connect(config.db);
+
+		let query = await db
+			.request()
+			.output(`order_id`, sql.Int, params.id)
+			.input(`order_status`, sql.NVarChar(20), body.order_status)
+			.execute(`update_order_status`);
+
+		let data = await query;
+
+		db.removeAllListeners();
+
+		await db.close();
+
+		res.send(data.output);
+	} catch (error) {
+		console.error(error);
+		res.send(error);
+	}
+});
+
 route.delete(`/delete/:id`, async (req, res) => {
 	try {
 		let params = req.params;

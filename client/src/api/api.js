@@ -122,6 +122,7 @@ export const ordersAPI = {
     get_by_customer_id: `${baseAPI}/orders/customer/`,
     post_add: `${baseAPI}/orders/add`,
     put_update: `${baseAPI}/orders/update/`,
+    put_update_status: `${baseAPI}/orders/update_status/`,
     delete_order: `${baseAPI}/orders/delete/`
 }
 

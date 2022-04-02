@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ordersAPI } from '../../api/api';
-import { GET, DELETE } from '../../api/fetch';
+import { GET, PUT, DELETE } from '../../api/fetch';
 import { BeatLoader } from 'react-spinners';
 
 const AdminOrders = () => {
@@ -37,6 +37,45 @@ const AdminOrders = () => {
         setLoad(true);
         let res = await GET(ordersAPI.get_all);
         setOrders(res);
+        setLoad(false);
+    }
+
+    const updateStatusDone = async (id) => {
+        setLoad(true);
+        let res = await PUT(ordersAPI.put_update_status, [id], {"order_status": "הושלם"})
+        if (res.order_id){
+            alert("סטטוס ההזמנה עודכן בהצלחה");
+        }
+        else{
+            alert("עדכון הסטטוס נכשל");
+        }
+        setLoad(false);
+    }
+
+
+    const updateStatusInProgress = async (id) => {
+        setLoad(true);
+        let res = await PUT(ordersAPI.put_update_status, [id], {"order_status": "בתהליך"})
+        console.log('res :>> ', res);
+        if (res.order_id){
+            alert("סטטוס ההזמנה עודכן בהצלחה");
+        }
+        else{
+            alert("עדכון הסטטוס נכשל");
+        }
+        setLoad(false);
+    }
+
+    const updateStatusCanceled = async (id) => {
+        setLoad(true);
+        let res = await PUT(ordersAPI.put_update_status, [id], {"order_status": "בוטל"})
+        console.log('res :>> ', res);
+        if (res.order_id){
+            alert("סטטוס ההזמנה עודכן בהצלחה");
+        }
+        else{
+            alert("עדכון הסטטוס נכשל");
+        }
         setLoad(false);
     }
 
@@ -98,21 +137,27 @@ const AdminOrders = () => {
                     <Orderid>סטטוס הזמנה</Orderid>
                     <Orderid>תאריך הזמנה</Orderid>
                     <Orderid>תאריך הגעה רצוי</Orderid>
-                    <Orderid>עדכון הזמנה</Orderid>
+                    <Orderid>ביטול הזמנה</Orderid>
+                    <Orderid>סיום הזמנה</Orderid>
+                    <Orderid>הגדרת הזמנה כפעילה</Orderid>
                     <Orderid>מחיקת הזמנה</Orderid>
                 </OrderLine>
                 {Orders.length > 0 && Orders.map((Order, key) => {
-                    console.log('Order', Order)
+                    //console.log('Order', Order)
                     return (
                         <>
                             <OrderLine>
                                 <span>{key}</span>
                                 <Orderid>{Order.order_id}</Orderid>
-                                <Orderid>{Order.order_status}</Orderid>
+                                { Order.order_status === "הושלם" && <OrderStatus1>{Order.order_status}</OrderStatus1>}
+                                { Order.order_status === "בתהליך" && <OrderStatus2>{Order.order_status}</OrderStatus2>}
+                                { Order.order_status === "בוטל" && <OrderStatus3>{Order.order_status}</OrderStatus3>}
                                 <Orderid>{new Date(Order.order_date).toLocaleDateString(`he-IL`, DateOptions)}</Orderid>
                                 <Orderid>{new Date(Order.order_ship_date_preference).toLocaleDateString(`he-IL`, DateOptions)}</Orderid>
-                                <Orderid><Link to={`/adminPage/Order/${Order.order_id}`}>Update</Link></Orderid>
-                                <Delete onClick={() => { DeleteItem(Order.order_id) }}>Delete</Delete>
+                                <OrderClick onClick={() => {updateStatusCanceled(Order.order_id)}}>בטל הזמנה</OrderClick>
+                                <OrderClick onClick={() => {updateStatusDone(Order.order_id)}}>סיים הזמנה</OrderClick>
+                                <OrderClick onClick={() => {updateStatusInProgress(Order.order_id)}}>הפעל הזמנה</OrderClick>
+                                <Delete onClick={() => { DeleteItem(Order.order_id) }}>מחק</Delete>
                             </OrderLine>
                         </>
                     )
@@ -170,6 +215,31 @@ const Orderid = styled.span`{
     color: rgba(10, 30, 50, 1);
 }`
 
+const OrderClick = styled.span`{
+    text-align: center;
+    padding-right: 1rem;
+    color: rgba(10, 30, 50, 1);
+    cursor: pointer;
+}`
+
+
+const OrderStatus1 = styled.span`{
+    text-align: center;
+    padding-right: 1rem;
+    color: rgba(10, 230, 50, 1);
+}`
+
+const OrderStatus2 = styled.span`{
+    text-align: center;
+    padding-right: 1rem;
+    color: darkblue;
+}`
+
+const OrderStatus3 = styled.span`{
+    text-align: center;
+    padding-right: 1rem;
+    color: gold;
+}`
 
 const Title = styled.div`
 	{
