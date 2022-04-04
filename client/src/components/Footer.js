@@ -27,7 +27,7 @@ const Footer = () => {
 
                     <LinksElement>
                         <h4>מזון ומכולת</h4>
-                        <Link to="/">אזור אישי</Link>
+                        <Link to="/UserPage">אזור אישי</Link>
                         <Link to="/">הזמנות קודמות</Link>
                     </LinksElement>
 

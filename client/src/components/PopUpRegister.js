@@ -195,8 +195,7 @@ const PopUpRegister = () => {
 						<div>
 							<CheckboxInput>
 								<h6>
-									Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
-									out print, graphic or web designs
+אני מאשר את תנאי ההרשמה לאתר
 								</h6>
 								<Checkbox
 									id="checkboxFirst"
@@ -207,8 +206,7 @@ const PopUpRegister = () => {
 							</CheckboxInput>
 							<CheckboxInput>
 								<h6>
-									Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying
-									out print, graphic or web designs
+ברצוני לקבל מבצעים והודעות מיוחדות למייל
 								</h6>
 								<Checkbox
 									id="checkboxSec"
@@ -278,6 +276,7 @@ const PopupRegAreaInput = styled.input`
 		color: #27407f;
 		font-weight: bold;
 		font-size: 15px;
+		direction: rtl;
 	}
 `;
 
@@ -285,7 +284,7 @@ const PopupRegAreaSpan = styled.span`
 	 {
 		color: #27407f;
 		font-size: 30px;
-		font-weight: 800;
+		font-weight: 600;
 	}
 `;
 
@@ -336,6 +335,7 @@ const CheckboxInput = styled.div`
 		text-align: end;
 		width: 100%;
 		margin: 10px;
+		justify-content: end;
 	}
 `;
 

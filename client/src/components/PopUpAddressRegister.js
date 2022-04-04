@@ -76,6 +76,7 @@ const PopUpAddressRegister = () => {
 					}
 					else{
 						alert("הכתובת עודכנה בהצלחה")
+						window.location.reload();
 					}
 					setLoading(false);
 				}
@@ -208,6 +209,7 @@ const PopupRegArea = styled.div`
 const PopupRegAreaInput = styled.input`
 	 {
 		text-align: right;
+		direction: rtl !important;
 		border: none;
 		border-bottom: 1px solid #27407f;
 		height: 3em;

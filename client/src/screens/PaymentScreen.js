@@ -160,7 +160,7 @@ const PaymentScreen = ({ cartItems, setCartItems }) => {
                         <hr />
                         <ScrollBox>
                             <BtnAddPaymentArea>
-                                <Link to={`/payment/registerAddress`}>לשינוי</Link>
+                                <Link to={`/payment/registerAddress`}>שינוי/הוספת כתובת</Link>
                             </BtnAddPaymentArea>
 
                             <DataArea>
