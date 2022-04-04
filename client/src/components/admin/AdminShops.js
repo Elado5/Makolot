@@ -95,12 +95,12 @@ const AdminShops = () => {
                     <ShopLine>
                         <span>{key}</span>
                         <ShopName>{shop.grocery_shop_name}</ShopName>
-                        {shop.isActive && <Active>ACTIVE</Active>}
-                        {!shop.isActive && <Inactive>INACTIVE</Inactive>}
-                        <ShopName><Link to={`/adminPage/shops/${shop.grocery_shop_id}`}>Update</Link></ShopName>
-                        {shop.isActive && <Hover onClick={() => { DeactivateItem(shop.grocery_shop_id) }}>Deactivate</Hover>}
-                        {!shop.isActive && <Hover onClick={() => { ActivateItem(shop.grocery_shop_id) }}>Activate</Hover>}
-                        <Delete onClick={() => { DeleteItem(shop.grocery_shop_id) }}>Delete</Delete>
+                        {shop.isActive && <Active>פעיל</Active>}
+                        {!shop.isActive && <Inactive>לא פעיל</Inactive>}
+                        <ShopName><Link to={`/adminPage/shops/${shop.grocery_shop_id}`}>עדכון</Link></ShopName>
+                        {shop.isActive && <Hover onClick={() => { DeactivateItem(shop.grocery_shop_id) }}>הסתרת חנות</Hover>}
+                        {!shop.isActive && <Hover onClick={() => { ActivateItem(shop.grocery_shop_id) }}>הפעלה</Hover>}
+                        <Delete onClick={() => { DeleteItem(shop.grocery_shop_id) }}>מחיקה</Delete>
                     </ShopLine>
                 )
             })}

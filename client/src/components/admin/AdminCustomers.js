@@ -91,8 +91,8 @@ const AdminCustomers = () => {
                             <CustomerLine>
                                 <span>{key}</span>
                                 <CustomerName>{Customer.customer_first_name} {Customer.customer_last_name}</CustomerName>
-                                <CustomerName><Link to={`/adminPage/Customer/${Customer.customer_id}`}>Update</Link></CustomerName>
-                                <Delete onClick={() => { DeleteItem(Customer.customer_id) }}>Delete</Delete>
+                                <CustomerName><Link to={`/adminPage/Customer/${Customer.customer_id}`}>עדכון</Link></CustomerName>
+                                <Delete onClick={() => { DeleteItem(Customer.customer_id) }}>מחיקה</Delete>
                             </CustomerLine>
                         </>
                     )

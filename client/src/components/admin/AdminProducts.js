@@ -114,20 +114,20 @@ const AdminProducts = () => {
                             <Key>{key+1}</Key>
                             <span><img src={product.product_image} alt={product.product_name} /></span>
                             <ProductName>{product.product_name}</ProductName>
-                            {product.isActive && <Active>ACTIVE</Active>}
-                            {!product.isActive && <Inactive>INACTIVE</Inactive>}
-                            <ProductName><Link to={`/adminPage/product/${product.product_id}`}>Update</Link></ProductName>
+                            {product.isActive && <Active>פעיל</Active>}
+                            {!product.isActive && <Inactive>מוסתר מהחנות</Inactive>}
+                            <ProductName><Link to={`/adminPage/product/${product.product_id}`}>עדכון</Link></ProductName>
                             <ProductName><Link to={
                                 {
                                     pathname: `/adminPage/product/${product.product_id}/image`,
                                     state: { id: product.product_id }
                                 }
                             }
-                            >Update Image</Link></ProductName>
+                            >עדכון תמונה</Link></ProductName>
 
-                            {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>Deactivate</Hover>}
-                            {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>Activate</Hover>}
-                            <Delete onClick={() => { DeleteItem(product.product_id) }}>Delete</Delete>
+                            {product.isActive && <Hover onClick={() => { DeactivateItem(product.product_id) }}>הסתרה מהחנות</Hover>}
+                            {!product.isActive && <Hover onClick={() => { ActivateItem(product.product_id) }}>הפעלה</Hover>}
+                            <Delete onClick={() => { DeleteItem(product.product_id) }}>מחיקה</Delete>
                         </ProductLine>
                     </>
                 )
@@ -163,7 +163,7 @@ const ActionButton = styled.button`{
     font-weight: bold;
     color: #27407f;
     :hover{
-        background-color: rgba(175, 255, 255, 0.5)
+        background-color: rgba(215, 255, 255, 0.8)
     }
 }`
 
