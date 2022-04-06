@@ -44,6 +44,7 @@ const AdminCustomers = () => {
             }
         }
         catch (err) {
+            alert('לא ניתן למחוק פיזית משתמשים עם היסטוריית הזמנות');
             console.error(`err`, err)
         }
     }
@@ -91,7 +92,7 @@ const AdminCustomers = () => {
                             <CustomerLine>
                                 <span>{key}</span>
                                 <CustomerName>{Customer.customer_first_name} {Customer.customer_last_name}</CustomerName>
-                                <CustomerName><Link to={`/adminPage/Customer/${Customer.customer_id}`}>עדכון</Link></CustomerName>
+                                <CustomerName><Link to={`/adminPage/Customers/${Customer.customer_id}`}>עדכון</Link></CustomerName>
                                 <Delete onClick={() => { DeleteItem(Customer.customer_id) }}>מחיקה</Delete>
                             </CustomerLine>
                         </>
